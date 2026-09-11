@@ -1,0 +1,11 @@
+# macOS metadata
+.DS_Store
+
+# Supabase CLI local link cache — machine-local, reveals project ref/org id
+/supabase/.temp/
+
+# QA test-suite build bundle — a compiled distributable, not site source
+/eagleview/testcase/EagleView_Test_Suite_Mac/
+
+# Ad-hoc editing safety snapshots of the testcase draft — not needed once git tracks real history
+eagleview/testcase/*.bak*
