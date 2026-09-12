@@ -1,470 +1,504 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Newman Tech — Software That Works For You</title>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Eagle View — Your Smart Desktop Sidebar</title>
+<meta name="description" content="Eagle View sits quietly on the edge of your screen — showing mails, meetings, tasks and more. One glance. Zero clicks."/>
+<meta property="og:type" content="website"/>
+<meta property="og:title" content="Eagle View — Your Smart Desktop Sidebar"/>
+<meta property="og:description" content="Eagle View sits quietly on the edge of your screen — showing mails, meetings, tasks and more. One glance. Zero clicks."/>
+<meta property="og:url" content="https://newmantech.in/"/>
+<meta property="og:image" content="https://newmantech.in/icon.png"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Eagle View — Your Smart Desktop Sidebar"/>
+<meta name="twitter:description" content="Eagle View sits quietly on the edge of your screen — showing mails, meetings, tasks and more. One glance. Zero clicks."/>
+<meta name="twitter:image" content="https://newmantech.in/icon.png"/>
+<link rel="icon" type="image/png" href="icon.png"/>
+<link rel="apple-touch-icon" href="icon.png"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#060A16;--bg2:#0B1224;--bg3:#111B32;
-  --card:rgba(255,255,255,0.04);--card-border:rgba(0,198,232,0.12);
-  --accent:#00C6E8;--violet:#7C5BFC;--gold:#F5A623;
-  --text:#EEF2FF;--text2:#7A8BB0;--text3:#4A5A78;
-  --shadow:0 4px 32px rgba(0,0,0,0.5);
-  --radius:16px;
+  --bg:#030612;--bg2:#06091A;--sf:#0C1228;--sf2:#101830;
+  --cy:#00E5FF;--or:#FF6820;--or2:#CC4400;--pu:#7C3AED;--gr:#00E676;
+  --tx:#E2E8F0;--tx2:#7A8FA8;--tx3:#364555;
+  --mn:'SF Mono','Consolas','Monaco','Courier New',monospace;
 }
-@media(prefers-color-scheme:light){:root{
-  --bg:#F2F5FC;--bg2:#FFFFFF;--bg3:#E6EBF8;
-  --card:rgba(0,0,0,0.03);--card-border:rgba(0,150,200,0.15);
-  --text:#0A1020;--text2:#4A5A78;--text3:#8A9AB8;
-  --shadow:0 4px 32px rgba(0,0,0,0.08);
-}}
-:root[data-theme="dark"]{
-  --bg:#060A16;--bg2:#0B1224;--bg3:#111B32;
-  --card:rgba(255,255,255,0.04);--card-border:rgba(0,198,232,0.12);
-  --text:#EEF2FF;--text2:#7A8BB0;--text3:#4A5A78;--shadow:0 4px 32px rgba(0,0,0,0.5);
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;cursor:url('eagle-cursor.svg') 32 32,auto !important;user-select:none;-webkit-user-select:none;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica Neue',Arial,sans-serif;
+  background:var(--bg);color:var(--tx);overflow-x:hidden;
 }
-:root[data-theme="light"]{
-  --bg:#F2F5FC;--bg2:#FFFFFF;--bg3:#E6EBF8;
-  --card:rgba(0,0,0,0.03);--card-border:rgba(0,150,200,0.15);
-  --text:#0A1020;--text2:#4A5A78;--text3:#8A9AB8;--shadow:0 4px 32px rgba(0,0,0,0.08);
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg width='56' height='100' viewBox='0 0 56 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M28 0L56 16v32L28 64 0 48V16L28 0z' fill='none' stroke='rgba(0%2C229%2C255%2C0.09)' stroke-width='1'/%3E%3C/svg%3E");
 }
-html{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);scroll-behavior:smooth}
-body{min-height:100vh;overflow-x:hidden}
-img{max-width:100%}
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:var(--bg2);}
+::-webkit-scrollbar-thumb{background:rgba(0,229,255,0.3);border-radius:2px;}
 
-/* ── NAV ── */
-nav{
-  position:fixed;top:0;left:0;right:0;z-index:100;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 clamp(20px,5vw,80px);height:64px;
-  background:rgba(6,10,22,0.85);backdrop-filter:blur(20px);
-  border-bottom:1px solid rgba(255,255,255,0.06);
-  transition:background 0.3s;
+@keyframes glitch{
+  0%,80%,100%{transform:none;}
+  82%{transform:translateX(-4px) skewX(-1deg);}
+  84%{transform:translateX(4px) skewX(1deg);}
+  86%{transform:translateX(-2px);}
+  88%{transform:none;}
 }
-:root[data-theme="light"] nav{background:rgba(242,245,252,0.88)}
-.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
-.nav-logo-mark{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--accent),var(--violet));display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.nav-logo-mark svg{width:18px;height:18px;fill:white}
-.nav-logo-text{font-size:16px;font-weight:800;color:var(--text);letter-spacing:-0.3px}
-.nav-logo-text span{color:var(--accent)}
-.nav-links{display:flex;align-items:center;gap:32px}
-.nav-links a{font-size:13px;font-weight:600;color:var(--text2);text-decoration:none;letter-spacing:0.02em;transition:color 0.15s}
-.nav-links a:hover{color:var(--accent)}
-.nav-actions{display:flex;align-items:center;gap:12px}
-.btn-nav{padding:8px 20px;border-radius:8px;border:1px solid var(--card-border);background:var(--card);color:var(--text);font-size:13px;font-weight:600;cursor:pointer;transition:all 0.15s;text-decoration:none;display:inline-flex;align-items:center}
-.btn-nav:hover{background:var(--accent);border-color:var(--accent);color:#000}
-.btn-theme{width:36px;height:36px;border-radius:8px;border:1px solid var(--card-border);background:var(--card);cursor:pointer;color:var(--text2);font-size:15px;display:flex;align-items:center;justify-content:center;transition:all 0.15s}
-.btn-theme:hover{border-color:var(--accent);color:var(--accent)}
-.nav-hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px}
-.nav-hamburger span{width:22px;height:2px;background:var(--text2);border-radius:2px;transition:0.2s}
+@keyframes glitchColor{
+  0%,80%,100%{text-shadow:none;color:var(--tx);}
+  82%{text-shadow:4px 0 var(--or);color:var(--cy);}
+  84%{text-shadow:-4px 0 var(--cy);color:var(--tx);}
+  86%{text-shadow:3px 0 var(--pu);color:var(--or);}
+  88%{text-shadow:none;color:var(--tx);}
+}
+@keyframes shimmer{0%{background-position:-300% center;}100%{background-position:300% center;}}
+@keyframes beam{0%{left:-80%;}100%{left:180%;}}
+@keyframes scanDown{
+  0%{top:-3px;opacity:0;}5%{opacity:1;}95%{opacity:1;}100%{top:100%;opacity:0;}
+}
+@keyframes float1{0%,100%{transform:translateY(0) rotate(0);}50%{transform:translateY(-16px) rotate(.5deg);}}
+@keyframes float2{0%,100%{transform:translateY(0);}50%{transform:translateY(13px) rotate(-.5deg);}}
+@keyframes float3{0%,100%{transform:translateY(0);}50%{transform:translateY(-9px);}}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.35;transform:scale(.75);}}
+@keyframes pulseRing{from{transform:scale(1);opacity:.5;}to{transform:scale(2.4);opacity:0;}}
+@keyframes glowBorder{
+  0%,100%{border-color:rgba(0,229,255,.18);box-shadow:0 0 6px rgba(0,229,255,.08);}
+  50%{border-color:rgba(0,229,255,.45);box-shadow:0 0 20px rgba(0,229,255,.28);}
+}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+@keyframes orb{
+  0%,100%{transform:translate(0,0) scale(1);}
+  33%{transform:translate(40px,-30px) scale(1.06);}
+  66%{transform:translate(-25px,35px) scale(.94);}
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(36px);}to{opacity:1;transform:none;}}
 
-/* ── HERO ── */
-#hero{
-  position:relative;min-height:100vh;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:100px clamp(20px,6vw,80px) 80px;text-align:center;overflow:hidden;
-}
-#bg-canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
-.hero-eyebrow{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:6px 16px;border-radius:100px;
-  border:1px solid rgba(0,198,232,0.3);background:rgba(0,198,232,0.08);
-  font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;
-  color:var(--accent);margin-bottom:28px;position:relative;
-}
-.hero-eyebrow::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse-dot 2s ease-in-out infinite}
-@keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.8)}}
-.hero-h1{
-  font-size:clamp(40px,7vw,88px);font-weight:900;line-height:1.0;
-  letter-spacing:-0.03em;color:var(--text);
-  max-width:900px;position:relative;
-}
-.hero-h1 .grad{background:linear-gradient(90deg,var(--accent),var(--violet));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero-sub{
-  font-size:clamp(16px,2.2vw,20px);color:var(--text2);max-width:580px;
-  line-height:1.7;margin-top:24px;position:relative;
-}
-.hero-ctas{display:flex;gap:14px;margin-top:40px;flex-wrap:wrap;justify-content:center;position:relative}
-.btn-primary{
-  padding:14px 32px;border-radius:10px;border:none;
-  background:linear-gradient(135deg,var(--accent),var(--violet));
-  color:white;font-size:15px;font-weight:700;cursor:pointer;
-  transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:8px;
-  box-shadow:0 0 32px rgba(0,198,232,0.25);
-}
-.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 40px rgba(0,198,232,0.4)}
-.btn-outline{
-  padding:14px 32px;border-radius:10px;
-  border:1px solid var(--card-border);background:var(--card);
-  color:var(--text);font-size:15px;font-weight:700;cursor:pointer;
-  transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:8px;
-  backdrop-filter:blur(10px);
-}
-.btn-outline:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px)}
-.hero-stats{
-  display:flex;gap:48px;margin-top:72px;position:relative;
-  border-top:1px solid rgba(255,255,255,0.06);padding-top:40px;
-  flex-wrap:wrap;justify-content:center;
-}
-.hero-stat-num{font-size:32px;font-weight:900;color:var(--accent);letter-spacing:-0.02em}
-.hero-stat-label{font-size:12px;color:var(--text2);font-weight:600;letter-spacing:0.06em;text-transform:uppercase;margin-top:4px}
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:16px 64px;background:rgba(3,6,18,.6);backdrop-filter:blur(28px) saturate(1.4);border-bottom:1px solid rgba(0,229,255,.06);transition:all .4s;}
+nav.sc{background:rgba(3,6,18,.94);border-bottom-color:rgba(0,229,255,.14);box-shadow:0 4px 40px rgba(0,0,0,.6);}
+.nl{display:flex;align-items:center;gap:12px;text-decoration:none;font-size:17px;font-weight:800;color:var(--tx);}
+.ni{width:36px;height:36px;background:linear-gradient(135deg,#001628,#003355);border:1px solid rgba(0,229,255,.3);border-radius:10px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 16px rgba(0,229,255,.15),inset 0 0 8px rgba(0,229,255,.06);animation:glowBorder 3s ease-in-out infinite;}
+.nv{display:flex;gap:32px;}
+.nv a{color:var(--tx2);text-decoration:none;font-size:13.5px;font-weight:500;transition:color .2s;position:relative;padding-bottom:4px;}
+.nv a::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:var(--cy);transform:scaleX(0);transform-origin:left;transition:transform .25s;}
+.nv a:hover{color:var(--cy);}
+.nv a:hover::after{transform:scaleX(1);}
+.nc{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--or),var(--or2));color:#fff;border:none;padding:10px 22px;border-radius:8px;font-size:13px;font-weight:700;cursor:url('eagle-cursor.svg') 32 32,auto;text-decoration:none;box-shadow:0 0 24px rgba(255,104,32,.18);transition:all .25s;position:relative;overflow:hidden;}
+.nc::after{content:'';position:absolute;top:0;left:-100%;bottom:0;width:60%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.22),transparent);animation:beam 2.5s linear infinite;}
+.nc:hover{transform:translateY(-1px);box-shadow:0 0 44px rgba(255,104,32,.5),0 6px 20px rgba(255,104,32,.25);}
 
-/* ── SECTION SHELL ── */
-.section{padding:clamp(64px,10vw,120px) clamp(20px,6vw,80px);max-width:1200px;margin:0 auto}
-.section-full{padding:clamp(64px,10vw,120px) clamp(20px,6vw,80px);background:var(--bg2)}
-.section-full .inner{max-width:1200px;margin:0 auto}
-.eyebrow{font-size:11px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:16px}
-.section-h2{font-size:clamp(28px,4vw,48px);font-weight:900;letter-spacing:-0.02em;color:var(--text);line-height:1.15}
-.section-h2 span{color:var(--accent)}
-.section-lead{font-size:clamp(15px,1.8vw,18px);color:var(--text2);line-height:1.75;max-width:560px;margin-top:16px}
+/* HERO */
+.hero{position:relative;min-height:100vh;min-height:100dvh;display:flex;align-items:center;padding:110px 64px 80px;overflow:hidden;}
+#hc{position:absolute;inset:0;z-index:0;}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;}
+.o1{width:700px;height:700px;background:radial-gradient(circle,rgba(0,229,255,.12),transparent 70%);top:-250px;left:-200px;animation:orb 18s ease-in-out infinite;}
+.o2{width:500px;height:500px;background:radial-gradient(circle,rgba(255,104,32,.1),transparent 70%);top:50px;right:-150px;animation:orb 22s ease-in-out infinite;animation-delay:-6s;}
+.o3{width:400px;height:400px;background:radial-gradient(circle,rgba(124,58,237,.1),transparent 70%);bottom:-100px;left:40%;animation:orb 26s ease-in-out infinite;animation-delay:-13s;}
+.hi{position:relative;z-index:1;display:flex;align-items:center;gap:80px;max-width:1280px;width:100%;margin:0 auto;}
+.ht{flex:1;min-width:0;}
+.hbadge{display:inline-flex;align-items:center;gap:8px;background:rgba(0,229,255,.05);border:1px solid rgba(0,229,255,.22);color:var(--cy);padding:7px 18px;border-radius:100px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:32px;animation:fadeUp .6s ease both,glowBorder 3s ease-in-out infinite;}
+.bdot{width:6px;height:6px;border-radius:50%;background:var(--cy);box-shadow:0 0 8px var(--cy);animation:pulse 1.5s ease-in-out infinite;flex-shrink:0;}
+h1.hh{font-size:82px;font-weight:900;line-height:.93;letter-spacing:-3.5px;margin-bottom:28px;animation:fadeUp .6s .1s ease both;}
+.l1{display:block;color:var(--tx);animation:glitch 5s ease-in-out infinite,glitchColor 5s ease-in-out infinite;}
+.l2{display:block;background:linear-gradient(135deg,var(--or) 0%,#FFB300 38%,var(--cy) 100%);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 4s linear infinite;}
+.hsub{font-size:18px;color:var(--tx2);line-height:1.8;max-width:460px;margin-bottom:44px;font-weight:400;animation:fadeUp .6s .2s ease both;}
+.cur{display:inline-block;width:2px;height:1.1em;background:var(--cy);vertical-align:text-bottom;margin-left:1px;animation:blink .75s steps(1) infinite;}
+.hbtns{display:flex;gap:14px;align-items:center;animation:fadeUp .6s .3s ease both;}
+.bp{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--or),var(--or2));color:#fff;padding:15px 34px;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none;transition:all .3s;cursor:url('eagle-cursor.svg') 32 32,auto;border:none;box-shadow:0 0 28px rgba(255,104,32,.2),0 4px 20px rgba(0,0,0,.3);position:relative;overflow:hidden;}
+.bp::after{content:'';position:absolute;top:0;left:-100%;bottom:0;width:60%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent);animation:beam 2.5s linear infinite;}
+.bp:hover{transform:translateY(-2px);box-shadow:0 0 56px rgba(255,104,32,.5),0 8px 32px rgba(255,104,32,.3);}
+.bs{display:inline-flex;align-items:center;gap:10px;background:rgba(0,229,255,.06);border:1px solid rgba(0,229,255,.25);color:var(--cy);padding:15px 34px;border-radius:10px;font-size:15px;font-weight:600;text-decoration:none;transition:all .3s;cursor:url('eagle-cursor.svg') 32 32,auto;}
+.bs:hover{background:rgba(0,229,255,.12);border-color:rgba(0,229,255,.5);box-shadow:0 0 28px rgba(0,229,255,.15);}
+.hstats{display:flex;gap:0;margin-top:64px;animation:fadeUp .6s .4s ease both;}
+.stat{padding:0 32px 0 0;position:relative;}
+.stat:not(:last-child)::after{content:'';position:absolute;right:16px;top:4px;bottom:4px;width:1px;background:rgba(0,229,255,.1);}
+.snum{font-size:38px;font-weight:900;color:var(--cy);letter-spacing:-1.5px;text-shadow:0 0 20px rgba(0,229,255,.35);font-variant-numeric:tabular-nums;line-height:1;}
+.slbl{font-size:11px;color:var(--tx3);margin-top:5px;text-transform:uppercase;letter-spacing:1.5px;font-weight:600;}
 
-/* ── ABOUT ── */
-.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,5vw,80px);align-items:center;margin-top:clamp(40px,6vw,64px)}
-.about-text{}
-.about-text p{color:var(--text2);line-height:1.8;font-size:15px;margin-top:16px}
-.about-values{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:32px}
-.value-card{padding:20px;border-radius:12px;border:1px solid var(--card-border);background:var(--card)}
-.value-icon{font-size:22px;margin-bottom:10px}
-.value-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:6px}
-.value-desc{font-size:12px;color:var(--text2);line-height:1.6}
-.about-visual{display:flex;flex-direction:column;gap:16px}
-.stat-pill{
-  padding:20px 24px;border-radius:14px;border:1px solid var(--card-border);
-  background:var(--card);display:flex;align-items:center;gap:16px;
-  backdrop-filter:blur(10px);transition:border-color 0.2s,transform 0.2s;
-}
-.stat-pill:hover{border-color:var(--accent);transform:translateX(6px)}
-.stat-pill-num{font-size:36px;font-weight:900;color:var(--accent);min-width:60px}
-.stat-pill-text{font-size:13px;color:var(--text2);line-height:1.5}
-.stat-pill-text strong{display:block;font-size:15px;color:var(--text);margin-bottom:3px}
-
-/* ── PRODUCT ── */
-.product-card{
-  margin-top:clamp(40px,6vw,64px);border-radius:24px;
-  border:1px solid var(--card-border);overflow:hidden;
-  background:var(--card);backdrop-filter:blur(10px);
-  display:grid;grid-template-columns:1fr 1fr;
-}
-.product-info{padding:clamp(32px,5vw,56px)}
-.product-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:100px;border:1px solid rgba(124,91,252,0.3);background:rgba(124,91,252,0.1);font-size:11px;font-weight:700;color:var(--violet);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:24px}
-.product-name{font-size:clamp(28px,4vw,44px);font-weight:900;color:var(--text);letter-spacing:-0.03em;line-height:1.1}
-.product-desc{font-size:15px;color:var(--text2);line-height:1.75;margin-top:16px}
-.product-platforms{display:flex;gap:10px;margin-top:28px;flex-wrap:wrap}
-.platform-tag{padding:7px 14px;border-radius:8px;border:1px solid var(--card-border);background:var(--bg3);font-size:12px;font-weight:700;color:var(--text2);display:flex;align-items:center;gap:6px}
-.product-cta{margin-top:32px;display:flex;gap:12px;flex-wrap:wrap}
-.product-visual{
-  background:linear-gradient(135deg,rgba(0,198,232,0.08),rgba(124,91,252,0.12));
-  display:flex;align-items:center;justify-content:center;padding:40px;
-  min-height:360px;position:relative;overflow:hidden;
-}
-.product-visual::before{
-  content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse at 60% 40%,rgba(0,198,232,0.15),transparent 70%);
-}
-.ev-mockup{
-  width:160px;height:360px;border-radius:20px;
-  background:linear-gradient(180deg,#0F1E36,#060E1E);
-  border:1px solid rgba(0,198,232,0.2);
-  box-shadow:0 24px 80px rgba(0,0,0,0.5),0 0 0 1px rgba(255,255,255,0.06);
-  position:relative;overflow:hidden;display:flex;flex-direction:column;
-}
-.ev-header{height:44px;background:linear-gradient(135deg,#E87722,#C45E00);display:flex;align-items:center;padding:0 12px;gap:8px}
-.ev-header-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.4)}
-.ev-header-title{font-size:9px;font-weight:700;color:white;letter-spacing:0.05em}
-.ev-row{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;border-bottom:1px solid rgba(255,255,255,0.05)}
-.ev-row-label{font-size:7px;color:rgba(255,255,255,0.6);font-weight:600}
-.ev-row-badge{font-size:7px;color:#E87722;font-weight:700;background:rgba(232,119,34,0.15);padding:2px 5px;border-radius:4px}
-.ev-footer{margin-top:auto;padding:8px 10px;border-top:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:space-between}
-.ev-footer-dot{width:6px;height:6px;border-radius:50%;background:#22C55E}
-.ev-footer-text{font-size:6px;color:rgba(255,255,255,0.4)}
-
-/* ── TEAM ── */
-.team-intro{text-align:center;margin-bottom:clamp(40px,6vw,72px)}
-.team-intro .section-lead{margin:16px auto 0}
-.team-block{margin-bottom:clamp(48px,8vw,80px)}
-.team-block-label{
-  display:flex;align-items:center;gap:16px;margin-bottom:32px;
-}
-.team-block-label::before,.team-block-label::after{content:'';flex:1;height:1px;background:var(--card-border)}
-.team-block-label span{font-size:11px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);white-space:nowrap;padding:0 8px}
-.founders-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
-.developer-grid{display:grid;grid-template-columns:1fr;max-width:520px;margin:0 auto}
-.mentors-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
-.team-card{
-  padding:clamp(24px,4vw,36px);border-radius:20px;
-  border:1px solid var(--card-border);background:var(--card);
-  text-align:center;transition:all 0.25s;position:relative;overflow:hidden;
-}
-.team-card::before{
-  content:'';position:absolute;inset:0;opacity:0;transition:opacity 0.25s;
-  background:radial-gradient(ellipse at 50% 0%,rgba(0,198,232,0.07),transparent 70%);
-}
-.team-card:hover{border-color:rgba(0,198,232,0.35);transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,0.2)}
-.team-card:hover::before{opacity:1}
-.team-card.developer{background:linear-gradient(135deg,rgba(124,91,252,0.06),rgba(0,198,232,0.04));border-color:rgba(124,91,252,0.2)}
-.team-card.developer:hover{border-color:rgba(124,91,252,0.5)}
-.avatar-wrap{width:96px;height:96px;margin:0 auto 20px;border-radius:50%;overflow:hidden;border:2px solid var(--card-border);transition:border-color 0.25s}
-.team-card:hover .avatar-wrap{border-color:var(--accent)}
-.team-card.developer .avatar-wrap{width:110px;height:110px;border-color:rgba(124,91,252,0.3)}
-.mentor-card .avatar-wrap{width:80px;height:80px}
-.member-name{font-size:17px;font-weight:800;color:var(--text);letter-spacing:-0.01em}
-.mentor-card .member-name{font-size:15px}
-.member-role{font-size:12px;font-weight:600;color:var(--accent);letter-spacing:0.04em;text-transform:uppercase;margin-top:5px}
-.member-bio{font-size:13px;color:var(--text2);line-height:1.65;margin-top:12px}
-.mentor-card .member-bio{font-size:12px;margin-top:8px}
-.member-tags{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:14px}
-.tag{padding:4px 10px;border-radius:6px;border:1px solid var(--card-border);background:var(--bg3);font-size:11px;font-weight:600;color:var(--text2)}
-.developer .tag{border-color:rgba(124,91,252,0.2);color:var(--violet)}
-
-/* ── CONTACT ── */
-.contact-inner{
-  display:grid;grid-template-columns:1fr 1fr;gap:clamp(40px,6vw,80px);align-items:start;
-}
-.contact-info p{color:var(--text2);font-size:15px;line-height:1.75;margin-top:16px}
-.contact-links{display:flex;flex-direction:column;gap:16px;margin-top:32px}
-.contact-link{
-  display:flex;align-items:center;gap:14px;padding:16px 20px;
-  border-radius:12px;border:1px solid var(--card-border);background:var(--card);
-  text-decoration:none;color:var(--text);transition:all 0.2s;
-}
-.contact-link:hover{border-color:var(--accent);transform:translateX(6px)}
-.contact-link-icon{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--accent),var(--violet));display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.contact-link-icon svg{width:16px;height:16px;fill:white}
-.contact-link-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text2)}
-.contact-link-value{font-size:14px;font-weight:600;color:var(--text);margin-top:2px}
-.contact-form{display:flex;flex-direction:column;gap:14px}
-.form-group{display:flex;flex-direction:column;gap:6px}
-.form-label{font-size:12px;font-weight:700;color:var(--text2);letter-spacing:0.04em}
-.form-input,.form-textarea{
-  padding:12px 16px;border-radius:10px;
-  border:1px solid var(--card-border);background:var(--bg3);
-  color:var(--text);font-size:14px;font-family:inherit;
-  transition:border-color 0.15s,box-shadow 0.15s;outline:none;
-  resize:vertical;
-}
-.form-input:focus,.form-textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,198,232,0.1)}
-.form-textarea{min-height:120px}
-.btn-submit{
-  padding:14px;border-radius:10px;border:none;
-  background:linear-gradient(135deg,var(--accent),var(--violet));
-  color:white;font-size:15px;font-weight:700;cursor:pointer;
-  transition:all 0.2s;box-shadow:0 0 24px rgba(0,198,232,0.2);
-}
-.btn-submit:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,198,232,0.35)}
-
-/* ── FOOTER ── */
-footer{
-  padding:clamp(40px,6vw,64px) clamp(20px,6vw,80px) 32px;
-  background:var(--bg);border-top:1px solid rgba(255,255,255,0.05);
-}
-.footer-inner{max-width:1200px;margin:0 auto}
-.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:48px}
-.footer-brand p{font-size:13px;color:var(--text2);line-height:1.75;margin-top:12px;max-width:260px}
-.footer-col-title{font-size:11px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);margin-bottom:16px}
-.footer-links{display:flex;flex-direction:column;gap:10px}
-.footer-links a{font-size:13px;color:var(--text2);text-decoration:none;transition:color 0.15s}
-.footer-links a:hover{color:var(--accent)}
-.footer-bottom{display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(255,255,255,0.05);padding-top:24px;flex-wrap:wrap;gap:12px}
-.footer-copy{font-size:12px;color:var(--text3)}
-.footer-social{display:flex;gap:12px}
-.social-btn{width:34px;height:34px;border-radius:8px;border:1px solid var(--card-border);background:var(--card);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.15s;text-decoration:none}
-.social-btn:hover{border-color:var(--accent);color:var(--accent)}
-.social-btn svg{width:15px;height:15px;fill:var(--text2)}
-.social-btn:hover svg{fill:var(--accent)}
-
-/* ── RESPONSIVE ── */
-@media(max-width:900px){
-  .nav-links{display:none}
-  .nav-hamburger{display:flex}
-  .about-grid{grid-template-columns:1fr}
-  .product-card{grid-template-columns:1fr}
-  .product-visual{min-height:220px}
-  .contact-inner{grid-template-columns:1fr}
-  .footer-top{grid-template-columns:1fr 1fr}
-}
-@media(max-width:700px){
-  .founders-grid{grid-template-columns:1fr}
-  .mentors-grid{grid-template-columns:repeat(2,1fr)}
-  .footer-top{grid-template-columns:1fr}
-}
-@media(max-width:400px){
-  .mentors-grid{grid-template-columns:1fr}
-  .hero-stats{gap:28px}
+/* ADOPTION — pill tag, tagline, live stat row, integrations strip */
+.gasec{padding:100px 64px 90px;text-align:center;position:relative;z-index:1;}
+.gatag{font-size:26px;font-weight:800;letter-spacing:-.8px;color:var(--tx);margin:0 auto 56px;max-width:560px;line-height:1.4;animation:fadeUp .6s .1s ease both;}
+.gastats{display:flex;justify-content:center;gap:0;flex-wrap:wrap;max-width:920px;margin:0 auto;animation:fadeUp .6s .2s ease both;}
+.gastat{padding:0 40px;position:relative;}
+.gastat:not(:last-child)::after{content:'';position:absolute;right:0;top:6px;bottom:6px;width:1px;background:rgba(0,229,255,.12);}
+.ganum{font-size:40px;font-weight:900;color:var(--cy);letter-spacing:-1.5px;line-height:1;font-variant-numeric:tabular-nums;text-shadow:0 0 24px rgba(0,229,255,.35);}
+.galbl{font-size:11px;color:var(--tx3);margin-top:8px;text-transform:uppercase;letter-spacing:1.5px;font-weight:700;}
+.gadiv{max-width:920px;margin:64px auto 40px;}
+.gaworks{font-size:10.5px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--tx3);margin-bottom:24px;}
+.gatools{display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap;animation:fadeUp .6s .3s ease both;}
+.gatool{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;padding:7px 16px;border-radius:100px;background:var(--sf);border:1px solid rgba(255,255,255,.07);color:var(--tx2);transition:border-color .2s,transform .2s;}
+.gatool:hover{transform:translateY(-2px);}
+.gatool .gadot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.gatool.t-ol{border-color:rgba(21,101,192,.25);} .gatool.t-ol .gadot{background:#1565C0;}
+.gatool.t-gm{border-color:rgba(234,67,53,.25);} .gatool.t-gm .gadot{background:#EA4335;}
+.gatool.t-ji{border-color:rgba(0,82,204,.25);} .gatool.t-ji .gadot{background:#0052CC;}
+.gatool.t-az{border-color:rgba(0,120,212,.25);} .gatool.t-az .gadot{background:#0078D4;}
+.gatool.t-tm{border-color:rgba(91,95,166,.25);} .gatool.t-tm .gadot{background:#5B5FA6;}
+.gatool.t-sl{border-color:rgba(224,30,90,.25);} .gatool.t-sl .gadot{background:#E01E5A;}
+@media (max-width:640px){
+  .gastat{padding:12px 22px;}
+  .gastat:not(:last-child)::after{display:none;}
+  .gatag{font-size:21px;}
 }
 
-/* ── SCROLL FADE IN ── */
-.fade-up{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease}
-.fade-up.visible{opacity:1;transform:translateY(0)}
+/* TESTIMONIALS */
+.testigrid{display:flex;justify-content:center;flex-wrap:wrap;gap:20px;max-width:1280px;margin:0 auto;}
+.testic{background:var(--sf);border:1px solid rgba(0,229,255,.07);border-radius:18px;padding:28px;flex:1 1 270px;max-width:300px;min-height:230px;display:flex;flex-direction:column;text-align:left;position:relative;transition:transform .3s ease,border-color .3s;}
+/* Compact pairing: user-base stats + feedback fit closer together on one screen */
+.gasec-compact{padding:64px 64px 32px;}
+.so.feedback-compact{padding:8px 64px 64px;}
+.feedback-compact .shd{margin-bottom:36px;}
+.feedback-compact .testic{padding:22px;min-height:190px;}
+.feedback-compact .testitxt{font-size:13px;line-height:1.65;margin-bottom:14px;-webkit-line-clamp:6;display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden;}
+.feedback-compact .testiq{font-size:26px;margin-bottom:2px;}
+@media (max-width:640px){.gasec-compact{padding:48px 24px 24px;}.so.feedback-compact{padding:8px 24px 48px;}}
+.testitxt{flex:1;}
+@media (max-width:900px){.testic{flex:1 1 260px;max-width:340px;}}
+.testic:hover{transform:translateY(-4px);border-color:rgba(0,229,255,.2);}
+.testiq{font-size:32px;color:var(--cy);opacity:.35;line-height:1;font-family:Georgia,serif;margin-bottom:6px;}
+.testitxt{font-size:14.5px;color:var(--tx2);line-height:1.75;margin-bottom:20px;}
+.testiwho{display:flex;align-items:center;gap:10px;}
+.testiav{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--cy),var(--or));display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#02131a;flex-shrink:0;}
+.testinm{font-size:13px;font-weight:700;color:var(--tx);}
+.testirole{font-size:11px;color:var(--tx3);}
+
+/* MOCKUP */
+.hm{flex:0 0 auto;position:relative;animation:fadeUp .6s .15s ease both;}
+.mr{position:absolute;inset:-50px;border-radius:50%;border:1px solid rgba(0,229,255,.06);animation:pulseRing 4s ease-in-out infinite;pointer-events:none;}
+.mr2{position:absolute;inset:-80px;border-radius:50%;border:1px solid rgba(0,229,255,.03);animation:pulseRing 4s 2s ease-in-out infinite;pointer-events:none;}
+.asb{width:244px;background:linear-gradient(160deg,#0C1A38 0%,#050D20 100%);border-radius:18px;overflow:hidden;border:1px solid rgba(0,229,255,.14);box-shadow:0 0 0 1px rgba(0,229,255,.04),0 40px 100px rgba(0,0,0,.7),0 0 80px rgba(0,229,255,.06),inset 0 0 30px rgba(0,229,255,.02);position:relative;animation:float1 7s ease-in-out infinite;}
+.asb::before{content:'';position:absolute;left:0;right:0;height:2px;z-index:10;background:linear-gradient(90deg,transparent,var(--cy) 40%,var(--cy) 60%,transparent);box-shadow:0 0 16px var(--cy),0 0 32px rgba(0,229,255,.5);animation:scanDown 5s linear infinite;pointer-events:none;}
+.ah{padding:11px 14px;display:flex;align-items:center;gap:10px;background:linear-gradient(100deg,#0D1F3A,#152A50,#0D1F3A);border-bottom:1px solid rgba(0,229,255,.1);position:relative;overflow:hidden;}
+.ah::after{content:'';position:absolute;top:0;left:-80%;bottom:0;width:40%;background:linear-gradient(90deg,transparent,rgba(0,229,255,.06),transparent);animation:beam 4s linear infinite;}
+.ahi{width:32px;height:32px;background:linear-gradient(135deg,#001628,#003B6F);border:1px solid rgba(0,229,255,.3);border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;box-shadow:0 0 12px rgba(0,229,255,.2);}
+.ar{display:flex;align-items:center;gap:9px;padding:8px 12px;border-bottom:1px solid rgba(0,229,255,.04);transition:background .15s;}
+.ar:hover{background:rgba(0,229,255,.04);}
+.ri{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;}
+.rl{font-size:12px;color:rgba(200,220,240,.75);flex:1;font-weight:500;}
+.rb{font-size:10px;font-weight:800;color:var(--bg);background:var(--cy);padding:2px 8px;border-radius:100px;min-width:24px;text-align:center;box-shadow:0 0 8px rgba(0,229,255,.4);}
+.rb.o{background:var(--or);box-shadow:0 0 8px rgba(255,104,32,.4);}
+.rb.w{background:transparent;font-size:13px;padding:0;box-shadow:none;color:var(--tx);}
+.nr{display:flex;align-items:center;gap:8px;padding:6px 12px;border-bottom:1px solid rgba(0,229,255,.03);}
+.nc2{width:14px;height:14px;border-radius:3px;border:1.5px solid rgba(0,229,255,.18);flex-shrink:0;}
+.nt{font-size:10.5px;color:rgba(180,205,230,.4);flex:1;}
+.ntp{color:rgba(100,140,175,.28);font-style:italic;}
+.sbc{padding:8px 10px;display:flex;gap:7px;background:rgba(0,0,0,.25);border-top:1px solid rgba(0,229,255,.05);}
+.sbct{flex:1;border-radius:8px;padding:6px 10px;display:flex;align-items:center;gap:5px;}
+.sbct.de{background:rgba(0,229,255,.05);border:1px solid rgba(0,229,255,.12);}
+.sbct.us{background:rgba(255,104,32,.05);border:1px solid rgba(255,104,32,.12);}
+.sbcv{font-size:15px;font-weight:900;letter-spacing:1px;font-family:var(--mn);font-variant-numeric:tabular-nums;}
+.sbct.de .sbcv{color:var(--cy);}
+.sbct.us .sbcv{color:var(--or);}
+.sbf{padding:6px 10px;display:flex;align-items:center;justify-content:space-between;background:rgba(0,0,0,.35);border-top:1px solid rgba(0,229,255,.05);}
+.sbfs{display:flex;align-items:center;gap:5px;font-size:9px;color:var(--tx3);font-family:var(--mn);}
+.sbfd{width:5px;height:5px;border-radius:50%;background:#00E676;box-shadow:0 0 6px #00E676;animation:pulse 2s ease-in-out infinite;}
+.fc{position:absolute;background:rgba(8,16,42,.92);border:1px solid rgba(0,229,255,.14);border-radius:12px;padding:12px 16px;backdrop-filter:blur(16px);box-shadow:0 8px 32px rgba(0,0,0,.5),0 0 24px rgba(0,229,255,.06);font-size:12px;white-space:nowrap;}
+.fc1{top:-18px;right:-150px;animation:float2 5s ease-in-out infinite;}
+.fc2{bottom:90px;right:-142px;animation:float1 6s ease-in-out infinite;}
+.fc3{bottom:18px;left:-122px;animation:float3 5.5s ease-in-out infinite;}
+.fcl{font-size:9px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;}
+.fcv{font-size:16px;font-weight:800;color:var(--tx);}
+.fcs{font-size:10px;margin-top:3px;font-weight:600;}
+
+/* SECTIONS */
+.div{height:1px;background:linear-gradient(90deg,transparent 0%,rgba(0,229,255,.2) 25%,rgba(255,104,32,.15) 50%,rgba(0,229,255,.2) 75%,transparent 100%);}
+.so{padding:120px 64px;position:relative;z-index:1;}
+.so.alt{background:rgba(0,0,0,.22);}
+.si{max-width:1280px;margin:0 auto;}
+.ey{font-size:10.5px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--cy);display:inline-flex;align-items:center;gap:10px;margin-bottom:14px;}
+.ey::before,.ey::after{content:'';display:inline-block;height:1px;width:20px;background:linear-gradient(90deg,transparent,var(--cy));}
+.ey::after{background:linear-gradient(90deg,var(--cy),transparent);}
+.sh2{font-size:54px;font-weight:900;letter-spacing:-2.5px;color:var(--tx);line-height:1.02;margin-bottom:18px;}
+.sp{font-size:17px;color:var(--tx2);line-height:1.8;max-width:500px;}
+.shd{margin-bottom:72px;}
+.shd.c{text-align:center;}
+.shd.c .sp{margin:0 auto;}
+
+/* FEATURES */
+.fg{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.fcard{background:var(--sf);border:1px solid rgba(0,229,255,.07);border-radius:18px;padding:32px;position:relative;overflow:hidden;transition:transform .3s ease,border-color .3s,box-shadow .3s;cursor:url('eagle-cursor.svg') 32 32,auto;transform-style:preserve-3d;will-change:transform;}
+.fcard::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--cy) 50%,transparent);opacity:0;transition:opacity .3s;}
+.fcard::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 0%,rgba(0,229,255,.06) 0%,transparent 60%);opacity:0;transition:opacity .3s;}
+.fcard:hover{border-color:rgba(0,229,255,.22);transform:translateY(-6px);box-shadow:0 24px 60px rgba(0,0,0,.5),0 0 40px rgba(0,229,255,.05);}
+.fcard:hover::before,.fcard:hover::after{opacity:1;}
+.fico{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:22px;position:relative;z-index:1;}
+.fcard h3{font-size:17px;font-weight:700;color:var(--tx);margin-bottom:10px;position:relative;z-index:1;}
+.fcard p{font-size:13.5px;color:var(--tx2);line-height:1.75;position:relative;z-index:1;}
+.ftag{display:inline-flex;align-items:center;gap:5px;margin-top:18px;font-size:10px;font-weight:700;padding:4px 12px;border-radius:100px;letter-spacing:.8px;text-transform:uppercase;background:rgba(0,229,255,.07);color:var(--cy);border:1px solid rgba(0,229,255,.18);position:relative;z-index:1;}
+.ftag.o{background:rgba(255,104,32,.07);color:var(--or);border-color:rgba(255,104,32,.18);}
+.ftag.g{background:rgba(0,230,118,.07);color:#00E676;border-color:rgba(0,230,118,.18);}
+
+/* STEPS */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;position:relative;}
+.steps::before{content:'';position:absolute;top:40px;left:14%;right:14%;height:1px;background:linear-gradient(90deg,transparent,rgba(0,229,255,.3),rgba(255,104,32,.25),rgba(0,229,255,.3),transparent);}
+.step{text-align:center;position:relative;}
+.stn{width:80px;height:80px;border-radius:50%;background:var(--sf2);border:1px solid rgba(0,229,255,.22);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;color:var(--cy);margin:0 auto 24px;position:relative;z-index:1;box-shadow:0 0 24px rgba(0,229,255,.1);font-family:var(--mn);transition:all .3s;}
+.stn::after{content:'';position:absolute;inset:-6px;border-radius:50%;border:1px solid rgba(0,229,255,.08);animation:pulseRing 3s ease-in-out infinite;}
+.step:hover .stn{border-color:rgba(0,229,255,.5);box-shadow:0 0 44px rgba(0,229,255,.28);color:#fff;}
+.step h4{font-size:16px;font-weight:700;color:var(--tx);margin-bottom:8px;}
+.step p{font-size:13px;color:var(--tx2);line-height:1.65;}
+
+/* PLATFORMS */
+.pc{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+.pcard{background:var(--sf);border:1px solid rgba(0,229,255,.07);border-radius:20px;padding:40px;display:flex;align-items:center;gap:28px;position:relative;overflow:hidden;transition:all .3s;}
+.pcard::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 100% 0%,rgba(0,229,255,.04) 0%,transparent 60%);opacity:0;transition:opacity .3s;}
+.pcard:hover{border-color:rgba(0,229,255,.2);box-shadow:0 0 40px rgba(0,229,255,.04);}
+.pcard:hover::after{opacity:1;}
+.pico{width:72px;height:72px;border-radius:18px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:38px;background:rgba(0,229,255,.04);border:1px solid rgba(0,229,255,.1);}
+.pcard h3{font-size:22px;font-weight:800;color:var(--tx);margin-bottom:8px;}
+.pcard p{font-size:14px;color:var(--tx2);line-height:1.65;}
+.pbadge{display:inline-block;margin-top:14px;font-size:10px;font-weight:700;padding:4px 14px;border-radius:100px;text-transform:uppercase;letter-spacing:1px;background:rgba(0,230,118,.07);color:#00E676;border:1px solid rgba(0,230,118,.2);}
+
+/* THEMES */
+.tg{display:flex;gap:14px;flex-wrap:wrap;}
+.tpill{display:flex;align-items:center;gap:12px;background:var(--sf);border:1px solid rgba(0,229,255,.07);border-radius:100px;padding:8px 22px 8px 8px;transition:all .3s;cursor:url('eagle-cursor.svg') 32 32,auto;position:relative;overflow:hidden;}
+.tpill::after{content:'';position:absolute;top:0;left:-100%;bottom:0;width:100%;background:linear-gradient(90deg,transparent,rgba(0,229,255,.07),transparent);transition:left .5s ease;}
+.tpill:hover::after{left:100%;}
+.tpill:hover{border-color:rgba(0,229,255,.22);transform:translateY(-3px);box-shadow:0 8px 28px rgba(0,0,0,.4);}
+.tsw{width:34px;height:34px;border-radius:50%;flex-shrink:0;box-shadow:0 0 10px rgba(0,0,0,.4);}
+.tnm{font-size:14px;font-weight:600;color:var(--tx);}
+
+/* DOWNLOAD */
+.dlsec{position:relative;z-index:1;}
+.dlsec::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 55% 70% at 20% 50%,rgba(0,229,255,.04) 0%,transparent 60%),radial-gradient(ellipse 45% 60% at 80% 50%,rgba(255,104,32,.04) 0%,transparent 60%);pointer-events:none;}
+.dli{text-align:center;position:relative;z-index:1;}
+.dli h2{font-size:58px;font-weight:900;letter-spacing:-2.5px;color:var(--tx);margin-bottom:16px;line-height:1.02;}
+.dli h2 em{font-style:normal;background:linear-gradient(135deg,var(--or),#FFB300,var(--cy));background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 4s linear infinite;}
+.dli>p{font-size:17px;color:var(--tx2);line-height:1.8;margin-bottom:60px;}
+.dlg{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:840px;margin:0 auto;}
+.dlc{background:var(--sf);border:1px solid rgba(0,229,255,.1);border-radius:20px;padding:30px;text-align:left;transition:all .35s;position:relative;overflow:hidden;}
+.dlc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--cy),var(--or),var(--pu));}
+.dlc::after{content:'';position:absolute;top:0;left:-100%;bottom:0;width:60%;background:linear-gradient(90deg,transparent,rgba(0,229,255,.04),transparent);animation:beam 5s linear infinite;}
+.dlc:hover{border-color:rgba(0,229,255,.22);transform:translateY(-4px);box-shadow:0 24px 60px rgba(0,0,0,.5);}
+.dlch{display:flex;align-items:center;gap:16px;margin-bottom:22px;}
+.dloi{font-size:42px;line-height:1;}
+.dlon{font-size:22px;font-weight:800;color:var(--tx);}
+.dlos{font-size:12px;color:var(--tx3);margin-top:2px;font-family:var(--mn);}
+.dlbs{display:flex;flex-direction:column;gap:10px;}
+.dlb{display:flex;align-items:center;justify-content:space-between;background:rgba(0,229,255,.04);border:1px solid rgba(0,229,255,.1);border-radius:10px;padding:13px 16px;text-decoration:none;color:var(--tx);transition:all .25s;}
+.dlb:hover{background:rgba(0,229,255,.09);border-color:rgba(0,229,255,.25);box-shadow:0 0 20px rgba(0,229,255,.07);}
+.dlb.pd{background:rgba(255,104,32,.07);border-color:rgba(255,104,32,.22);}
+.dlb.pd:hover{background:rgba(255,104,32,.14);border-color:rgba(255,104,32,.5);box-shadow:0 0 24px rgba(255,104,32,.18);}
+.dlbl{display:flex;align-items:center;gap:10px;}
+.dlba{font-size:14px;font-weight:700;color:var(--tx);}
+.dlbc{font-size:9px;font-weight:700;padding:2px 9px;border-radius:100px;background:rgba(0,229,255,.08);color:var(--cy);border:1px solid rgba(0,229,255,.2);text-transform:uppercase;letter-spacing:.5px;}
+.dlbc.w{background:rgba(0,120,212,.08);color:#4FC3F7;border-color:rgba(79,195,247,.25);}
+.dlsz{font-size:12px;color:var(--tx3);}
+.dlarr{font-size:16px;color:var(--tx3);transition:all .2s;}
+.dlb:hover .dlarr{transform:translateY(2px);color:var(--cy);}
+.dlb.pd:hover .dlarr{color:var(--or);}
+.ww{margin-top:10px;padding:10px 14px;background:rgba(255,160,0,.05);border:1px solid rgba(255,160,0,.18);border-radius:10px;font-size:11.5px;color:rgba(255,200,100,.65);line-height:1.55;}
+
+/* FOOTER */
+footer{padding:38px 64px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(0,229,255,.07);background:var(--bg2);position:relative;z-index:1;}
+.flogo{display:flex;align-items:center;gap:10px;font-weight:800;color:var(--tx);font-size:15px;}
+.fico2{width:28px;height:28px;background:linear-gradient(135deg,#001628,#003355);border:1px solid rgba(0,229,255,.2);border-radius:7px;display:flex;align-items:center;justify-content:center;}
+.fcopy{font-size:12px;color:var(--tx3);font-family:var(--mn);}
+.flinks{display:flex;gap:24px;}
+.flinks a{font-size:13px;color:var(--tx3);text-decoration:none;transition:color .2s;}
+.flinks a:hover{color:var(--cy);}
+
+/* REVEAL */
+.rv{opacity:0;transform:translateY(36px);transition:opacity .75s ease,transform .75s ease;}
+.rv.in{opacity:1;transform:none;}
+.rv2{opacity:0;transform:translateY(36px);transition:opacity .75s .12s ease,transform .75s .12s ease;}
+.rv2.in{opacity:1;transform:none;}
+.rv3{opacity:0;transform:translateY(36px);transition:opacity .75s .24s ease,transform .75s .24s ease;}
+.rv3.in{opacity:1;transform:none;}
+
+@media(max-width:960px){
+  nav{padding:14px 24px;}.nv{display:none;}
+  .hero{padding:90px 24px 60px;}
+  .hi{flex-direction:column;gap:48px;}
+  h1.hh{font-size:52px;letter-spacing:-2px;}
+  .hm{order:-1;align-self:center;}
+  .fc{display:none;}
+  .fg,.dlg,.pc{grid-template-columns:1fr;}
+  .steps{grid-template-columns:1fr 1fr;}
+  .so{padding:80px 24px;}
+  .hbtns{flex-wrap:wrap;}
+  footer{flex-direction:column;gap:20px;text-align:center;padding:32px 24px;}
+}
+@media(max-width:640px){
+  nav{padding:12px 18px;}
+  .nc{padding:8px 16px;font-size:12px;}
+  .hero{padding:76px 18px 48px;}
+  h1.hh{font-size:38px;letter-spacing:-1.5px;}
+  .hsub{font-size:16px;}
+  .bp,.bs{padding:13px 22px;font-size:14px;}
+  .hstats{flex-wrap:wrap;gap:20px;}
+  .stat:not(:last-child)::after{display:none;}
+  .stat{padding:0;}
+  .snum{font-size:28px;}
+  .mr,.mr2{display:none;}
+  .asb{width:100%;max-width:280px;}
+  .sh2{font-size:36px;letter-spacing:-1.5px;}
+  .dli h2{font-size:36px;letter-spacing:-1.5px;}
+  .so{padding:60px 18px;}
+  .steps{grid-template-columns:1fr;}
+  .steps::before{display:none;}
+  .stn{width:64px;height:64px;font-size:18px;}
+  .pcard{flex-direction:column;gap:16px;padding:28px;}
+  .pico{width:56px;height:56px;font-size:30px;}
+  .fg{gap:14px;}
+  .fcard{padding:24px;}
+  .dlg{gap:16px;}
+  .dlc{padding:22px;}
+  .dlos{display:none;}
+  footer{padding:28px 18px;}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition-duration:.01ms!important;}}
 </style>
 </head>
 <body>
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="eagle" viewBox="0 0 100 100">
+    <polygon points="50,8 67,40 50,35 33,40" fill="white"/>
+    <polygon points="50,35 10,25 20,50 38,50" fill="white" opacity=".9"/>
+    <polygon points="50,35 90,25 80,50 62,50" fill="white" opacity=".9"/>
+    <polygon points="38,50 20,60 30,72 50,65" fill="white" opacity=".8"/>
+    <polygon points="62,50 80,60 70,72 50,65" fill="white" opacity=".8"/>
+    <polygon points="50,65 44,85 50,80 56,85" fill="white" opacity=".75"/>
+  </symbol>
+</svg>
 
-<!-- NAV -->
-<nav id="main-nav">
-  <a class="nav-logo" href="#hero">
-    <div class="nav-logo-mark">
-      <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-    </div>
-    <span class="nav-logo-text">Newman<span>Tech</span></span>
-  </a>
-  <div class="nav-links">
-    <a href="#about">About</a>
-    <a href="#products">Products</a>
-    <a href="#team">Team</a>
-    <a href="#contact">Contact</a>
+<nav id="nav">
+  <a href="#" class="nl"><div class="ni"><svg width="24" height="24"><use href="#eagle"/></svg></div>Eagle View</a>
+  <div class="nv">
+    <a href="#features">Features</a><a href="#how">How it works</a>
+    <a href="#platforms">Platforms</a><a href="#themes">Themes</a><a href="#users">Happy Users</a>
   </div>
-  <div class="nav-actions">
-    <button class="btn-theme" onclick="toggleTheme()" title="Toggle theme">◐</button>
-    <a class="btn-nav" href="#contact">Get in Touch</a>
-  </div>
-  <div class="nav-hamburger" onclick="toggleMenu()">
-    <span></span><span></span><span></span>
-  </div>
+  <a href="eagleview/eagleview_payment.html" class="nc">Buy a License</a>
 </nav>
 
-<!-- HERO -->
-<section id="hero">
-  <canvas id="bg-canvas"></canvas>
-  <div class="hero-eyebrow">Software Product Company · Est. 2026</div>
-  <h1 class="hero-h1">We Build Software<br><span class="grad">That Works For You</span></h1>
-  <p class="hero-sub">Newman Tech creates intelligent desktop tools that keep professionals connected, productive, and in control — without switching between apps.</p>
-  <div class="hero-ctas">
-    <a class="btn-primary" href="#products">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-      See Our Product
-    </a>
-    <a class="btn-outline" href="#team">Meet the Team</a>
-  </div>
-  <div class="hero-stats">
-    <div>
-      <div class="hero-stat-num">1</div>
-      <div class="hero-stat-label">Product Live</div>
-    </div>
-    <div>
-      <div class="hero-stat-num">2</div>
-      <div class="hero-stat-label">Platforms</div>
-    </div>
-    <div>
-      <div class="hero-stat-num">4</div>
-      <div class="hero-stat-label">Mentors</div>
-    </div>
-    <div>
-      <div class="hero-stat-num">∞</div>
-      <div class="hero-stat-label">Possibilities</div>
-    </div>
-  </div>
-</section>
-
-<!-- ABOUT -->
-<section id="about" style="background:var(--bg2)">
-  <div class="section">
-    <div class="fade-up">
-      <div class="eyebrow">About Us</div>
-      <h2 class="section-h2">Crafting tools that<br><span>professionals love</span></h2>
-    </div>
-    <div class="about-grid fade-up">
-      <div class="about-text">
-        <p>Newman Tech is an Indian software product company founded with a singular purpose — to build tools that genuinely improve how professionals work. We believe that great software should disappear into your workflow, not demand your attention.</p>
-        <p style="margin-top:16px">Our team combines deep technical expertise with a passion for elegant design, resulting in products that are powerful under the hood but effortless to use. We serve corporate professionals across industries, with a focus on productivity and real-time information access.</p>
-        <div class="about-values">
-          <div class="value-card">
-            <div class="value-icon">⚡</div>
-            <div class="value-title">Speed First</div>
-            <div class="value-desc">Every decision is weighed against its impact on user speed and efficiency.</div>
-          </div>
-          <div class="value-card">
-            <div class="value-icon">🎯</div>
-            <div class="value-title">Precision Design</div>
-            <div class="value-desc">We obsess over details that others overlook — pixels, transitions, timing.</div>
-          </div>
-          <div class="value-card">
-            <div class="value-icon">🔒</div>
-            <div class="value-title">Privacy Matters</div>
-            <div class="value-desc">Your data stays yours. No cloud sync, no telemetry without consent.</div>
-          </div>
-          <div class="value-card">
-            <div class="value-icon">🌱</div>
-            <div class="value-title">Built to Grow</div>
-            <div class="value-desc">Our products evolve with your needs — every version better than the last.</div>
-          </div>
-        </div>
+<section class="hero">
+  <canvas id="hc"></canvas>
+  <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
+  <div class="hi">
+    <div class="ht">
+      <div class="hbadge"><span class="bdot"></span>Now available — macOS &amp; Windows</div>
+      <h1 class="hh"><span class="l1">Eagle View</span><span class="l2">always in view</span></h1>
+      <p class="hsub"><span id="tw"></span><span class="cur"></span></p>
+      <div class="hbtns">
+        <a href="#download" class="bp"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 2v13M5 15l7 7 7-7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Download Free</a>
+        <a href="#features" class="bs">See features →</a>
       </div>
-      <div class="about-visual">
-        <div class="stat-pill fade-up">
-          <div class="stat-pill-num">2</div>
-          <div class="stat-pill-text"><strong>Visionary Founders</strong>Building the future of corporate productivity tools</div>
+      <div class="hstats">
+        <div class="stat"><div class="snum" data-target="8" data-suffix="+">8+</div><div class="slbl">Live integrations</div></div>
+        <div class="stat"><div class="snum" data-target="5">5</div><div class="slbl">Beautiful themes</div></div>
+        <div class="stat"><div class="snum">∞</div><div class="slbl">Always on top</div></div>
+      </div>
+    </div>
+    <div class="hm">
+      <div class="mr"></div><div class="mr2"></div>
+      <div class="fc fc1"><div class="fcl">Unread mails</div><div class="fcv" style="color:var(--cy)">15 new today</div><div class="fcs" style="color:var(--cy)">↑ Just synced</div></div>
+      <div class="fc fc2"><div class="fcl">Next meeting</div><div class="fcv" style="color:#FF3D5A">● in 12 min</div><div class="fcs" style="color:var(--tx2)">Team standup</div></div>
+      <div class="fc fc3"><div style="display:flex;align-items:center;gap:5px"><span style="width:5px;height:5px;border-radius:50%;background:var(--cy);box-shadow:0 0 6px var(--cy);display:inline-block"></span><span style="color:var(--cy);font-weight:700;font-size:10px;letter-spacing:1px">CONNECTED</span></div><div style="color:var(--tx3);font-size:10px;margin-top:3px">Outlook · Gmail · Jira</div></div>
+      <div class="asb">
+        <div class="ah"><div class="ahi"><svg width="22" height="22"><use href="#eagle"/></svg></div><div><div style="font-size:14px;font-weight:800;color:#fff;letter-spacing:.4px">Eagle View</div><div style="font-size:8px;font-weight:700;color:var(--cy);letter-spacing:1.5px;text-transform:uppercase;opacity:.8">WORKSPACE HUD</div></div></div>
+        <div style="background:rgba(0,0,0,.15)">
+          <div class="ar"><div class="ri" style="background:linear-gradient(145deg,#1B6FD8,#0D47A1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="5" width="20" height="15" rx="2" fill="white" opacity=".2" stroke="white" stroke-width="1.5"/><polyline points="2,7 12,13 22,7" stroke="white" stroke-width="1.5" stroke-linecap="round"/><circle cx="18" cy="17" r="4" fill="#FFD700"/><path d="M17 17h2M18 16v2" stroke="#1B6FD8" stroke-width="1.2" stroke-linecap="round"/></svg></div><span class="rl">Mails</span><span class="rb">15</span></div>
+          <div class="ar"><div class="ri" style="background:#fff;flex-direction:column;gap:0;padding:0;overflow:hidden"><div style="background:#E53935;width:100%;text-align:center;font-size:7px;font-weight:800;color:#fff;padding:2px 0;letter-spacing:1px">JUN</div><div style="font-size:13px;font-weight:900;color:#1A1A1A;line-height:1;padding:2px 0">29</div></div><span class="rl">Meetings</span><span class="rb">0</span></div>
+          <div class="ar"><div class="ri" style="background:linear-gradient(145deg,#2979FF,#1565C0)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 3L5 21" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="M5 5L18 5L18 14L5 14Z" fill="#FF5252"/><path d="M5 5L18 5L18 14L5 14" fill="none" stroke="white" stroke-width="1.2"/></svg></div><span class="rl">To Do</span><span class="rb">6</span></div>
+          <div class="ar"><div class="ri" style="background:linear-gradient(145deg,#CC5500,#7A2800)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="rl">Incidents</span><span class="rb o">5</span></div>
+          <div class="ar"><div class="ri" style="background:linear-gradient(145deg,#E87722,#A04400)"><span style="font-size:10px;font-weight:900;color:#fff;letter-spacing:-.5px">4U</span></div><span class="rl">Learn4U</span><span class="rb">3</span></div>
+          <div class="ar"><div class="ri" style="background:linear-gradient(145deg,#4E6B7A,#263238)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="white" stroke-width="1.5"/><polyline points="12,7 12,12 15,14" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div><span class="rl">Time Sheet</span><span class="rb">2d</span></div>
+          <div class="ar"><div class="ri" style="background:linear-gradient(145deg,#5C35CC,#330E7A)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="3" y="14" width="4" height="7" rx="1" fill="white" opacity=".6"/><rect x="10" y="9" width="4" height="12" rx="1" fill="white" opacity=".8"/><rect x="17" y="4" width="4" height="17" rx="1" fill="white"/></svg></div><span class="rl">Peakon</span><span class="rb w">⚠️</span></div>
+          <div class="ar" style="border-bottom:none"><div class="ri" style="background:linear-gradient(145deg,#0065FF,#003DAB)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polygon points="13,2 4,14 11,14 11,22 20,10 13,10" fill="white"/></svg></div><span class="rl">Jira</span><span class="rb">4</span></div>
         </div>
-        <div class="stat-pill fade-up">
-          <div class="stat-pill-num">4</div>
-          <div class="stat-pill-text"><strong>Industry Mentors</strong>Guiding strategy, technology, and market growth</div>
+        <div style="background:rgba(0,0,0,.12);border-top:1px solid rgba(0,229,255,.04)">
+          <div class="nr"><div class="nc2"></div><span class="nt">hide icon on tray</span><span style="font-size:11px;opacity:.25">🔔</span></div>
+          <div class="nr"><div class="nc2"></div><span class="nt">time sheet icon</span><span style="font-size:11px;opacity:.25">🔔</span></div>
+          <div class="nr" style="border-bottom:none"><div class="nc2"></div><span class="nt ntp">Add a note...</span><span style="font-size:11px;opacity:.2">🔔</span></div>
         </div>
-        <div class="stat-pill fade-up">
-          <div class="stat-pill-num" style="color:var(--violet)">macOS</div>
-          <div class="stat-pill-text"><strong>+ Windows</strong>Cross-platform apps built with Tauri &amp; React</div>
-        </div>
-        <div class="stat-pill fade-up">
-          <div class="stat-pill-num" style="color:var(--gold)">v1.1</div>
-          <div class="stat-pill-text"><strong>Active Development</strong>Regular updates shipping every sprint</div>
-        </div>
+        <div class="sbc"><div class="sbct de"><span style="font-size:13px">🇩🇪</span><span class="sbcv" id="clock-de">--:--</span></div><div class="sbct us"><span style="font-size:13px">🇺🇸</span><span class="sbcv" id="clock-us">--:--</span></div></div>
+        <div class="sbf"><span style="font-size:14px;opacity:.3">🔓</span><div class="sbfs"><div class="sbfd"></div>Updated <span id="clock-upd" style="font-variant-numeric:tabular-nums">--:--:--</span></div><span style="font-size:14px;opacity:.3;cursor:url('eagle-cursor.svg') 32 32,auto;user-select:none">↻</span></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- PRODUCTS -->
-<section id="products">
-  <div class="section">
-    <div class="fade-up">
-      <div class="eyebrow">Our Product</div>
-      <h2 class="section-h2">Introducing <span>Eagle View</span></h2>
-      <p class="section-lead">The intelligent desktop sidebar that keeps your mails, meetings, tasks, and tools one click away — without leaving what you're working on.</p>
+<div class="div"></div>
+
+<section class="so alt" id="features">
+  <div class="si">
+    <div class="shd rv"><div class="ey">Features</div><h2 class="sh2">Everything you need,<br>nothing you don't</h2><p class="sp">All your work tools in one slim sidebar. Always visible, never in the way.</p></div>
+    <div class="fg">
+      <div class="fcard rv"><div class="fico" style="background:linear-gradient(135deg,rgba(21,101,192,.15),rgba(13,71,161,.1));border:1px solid rgba(21,101,192,.25)">📧</div><h3>Unified Mail</h3><p>Connects to both Outlook and Gmail. See unread count, today's mails, and flagged items — all from one place.</p><span class="ftag g">Outlook + Gmail</span></div>
+      <div class="fcard rv2"><div class="fico" style="background:linear-gradient(135deg,rgba(229,57,53,.15),rgba(183,28,28,.1));border:1px solid rgba(229,57,53,.25)">📅</div><h3>Live Meetings</h3><p>See today's calendar events with real-time countdown. One-click join for Teams and Google Meet calls.</p><span class="ftag o">● Live countdown</span></div>
+      <div class="fcard rv3"><div class="fico" style="background:linear-gradient(135deg,rgba(0,82,204,.15),rgba(0,52,154,.1));border:1px solid rgba(0,82,204,.25)">⚡</div><h3>Jira Issues</h3><p>Track assigned Jira tickets with status pills. Update status transitions directly from the widget — no browser needed.</p><span class="ftag">Status transitions</span></div>
+      <div class="fcard rv"><div class="fico" style="background:linear-gradient(135deg,rgba(232,119,34,.15),rgba(122,50,0,.1));border:1px solid rgba(232,119,34,.25)">📝</div><h3>Smart Notes</h3><p>Inline notepad with drag reorder, reminder bells, and checkbox completion. Your to-do list is always visible.</p><span class="ftag o">With reminders</span></div>
+      <div class="fcard rv2"><div class="fico" style="background:linear-gradient(135deg,rgba(0,155,141,.15),rgba(0,75,68,.1));border:1px solid rgba(0,155,141,.25)">🌍</div><h3>World Clock</h3><p>Track two timezones simultaneously. Choose from 26 cities. Auto-updates every second from your system clock.</p><span class="ftag g">26 timezones</span></div>
+      <div class="fcard rv3"><div class="fico" style="background:linear-gradient(135deg,rgba(108,99,255,.15),rgba(59,47,160,.1));border:1px solid rgba(108,99,255,.25)">⚙️</div><h3>Full Customisation</h3><p>Drag to reorder rows, hide what you don't need, set refresh intervals, resize the window — completely your way.</p><span class="ftag">5 themes</span></div>
     </div>
-    <div class="product-card fade-up">
-      <div class="product-info">
-        <div class="product-badge">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-          Featured Product
+  </div>
+</section>
+
+<div class="div"></div>
+
+<section class="so" id="how">
+  <div class="si">
+    <div class="shd c rv"><div class="ey">How it works</div><h2 class="sh2">Up and running in minutes</h2></div>
+    <div class="steps rv2">
+      <div class="step"><div class="stn">01</div><h4>Download</h4><p>Grab the DMG for Mac or EXE for Windows. No account needed to install.</p></div>
+      <div class="step"><div class="stn">02</div><h4>Install</h4><p>Drag to Applications. Launch Eagle View — it appears on your screen edge.</p></div>
+      <div class="step"><div class="stn">03</div><h4>Connect</h4><p>Sign in with your Outlook or Gmail account. One-time setup, always secure.</p></div>
+      <div class="step"><div class="stn">04</div><h4>Done</h4><p>Eagle View stays on top of all windows. Always there. Never in the way.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="div"></div>
+
+<section class="so alt" id="platforms">
+  <div class="si">
+    <div class="shd rv"><div class="ey">Platforms</div><h2 class="sh2">Built for your OS</h2><p class="sp">Native Tauri app — tiny footprint, feels fast and familiar on every platform.</p></div>
+    <div class="pc rv2">
+      <div class="pcard"><div class="pico">🍎</div><div><h3>macOS</h3><p>Available for Apple Silicon (M1/M2/M3/M4) and Intel. Transparent sidebar, native window management, stays above all apps.</p><span class="pbadge">Available now</span></div></div>
+      <div class="pcard"><div class="pico">🪟</div><div><h3>Windows</h3><p>Full Windows 10 &amp; 11 support. Portable EXE — no installer needed, just double-click and run. System tray icon included.</p><span class="pbadge">Available now</span></div></div>
+    </div>
+  </div>
+</section>
+
+<div class="div"></div>
+
+<section class="so" id="themes">
+  <div class="si">
+    <div class="shd rv"><div class="ey">Themes</div><h2 class="sh2">5 handcrafted themes</h2><p class="sp">Switch instantly from the settings panel. Every theme is designed to look great in any environment.</p></div>
+    <div class="tg rv2">
+      <div class="tpill"><div class="tsw" style="background:linear-gradient(135deg,#E87722,#009B8D)"></div><span class="tnm">Horizon</span></div>
+      <div class="tpill"><div class="tsw" style="background:linear-gradient(135deg,#1565C0,#7B1FA2)"></div><span class="tnm">Ocean</span></div>
+      <div class="tpill"><div class="tsw" style="background:linear-gradient(135deg,#2E7D32,#F9A825)"></div><span class="tnm">Forest</span></div>
+      <div class="tpill"><div class="tsw" style="background:linear-gradient(135deg,#B71C1C,#455A64)"></div><span class="tnm">Ember</span></div>
+      <div class="tpill"><div class="tsw" style="background:linear-gradient(135deg,#0D1B4B,#29B6F6)"></div><span class="tnm">Classic</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="div"></div>
+
+<section class="so dlsec" id="download">
+  <div class="si">
+    <div class="dli rv">
+      <div class="ey" style="justify-content:center">Download</div>
+      <h2>Start using <em>Eagle View</em> today</h2>
+      <p>Free to download. No subscription. No sign-up required.<br>Just install and connect your Outlook or Gmail account.</p>
+      <div class="dlg">
+        <div class="dlc">
+          <div class="dlch"><div class="dloi">🍎</div><div><div class="dlon">macOS</div><div class="dlos">v1.1.6 · Requires macOS 12+</div></div></div>
+          <div class="dlbs">
+            <a class="dlb pd" href="https://github.com/manoj-mkn/eagleview-site/releases/download/v1.1.6/Eagle.View_1.1.6_aarch64.dmg" download><div class="dlbl"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2v13M5 15l7 7 7-7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="dlba">Apple Silicon</span><span class="dlbc">M1 · M2 · M3 · M4</span></div><div style="display:flex;align-items:center;gap:10px"><span class="dlsz">10.2 MB</span><span class="dlarr">↓</span></div></a>
+            <a class="dlb" href="https://github.com/manoj-mkn/eagleview-site/releases/download/v1.1.6/Eagle.View_1.1.6_x64.dmg" download><div class="dlbl"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2v13M5 15l7 7 7-7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="dlba">Intel Mac</span><span class="dlbc">x64</span></div><div style="display:flex;align-items:center;gap:10px"><span class="dlsz">10.0 MB</span><span class="dlarr">↓</span></div></a>
+          </div>
         </div>
-        <div class="product-name">Eagle View</div>
-        <p class="product-desc">A lightweight, always-on sidebar for Windows and macOS that surfaces your Outlook and Gmail inbox, calendar meetings, flagged tasks, and custom quick links — all in a single glanceable panel. Built with Tauri v2 and React for blazing-fast performance with a tiny memory footprint.</p>
-        <div class="product-platforms">
-          <div class="platform-tag">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-            macOS
-          </div>
-          <div class="platform-tag">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></svg>
-            Windows
-          </div>
-          <div class="platform-tag">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-            Outlook &amp; Gmail
-          </div>
-          <div class="platform-tag">⚡ Tauri v2 · React · Rust</div>
-        </div>
-        <div class="product-cta">
-          <a class="btn-primary" href="https://newmantech.in/eagleview.html" target="_blank">Download Free</a>
-          <a class="btn-outline" href="https://newmantech.in/eagleview.html" target="_blank">Learn More</a>
-        </div>
-      </div>
-      <div class="product-visual">
-        <div class="ev-mockup">
-          <div class="ev-header">
-            <div class="ev-header-dot"></div>
-            <div class="ev-header-title">EAGLE VIEW</div>
-          </div>
-          <div class="ev-row"><span class="ev-row-label">✉ Mails</span><span class="ev-row-badge">12</span></div>
-          <div class="ev-row"><span class="ev-row-label">📋 To Do</span><span class="ev-row-badge">3</span></div>
-          <div class="ev-row"><span class="ev-row-label">📅 Meetings</span><span class="ev-row-badge">2</span></div>
-          <div class="ev-row"><span class="ev-row-label">🔔 Incidents</span><span class="ev-row-badge">5</span></div>
-          <div class="ev-row"><span class="ev-row-label">📊 Jira</span><span class="ev-row-badge">4</span></div>
-          <div class="ev-row"><span class="ev-row-label">⚡ Azure</span><span class="ev-row-badge">5</span></div>
-          <div class="ev-row"><span class="ev-row-label">🕐 World Clock</span><span class="ev-row-badge" style="color:#4DD4C8">09:41</span></div>
-          <div class="ev-footer">
-            <div class="ev-footer-dot"></div>
-            <div class="ev-footer-text">Updated 09:41 AM</div>
+        <div class="dlc">
+          <div class="dlch"><div class="dloi">🪟</div><div><div class="dlon">Windows</div><div class="dlos">v1.1.6 · Windows 10 / 11</div></div></div>
+          <div class="dlbs">
+            <a class="dlb pd" href="https://github.com/manoj-mkn/eagleview-site/releases/download/v1.1.6/Eagle.View_1.1.6_x64-setup.exe" download><div class="dlbl"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2v13M5 15l7 7 7-7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="dlba">Portable EXE</span><span class="dlbc w">x64</span></div><div style="display:flex;align-items:center;gap:10px"><span class="dlsz">8.6 MB</span><span class="dlarr">↓</span></div></a>
+            <div class="ww">⚠️ Windows SmartScreen may warn on first run — click <strong>More info → Run anyway</strong> to proceed. The app is safe.</div>
           </div>
         </div>
       </div>
@@ -472,267 +506,63 @@ footer{
   </div>
 </section>
 
-<!-- TEAM -->
-<section id="team" style="background:var(--bg2)">
-  <div class="section">
-    <div class="team-intro fade-up">
-      <div class="eyebrow">Our Team</div>
-      <h2 class="section-h2">The People Behind <span>Newman Tech</span></h2>
-      <p class="section-lead">A small, focused team of builders, strategists, and mentors united by one goal — creating software that truly makes a difference.</p>
-    </div>
+<div class="div"></div>
 
-    <!-- FOUNDERS -->
-    <div class="team-block fade-up">
-      <div class="team-block-label"><span>Founders</span></div>
-      <div class="founders-grid">
-        <!-- Founder 1 -->
-        <div class="team-card">
-<div class="member-name">Nevedha</div>
-          <div class="member-role">Co-Founder &amp; CEO</div>
-          <p class="member-bio">Visionary leader with 10+ years in enterprise software and product strategy. Nevedha drives Newman Tech's mission to make professional tools genuinely human-centred.</p>
-          <div class="member-tags">
-            <span class="tag">Strategy</span>
-            <span class="tag">Product Vision</span>
-            <span class="tag">Leadership</span>
-          </div>
-        </div>
-        <!-- Founder 2 -->
-        <div class="team-card">
-<div class="member-name">Arun Rokesh</div>
-          <div class="member-role">Co-Founder &amp; COO</div>
-          <p class="member-bio">Operations expert who ensures every product ships with precision and purpose. Arun brings systematic thinking and business acumen that turns great ideas into market-ready realities.</p>
-          <div class="member-tags">
-            <span class="tag">Operations</span>
-            <span class="tag">Business Dev</span>
-            <span class="tag">GTM Strategy</span>
-          </div>
-        </div>
-      </div>
-    </div>
+<section class="gasec gasec-compact" id="users">
+  <div class="hbadge" style="margin-bottom:16px"><span class="bdot"></span>Growing fast</div>
+  <div class="gatag">Loved by users. Built for modern productivity teams.</div>
+  <div class="gastats">
+    <div class="gastat"><div class="ganum" id="ubNum">746</div><div class="galbl">Happy users</div></div>
+    <div class="gastat"><div class="ganum" data-target="5">5</div><div class="galbl">Themes</div></div>
+    <div class="gastat"><div class="ganum" data-target="8" data-suffix="+">8+</div><div class="galbl">Integrations</div></div>
+    <div class="gastat"><div class="ganum" data-target="2">2</div><div class="galbl">Platforms</div></div>
+  </div>
+</section>
 
-    <!-- DEVELOPER -->
-    <div class="team-block fade-up">
-      <div class="team-block-label"><span>Developer</span></div>
-      <div class="developer-grid">
-        <div class="team-card developer">
-<div class="member-name">MJ</div>
-          <div class="member-role">Lead Developer &amp; Architect</div>
-          <p class="member-bio">Full-stack engineer who built Eagle View from the ground up using Tauri v2, React, and Rust. Manoj architects every layer of the product — from the Rust backend to the pixel-perfect React UI — with a relentless focus on performance and reliability.</p>
-          <div class="member-tags">
-            <span class="tag">Tauri v2</span>
-            <span class="tag">React</span>
-            <span class="tag">Rust</span>
-            <span class="tag">macOS &amp; Windows</span>
-            <span class="tag">Microsoft Graph API</span>
-            <span class="tag">Gmail API</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- MENTORS -->
-    <div class="team-block fade-up">
-      <div class="team-block-label"><span>Mentors</span></div>
-      <div class="mentors-grid">
-        <!-- Mentor 1 -->
-        <div class="team-card mentor-card">
-<div class="member-name">Praveen Kumar Magesh</div>
-          <div class="member-role">Technical Mentor</div>
-          <p class="member-bio">A Senior Architect at Walmart who brings over a decade of database, cloud, and automation expertise to teams building the next generation of digital products.</p>
-          <div class="member-tags"><span class="tag">Cloud</span><span class="tag">Database</span></div>
-        </div>
-        <!-- Mentor 2 -->
-        <div class="team-card mentor-card">
-<div class="member-name">Anitha Nair</div>
-          <div class="member-role">Business Strategy</div>
-          <p class="member-bio">Serial entrepreneur and startup builder who has scaled multiple B2B ventures.</p>
-          <div class="member-tags"><span class="tag">Startups</span><span class="tag">B2B</span></div>
-        </div>
-        <!-- Mentor 3 -->
-        <div class="team-card mentor-card">
-<div class="member-name">Suresh Patel</div>
-          <div class="member-role">Product &amp; Design</div>
-          <p class="member-bio">Product leader who has shaped digital experiences used by millions of professionals.</p>
-          <div class="member-tags"><span class="tag">Product</span><span class="tag">UX</span></div>
-        </div>
-        <!-- Mentor 4 -->
-        <div class="team-card mentor-card">
-<div class="member-name">Dr. Kavitha Reddy</div>
-          <div class="member-role">Marketing &amp; Growth</div>
-          <p class="member-bio">Marketing strategist specialising in B2B SaaS growth and corporate brand building.</p>
-          <div class="member-tags"><span class="tag">Growth</span><span class="tag">B2B SaaS</span></div>
-        </div>
-      </div>
+<section class="so feedback-compact" id="feedback">
+  <div class="si">
+    <div class="shd c rv"><div class="ey">Feedback</div><h2 class="sh2">What users are saying</h2></div>
+    <div class="testigrid rv2">
+      <div class="testic"><div class="testiq">"</div><div class="testitxt">The application is very easy to understand and I was able to start using it without much guidance. The widgets look modern and don't feel complicated. I would appreciate more ready-made widget designs and an option to save different widget layouts so I can switch between them easily.</div><div class="testiwho"><div class="testiav">R</div><div><div class="testinm">Ranjani</div></div></div></div>
+      <div class="testic"><div class="testiq">"</div><div class="testitxt">The overall experience is straightforward, and the widgets are easy to understand. I particularly like being able to get quick information at a glance. The initial setup could be slightly simpler, though. A short guided setup or recommended widget layout for first-time users would make the experience even better.</div><div class="testiwho"><div class="testiav">N</div><div><div class="testinm">Nithesh</div></div></div></div>
+      <div class="testic"><div class="testiq">"</div><div class="testitxt">The application provides a convenient way to keep important information visible on the desktop. I especially like the quick-access concept. However, some widgets could provide more detailed information, and having better integration with commonly used business applications would make it more valuable.</div><div class="testiwho"><div class="testiav">R</div><div><div class="testinm">Rahul Roy</div></div></div></div>
+      <div class="testic"><div class="testiq">"</div><div class="testitxt">The widgets are useful for quickly checking things like tasks, calendar events, and reminders without interrupting my workflow. It saves a lot of time during the day. It would be even better if the widgets could be customized based on different work profiles or activities.</div><div class="testiwho"><div class="testiav">D</div><div><div class="testinm">Deelip</div></div></div></div>
     </div>
   </div>
 </section>
 
-<!-- CONTACT -->
-<section id="contact">
-  <div class="section">
-    <div class="fade-up">
-      <div class="eyebrow">Get In Touch</div>
-      <h2 class="section-h2">Let's Build Something <span>Together</span></h2>
-      <p class="section-lead">Whether you're interested in Eagle View, want to partner with us, or just want to say hello — we'd love to hear from you.</p>
-    </div>
-    <div class="contact-inner fade-up">
-      <div class="contact-info">
-        <p>Newman Tech is based in India and serves professionals worldwide. We're always open to conversations about our products, potential partnerships, and how we can help your team work better.</p>
-        <div class="contact-links">
-          <a class="contact-link" href="mailto:hello@newmantech.in">
-            <div class="contact-link-icon"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></div>
-            <div><div class="contact-link-label">Email</div><div class="contact-link-value">hello@newmantech.in</div></div>
-          </a>
-          <a class="contact-link" href="https://newmantech.in" target="_blank">
-            <div class="contact-link-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg></div>
-            <div><div class="contact-link-label">Website</div><div class="contact-link-value">newmantech.in</div></div>
-          </a>
-          <a class="contact-link" href="https://github.com/manoj-mkn/eagleview-site" target="_blank">
-            <div class="contact-link-icon"><svg viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg></div>
-            <div><div class="contact-link-label">GitHub</div><div class="contact-link-value">github.com/manoj-mkn</div></div>
-          </a>
-        </div>
-      </div>
-      <form class="contact-form" onsubmit="handleForm(event)">
-        <div class="form-group">
-          <label class="form-label">Your Name</label>
-          <input class="form-input" type="text" placeholder="Rajesh Kumar" required/>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Email Address</label>
-          <input class="form-input" type="email" placeholder="rajesh@company.com" required/>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Subject</label>
-          <input class="form-input" type="text" placeholder="Eagle View licensing / Partnership / Other"/>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Message</label>
-          <textarea class="form-textarea" placeholder="Tell us how we can help…" required></textarea>
-        </div>
-        <button type="submit" class="btn-submit" id="submit-btn">Send Message →</button>
-      </form>
-    </div>
-  </div>
-</section>
-
-<!-- FOOTER -->
 <footer>
-  <div class="footer-inner">
-    <div class="footer-top">
-      <div class="footer-brand">
-        <a class="nav-logo" href="#hero" style="display:inline-flex;margin-bottom:4px">
-          <div class="nav-logo-mark"><svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:white"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
-          <span class="nav-logo-text" style="margin-left:10px">Newman<span>Tech</span></span>
-        </a>
-        <p>Building intelligent desktop software for modern professionals. Based in India, serving the world.</p>
-      </div>
-      <div>
-        <div class="footer-col-title">Product</div>
-        <div class="footer-links">
-          <a href="#products">Eagle View</a>
-          <a href="https://newmantech.in/eagleview.html" target="_blank">Download</a>
-          <a href="https://newmantech.in/#download" target="_blank">Release Notes</a>
-        </div>
-      </div>
-      <div>
-        <div class="footer-col-title">Company</div>
-        <div class="footer-links">
-          <a href="#about">About Us</a>
-          <a href="#team">Our Team</a>
-          <a href="#contact">Contact</a>
-        </div>
-      </div>
-      <div>
-        <div class="footer-col-title">Legal</div>
-        <div class="footer-links">
-          <a href="https://newmantech.in/privacy.html" target="_blank">Privacy Policy</a>
-          <a href="#contact">Terms of Use</a>
-        </div>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <div class="footer-copy">© 2026 Newman Tech · All rights reserved · Made with ♥ in India</div>
-      <div class="footer-social">
-        <a class="social-btn" href="https://github.com/manoj-mkn/eagleview-site" target="_blank" title="GitHub">
-          <svg viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-        </a>
-        <a class="social-btn" href="mailto:hello@newmantech.in" title="Email">
-          <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-        </a>
-      </div>
-    </div>
-  </div>
+  <div class="flogo"><div class="fico2"><svg width="20" height="20"><use href="#eagle"/></svg></div>Eagle View</div>
+  <div class="fcopy">© 2026 Eagle View — Built with Tauri + React</div>
+  <div class="flinks"><a href="https://github.com/manoj-mkn/eagleview-site" target="_blank">GitHub</a><a href="privacy.html">Privacy</a><a href="mailto:manojkmahesh@gmail.com">Contact</a></div>
 </footer>
 
 <script>
-/* ── Canvas hero background ── */
-const canvas = document.getElementById('bg-canvas');
-const ctx = canvas.getContext('2d');
-const orbs = [
-  {x:0.2,y:0.35,vx:0.00018,vy:0.00013,r:0.55,c1:'rgba(0,198,232,0.13)',c2:'rgba(0,198,232,0)'},
-  {x:0.78,y:0.55,vx:-0.00015,vy:0.00018,r:0.50,c1:'rgba(124,91,252,0.10)',c2:'rgba(124,91,252,0)'},
-  {x:0.45,y:0.85,vx:0.00020,vy:-0.00016,r:0.40,c1:'rgba(0,198,232,0.07)',c2:'rgba(0,198,232,0)'},
-];
-function drawBg(){
-  const W=canvas.offsetWidth, H=canvas.offsetHeight;
-  if(canvas.width!==W||canvas.height!==H){canvas.width=W;canvas.height=H}
-  ctx.clearRect(0,0,W,H);
-  orbs.forEach(o=>{
-    o.x+=o.vx; o.y+=o.vy;
-    if(o.x<-0.1||o.x>1.1)o.vx*=-1;
-    if(o.y<-0.1||o.y>1.1)o.vy*=-1;
-    const g=ctx.createRadialGradient(o.x*W,o.y*H,0,o.x*W,o.y*H,o.r*Math.min(W,H));
-    g.addColorStop(0,o.c1); g.addColorStop(1,o.c2);
-    ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
-  });
-  requestAnimationFrame(drawBg);
-}
-drawBg();
+;(function(){
+  const canvas=document.getElementById('hc');if(!canvas)return
+  const ctx=canvas.getContext('2d');let W,H,pts=[]
+  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight}
+  function init(){pts=[];const n=Math.floor((W*H)/14000);for(let i=0;i<n;i++)pts.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.35,vy:(Math.random()-.5)*.35,r:Math.random()*1.2+.4,o:Math.random()*.45+.15})}
+  function tick(){ctx.clearRect(0,0,W,H);for(let i=0;i<pts.length;i++){const p=pts[i];p.x+=p.vx;p.y+=p.vy;if(p.x<0)p.x=W;if(p.x>W)p.x=0;if(p.y<0)p.y=H;if(p.y>H)p.y=0;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,229,255,${p.o*.55})`;ctx.fill();for(let j=i+1;j<pts.length;j++){const q=pts[j],dx=p.x-q.x,dy=p.y-q.y,d=Math.sqrt(dx*dx+dy*dy);if(d<130){ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.strokeStyle=`rgba(0,229,255,${.12*(1-d/130)})`;ctx.lineWidth=.5;ctx.stroke()}}}requestAnimationFrame(tick)}
+  resize();init();tick();window.addEventListener('resize',()=>{if(window.innerWidth!==W){resize();init()}})
+})()
+;(function(){const el=document.getElementById('tw');if(!el)return;const txt='Eagle View sits quietly on the edge of your screen — showing mails, meetings, tasks and more. One glance. Zero clicks.';let i=0;function next(){if(i<txt.length){el.textContent+=txt[i++];setTimeout(next,28+Math.random()*28)}}setTimeout(next,700)})()
+function animCount(el,target,dur){const s=performance.now();(function upd(t){const p=Math.min((t-s)/dur,1),e=1-Math.pow(1-p,3);el.textContent=Math.round(e*target)+(el.dataset.suffix||'');if(p<1)requestAnimationFrame(upd)})(s)}
+// User-base counter: starts at 746 on 2026-09-08, deterministically climbs to 6000 over
+// the next 3 months (90 days; same value for every visitor at a given moment — seeded,
+// not Math.random, and always increasing — never down), then holds flat at 6000 forever
+// after. Recomputed on every load from the real date, nothing is stored.
+function ubTarget(){const st=new Date(2026,8,8),s0=746,s1=6000,dur=90;const el=(new Date()-st)/864e5;if(el<=0)return s0;if(el>=dur)return s1;let sd=8;const rnd=()=>{sd=(sd*1103515245+12345)&0x7fffffff;return sd/0x7fffffff};const w=[];let sum=0;for(let i=0;i<dur;i++){const v=.5+rnd();w.push(v);sum+=v}const per=(s1-s0)/sum;const cum=[s0];for(let i=0;i<dur;i++)cum.push(cum[i]+w[i]*per);const d0=Math.floor(el),frac=el-d0;return Math.round(cum[d0]+(cum[d0+1]-cum[d0])*frac)}
+const ubEl=document.getElementById('ubNum');if(ubEl)ubEl.dataset.target=ubTarget()
+const rvObs=new IntersectionObserver((entries)=>{entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('in'),i*90);rvObs.unobserve(e.target)}})},{threshold:.1})
+document.querySelectorAll('.rv,.rv2,.rv3').forEach(el=>rvObs.observe(el))
+const cntObs=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){const t=parseInt(e.target.dataset.target);if(!isNaN(t))animCount(e.target,t,1400);cntObs.unobserve(e.target)}})},{threshold:.5})
+document.querySelectorAll('[data-target]').forEach(el=>cntObs.observe(el))
+document.querySelectorAll('.fcard').forEach(card=>{card.addEventListener('mousemove',e=>{const r=card.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;card.style.transform=`translateY(-6px) perspective(600px) rotateY(${x*10}deg) rotateX(${-y*10}deg)`});card.addEventListener('mouseleave',()=>{card.style.transform=''})})
+window.addEventListener('scroll',()=>{document.getElementById('nav').classList.toggle('sc',window.scrollY>50)},{passive:true})
+function clocks(){const now=new Date(),f2=tz=>new Intl.DateTimeFormat('en',{timeZone:tz,hour:'2-digit',minute:'2-digit',hour12:false}).format(now),f3=tz=>new Intl.DateTimeFormat('en',{timeZone:tz,hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(now);const de=document.getElementById('clock-de'),us=document.getElementById('clock-us'),upd=document.getElementById('clock-upd');if(de)de.textContent=f2('Europe/Berlin');if(us)us.textContent=f2('America/New_York');if(upd)upd.textContent=f3('Europe/Berlin')}
+clocks();setInterval(clocks,1000)
 
-/* ── Theme toggle ── */
-function toggleTheme(){
-  const r=document.documentElement;
-  const cur=r.getAttribute('data-theme')||'dark';
-  r.setAttribute('data-theme',cur==='dark'?'light':'dark');
-}
-
-/* ── Mobile menu ── */
-function toggleMenu(){
-  const nl=document.querySelector('.nav-links');
-  if(!nl)return;
-  const open=nl.style.display==='flex';
-  nl.style.cssText=open?'':'display:flex;flex-direction:column;position:fixed;top:64px;left:0;right:0;background:var(--bg2);padding:20px 32px 28px;gap:20px;border-bottom:1px solid rgba(255,255,255,0.07);z-index:99';
-}
-
-/* ── Scroll fade-in ── */
-const obs=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}});
-},{threshold:0.12});
-document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));
-
-/* ── Contact form ── */
-function handleForm(e){
-  e.preventDefault();
-  const btn=document.getElementById('submit-btn');
-  btn.textContent='Message Sent ✓';
-  btn.style.background='#16a34a';
-  setTimeout(()=>{btn.textContent='Send Message →';btn.style.background='';e.target.reset()},3000);
-}
-
-/* ── Nav highlight on scroll ── */
-const sections=document.querySelectorAll('section[id],#hero');
-const navAs=document.querySelectorAll('.nav-links a');
-window.addEventListener('scroll',()=>{
-  const sy=window.scrollY+80;
-  sections.forEach(s=>{
-    if(sy>=s.offsetTop&&sy<s.offsetTop+s.offsetHeight){
-      navAs.forEach(a=>{
-        a.style.color=a.getAttribute('href')==='#'+s.id?'var(--accent)':'';
-      });
-    }
-  });
-},{passive:true});
 </script>
 </body>
 </html>
