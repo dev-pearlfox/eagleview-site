@@ -1,0 +1,503 @@
+<title>CASA Tier 2 Roadmap</title>
+<meta name="description" content="Eagle View's path through Google's CASA Tier 2 security assessment — process, real costs, cost-reduction tactics, and the annual revalidation cycle, sourced from official docs and real developer accounts.">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,900&family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+  /* Deliberate single light-theme design, matching the sibling Product
+     Launch Roadmap doc — same Eagle View Horizon-theme pair (orange
+     #E87722 / teal #009B8D) so the two read as one family. */
+  :root {
+    --bg: #FFFFFF;
+    --bg-soft: #FFF8EF;
+    --cream: #241A0E;
+    --cream-dim: #6B5C48;
+    --cream-faint: #9C8F7C;
+    --line: #EBDFC9;
+
+    --orange: #E87722;
+    --orange-card: #FFF2E2;
+    --orange-check: #C05A00;
+    --orange-edge: #F5D9B8;
+
+    --teal: #009B8D;
+    --teal-card: #E5F5F3;
+    --teal-check: #00786D;
+    --teal-edge: #B9E4DE;
+
+    --done: #4B7A1F;
+    --loop: #8A4B00;
+    --loop-card: #FFEFD9;
+    --loop-edge: #F0CB94;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--cream);
+    font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif;
+    line-height: 1.5;
+    padding: 36px 20px 60px;
+  }
+  .wrap { max-width: 900px; margin: 0 auto; }
+  h1, h2, h3 { font-family: 'Fraunces', Georgia, serif; text-wrap: balance; margin: 0; }
+  a { color: var(--orange-check); }
+
+  /* ── Title ────────────────────────────────────────────── */
+  .title-block { text-align: center; margin-bottom: 20px; }
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--orange);
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  h1 { font-size: clamp(30px, 5vw, 46px); font-weight: 700; line-height: 1.12; }
+  h1 .rule {
+    display: block;
+    font-size: 0.42em;
+    font-weight: 600;
+    color: var(--teal-check);
+    letter-spacing: 0.08em;
+    margin-top: 6px;
+  }
+  .subhead { color: var(--cream-dim); font-size: 15.5px; margin: 18px auto 0; max-width: 58ch; }
+
+  .stats { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 16px 0 0; }
+  .stat {
+    background: var(--orange); color: #fff; border-radius: 999px; padding: 9px 18px;
+    font-size: 13px; font-weight: 600; display: flex; align-items: baseline; gap: 7px;
+    box-shadow: 0 6px 16px -6px rgba(232,119,34,0.35);
+  }
+  .stat.teal { background: var(--teal); box-shadow: 0 6px 16px -6px rgba(0,155,141,0.35); }
+  .stat.loop { background: var(--loop); box-shadow: 0 6px 16px -6px rgba(138,75,0,0.35); }
+  .stat b { font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; color: #fff; }
+
+  .callout {
+    max-width: 680px; margin: 20px auto 0; background: var(--bg-soft);
+    border: 1px solid var(--line); border-radius: 14px; padding: 14px 18px;
+    display: flex; gap: 12px; align-items: flex-start;
+  }
+  .callout svg { flex-shrink: 0; width: 20px; height: 20px; color: var(--orange); margin-top: 2px; }
+  .callout p { margin: 0; font-size: 13.5px; color: var(--cream-dim); }
+  .callout strong { color: var(--cream); }
+
+  /* ── section headers ──────────────────────────────────── */
+  .section-head { margin: 56px 0 22px; text-align: center; }
+  .section-head .eyebrow { margin-bottom: 6px; }
+  .section-head h2 { font-size: 24px; font-weight: 700; }
+  .section-head p { color: var(--cream-dim); font-size: 14px; max-width: 56ch; margin: 8px auto 0; }
+
+  /* ── Zigzag timeline (matches sibling doc's component) ──── */
+  .timeline { position: relative; margin-top: 36px; }
+  .timeline::before {
+    content: ''; position: absolute; left: 50%; top: 6px; bottom: 6px; width: 2px;
+    background: var(--line); transform: translateX(-50%);
+  }
+  .node { position: relative; display: grid; grid-template-columns: 1fr 44px 1fr; margin-bottom: 24px; }
+  .node:last-child { margin-bottom: 0; }
+  .dot-col { grid-column: 2; display: flex; justify-content: center; padding-top: 6px; }
+  .dot { width: 15px; height: 15px; border-radius: 50%; background: var(--bg); border: 3px solid var(--orange); z-index: 2; }
+  .node.teal .dot { border-color: var(--teal); }
+  .node.loop .dot { border-color: var(--loop); }
+  .content { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+  .node.right .content { grid-column: 3; align-items: flex-start; }
+  .node.left  .content { grid-column: 1; align-items: flex-end; }
+
+  .node.center { grid-template-columns: 1fr; margin-top: 12px; }
+  .node.center .dot-col { grid-column: 1; }
+  .node.center .content { grid-column: 1; align-items: center; text-align: center; }
+  .node.center .dot { width: 20px; height: 20px; border-width: 4px; }
+  .node.center .pill-label { font-size: 15px; padding: 11px 28px; }
+  .node.center .card { max-width: 560px; padding: 30px 36px; }
+  .node.center.teal .card { background: var(--teal); border: 2px solid transparent; }
+  .node.center.loop .card { background: var(--loop); border: 2px solid transparent; }
+  .node.center .card-title {
+    font-family: 'Fraunces', Georgia, serif; font-size: 22px; font-weight: 700;
+    color: #fff; margin-bottom: 10px; text-align: center;
+  }
+  .node.center .card-sub { font-size: 13.5px; color: rgba(255,255,255,0.85); text-align: center; margin: 0 0 16px; }
+  .node.center .check-list { text-align: left; align-items: center; }
+  .node.center .check-item { justify-content: center; max-width: 420px; margin: 0 auto; }
+  .node.center .check-box { width: 24px; height: 24px; border-radius: 8px; border-width: 2.5px; border-color: rgba(255,255,255,0.8); }
+  .node.center .check-item.checked .check-box { background: #fff; border-color: #fff; }
+  .node.center .check-box svg { color: var(--teal-check); }
+  .node.center.loop .check-box svg { color: var(--loop); }
+  .node.center .check-text { font-size: 15.5px; font-weight: 600; color: #fff; }
+  .node.center .check-meta { font-size: 12.5px; color: rgba(255,255,255,0.78); margin-top: 3px; }
+  .node.center .check-item.checked .check-text { color: #fff; }
+
+  .pill-label {
+    background: var(--orange); color: #fff; font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase;
+    padding: 8px 16px; border-radius: 999px; box-shadow: 0 4px 12px -4px rgba(232,119,34,0.4);
+    white-space: nowrap;
+  }
+  .node.teal .pill-label { background: var(--teal); box-shadow: 0 4px 12px -4px rgba(0,155,141,0.4); }
+  .node.loop .pill-label { background: var(--loop); box-shadow: 0 4px 12px -4px rgba(138,75,0,0.4); }
+
+  .card {
+    width: 100%; max-width: 400px; border-radius: 14px; padding: 14px 18px;
+    border: 1px solid var(--orange-edge); background: var(--orange-card);
+  }
+  .node.teal .card { border-color: var(--teal-edge); background: var(--teal-card); }
+  .node.loop .card { border-color: var(--loop-edge); background: var(--loop-card); }
+  .card-title { font-size: 13px; font-weight: 700; color: var(--cream-dim); margin-bottom: 8px; text-align: left; }
+
+  .check-list { display: flex; flex-direction: column; gap: 8px; text-align: left; }
+  .check-item {
+    display: flex; gap: 10px; align-items: flex-start; background: none; border: none;
+    padding: 0; margin: 0; font: inherit; text-align: left; cursor: pointer; width: 100%;
+  }
+  .check-box {
+    flex-shrink: 0; width: 19px; height: 19px; margin-top: 1px; border-radius: 6px;
+    border: 2px solid var(--orange-check); display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s ease, border-color 0.15s ease;
+  }
+  .node.teal .check-box { border-color: var(--teal-check); }
+  .node.loop .check-box { border-color: var(--loop); }
+  .check-box svg { width: 12px; height: 12px; color: #fff; opacity: 0; transform: scale(0.5); transition: opacity 0.12s ease, transform 0.12s ease; }
+  .check-item.checked .check-box { background: var(--orange-check); border-color: var(--orange-check); }
+  .node.teal .check-item.checked .check-box { background: var(--teal-check); border-color: var(--teal-check); }
+  .node.loop .check-item.checked .check-box { background: var(--loop); border-color: var(--loop); }
+  .check-item.checked .check-box svg { opacity: 1; transform: scale(1); }
+  .check-item:focus-visible .check-box { outline: 2px solid var(--orange); outline-offset: 2px; }
+  .check-text { font-size: 13.5px; color: var(--cream); }
+  .check-meta { display: block; font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: var(--cream-faint); margin-top: 2px; font-variant-numeric: tabular-nums; }
+  .check-item.checked .check-text { color: var(--done); }
+
+  /* ── Cost-reduction playbook cards ────────────────────── */
+  .playbook { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 24px; }
+  .tip {
+    background: var(--bg-soft); border: 1px solid var(--line); border-radius: 14px;
+    padding: 18px 20px;
+  }
+  .tip .tip-num {
+    font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600;
+    color: var(--orange-check); letter-spacing: 0.06em;
+  }
+  .tip h3 { font-size: 16px; font-weight: 700; margin: 6px 0 6px; }
+  .tip p { font-size: 13.5px; color: var(--cream-dim); margin: 0; }
+  .tip .tip-save {
+    display: inline-block; margin-top: 10px; font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px; font-weight: 600; color: var(--done); background: #EAF3E0;
+    padding: 4px 10px; border-radius: 999px;
+  }
+
+  /* ── Benchmarks table ─────────────────────────────────── */
+  .bench-wrap { overflow-x: auto; margin-top: 24px; }
+  table.bench { width: 100%; border-collapse: collapse; font-size: 13.5px; min-width: 560px; }
+  table.bench th {
+    text-align: left; font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+    text-transform: uppercase; letter-spacing: 0.06em; color: var(--cream-faint);
+    padding: 0 14px 10px; border-bottom: 2px solid var(--line); font-weight: 600;
+  }
+  table.bench td { padding: 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  table.bench td.num { font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-weight: 600; }
+  table.bench tr:last-child td { border-bottom: none; }
+  .who { font-weight: 700; }
+  .who small { display: block; font-weight: 400; color: var(--cream-faint); font-size: 11.5px; margin-top: 2px; }
+
+  /* ── Current-scope card ───────────────────────────────── */
+  .scope-card {
+    max-width: 680px; margin: 24px auto 0; background: var(--teal-card);
+    border: 1px solid var(--teal-edge); border-radius: 14px; padding: 20px 24px;
+  }
+  .scope-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+  .scope-card p { font-size: 13.5px; color: var(--cream-dim); margin: 0 0 10px; }
+  .scope-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+  .scope-pill {
+    font-family: 'IBM Plex Mono', monospace; font-size: 12px; background: #fff;
+    border: 1px solid var(--teal-edge); color: var(--teal-check); padding: 5px 12px; border-radius: 999px;
+  }
+
+  footer {
+    max-width: 680px; margin: 60px auto 0; padding-top: 20px; border-top: 1px solid var(--line);
+    font-size: 12px; color: var(--cream-faint); text-align: center;
+  }
+  footer .src-list { text-align: left; max-width: 480px; margin: 14px auto 0; list-style: none; padding: 0; }
+  footer .src-list li { margin-bottom: 5px; }
+  footer .disclaimer { max-width: 480px; margin: 16px auto 0; font-style: italic; }
+
+  @media (max-width: 680px) {
+    .node { grid-template-columns: 32px 1fr; }
+    .dot-col { grid-column: 1; padding-top: 4px; }
+    .node.right .content, .node.left .content { grid-column: 2; align-items: flex-start; }
+    .card { max-width: none; }
+    .node.center { grid-template-columns: 1fr; }
+    .node.center .dot-col { grid-column: 1; }
+    .node.center .content { grid-column: 1; align-items: center; text-align: center; }
+    .node.center .card { max-width: none; padding: 24px 20px; }
+    .node.center .check-item { max-width: none; }
+    .playbook { grid-template-columns: 1fr; }
+  }
+</style>
+
+<div class="wrap">
+
+  <div class="title-block">
+    <div class="eyebrow">Eagle View — Compliance Deep Dive</div>
+    <h1>CASA Tier 2 Roadmap<span class="rule">— Cloud Application Security Assessment —</span></h1>
+    <p class="subhead">The path from Google flagging Eagle View's Gmail/Calendar scopes to a live Letter of Validation — and the annual cycle that follows it forever after.</p>
+    <div class="stats">
+      <div class="stat">Cheapest real cost <b>$540/yr</b></div>
+      <div class="stat teal">Scan time <b>2–4 days</b></div>
+      <div class="stat loop">Revalidation <b>Every 12 mo</b></div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    <p><strong>Self-scanning is deprecated — a paid assessor is now mandatory.</strong> But two developers who actually did this both used TAC Security, Google's own discounted preferred partner, and paid $540 and $720. Your existing roadmap's ₹3L high estimate reflects pricier alternative vendors, not the realistic path.</p>
+  </div>
+
+  <div class="section-head">
+    <div class="eyebrow">The Process</div>
+    <h2>From flag to Letter of Validation</h2>
+    <p>Nine steps, checked off as you clear them. State saves in this browser.</p>
+  </div>
+
+  <div class="timeline">
+
+    <div class="node right">
+      <div class="dot-col"><div class="dot"></div></div>
+      <div class="content">
+        <span class="pill-label">1 · Trigger</span>
+        <div class="card">
+          <div class="card-title">Google flags the app</div>
+          <div class="check-list">
+            <button class="check-item" data-key="c1"><span class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">Notification email arrives<span class="check-meta">Triggered by gmail.modify + calendar.readonly exceeding the test-user cap</span></span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="node left">
+      <div class="dot-col"><div class="dot"></div></div>
+      <div class="content">
+        <span class="pill-label">2 · Free first</span>
+        <div class="card">
+          <div class="card-title">Pre-scan yourself, for $0</div>
+          <div class="check-list">
+            <button class="check-item" data-key="c2"><span class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">Run OWASP ZAP + Fluid Attacks free scan<span class="check-meta">Catches ~80% of findings before you pay anyone</span></span></button>
+            <button class="check-item" data-key="c2b"><span class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">Check TLS via Qualys SSL Labs + Security Headers<span class="check-meta">Both free, both commonly checked by assessors</span></span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="node right teal">
+      <div class="dot-col"><div class="dot"></div></div>
+      <div class="content">
+        <span class="pill-label">3 · Pick a lane</span>
+        <div class="card">
+          <div class="card-title">Choose assessor &amp; scan type</div>
+          <div class="check-list">
+            <button class="check-item" data-key="c3"><span class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">Engage TAC Security<span class="check-meta">Google's discounted preferred partner — cheapest verified option</span></span></button>
+            <button class="check-item" data-key="c3b"><span class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">DAST over SAST<span class="check-meta">Scans the running app — no source code has to leave the building</span></span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="node left teal">
+      <div class="dot-col"><div class="dot"></div></div>
+      <div class="content">
+        <span class="pill-label">4 · The scan</span>
+        <div class="card">
+          <div class="card-title">Official assessment runs</div>
+          <div class="check-list">
+            <button class="check-item" data-key="c4"><span class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">Assessor runs DAST scan<span class="check-meta">Real timing: 2–4 days once you're ready</span></span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="node right">
+      <div class="dot-col"><div class="dot"></div></div>
+      <div class="content">
+        <span class="pill-label">5 · Fix it</span>
+        <div class="card">
+          <div class="card-title">Remediate findings</div>
+          <div class="check-list">
+            <button class="check-item" data-key="c5"><span class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">Patch flagged issues, write verification tests<span class="check-meta">Watch for follow-up evidence requests (e.g. DB screenshots)</span></span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="node left">
+      <div class="dot-col"><div class="dot"></div></div>
+      <div class="content">
+        <span class="pill-label">6 · Paperwork</span>
+        <div class="card">
+          <div class="card-title">Self-Assessment Questionnaire</div>
+          <div class="check-list">
+            <button class="check-item" data-key="c6"><span class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">Answer the ~54-question SAQ<span class="check-meta">Encryption, key management, DNS, CI/CD — grounded in your actual stack</span></span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="node right teal">
+      <div class="dot-col"><div class="dot"></div></div>
+      <div class="content">
+        <span class="pill-label">7 · Sign-off</span>
+        <div class="card">
+          <div class="card-title">Letter of Validation issued</div>
+          <div class="check-list">
+            <button class="check-item" data-key="c7"><span class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">Assessor confirms pass<span class="check-meta">Formal letter, no code/infra access needed for Tier 2</span></span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="node left teal">
+      <div class="dot-col"><div class="dot"></div></div>
+      <div class="content">
+        <span class="pill-label">8 · Hand-off</span>
+        <div class="card">
+          <div class="card-title">Submit to Google</div>
+          <div class="check-list">
+            <button class="check-item" data-key="c8"><span class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">Upload the Letter of Validation<span class="check-meta">Google reviews and lifts the restricted-scope hold</span></span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="node center teal">
+      <div class="dot-col"><div class="dot"></div></div>
+      <div class="content">
+        <span class="pill-label">9 · Live</span>
+        <div class="card">
+          <div class="card-title">Restricted scopes active</div>
+          <p class="card-sub">gmail.modify and calendar.readonly work in production, no user cap.</p>
+          <div class="check-list">
+            <button class="check-item" data-key="c9"><span class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">Google publishes verified status<span class="check-meta">Consent screen no longer shows the "unverified app" warning</span></span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="node center loop">
+      <div class="dot-col"><div class="dot"></div></div>
+      <div class="content">
+        <span class="pill-label">↻ Every ~12 months</span>
+        <div class="card">
+          <div class="card-title">Annual revalidation</div>
+          <p class="card-sub">Not optional, not a one-time fee — this loops back to Step 3 forever, on a firm deadline.</p>
+          <div class="check-list">
+            <button class="check-item" data-key="c10"><span class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">Re-scan before the deadline<span class="check-meta">TAC's $720 tier includes unlimited re-scans, softening the yearly grind</span></span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="section-head">
+    <div class="eyebrow">Spend Less</div>
+    <h2>Cost-reduction playbook</h2>
+    <p>Four tactics pulled directly from developers who've actually cleared Tier 2.</p>
+  </div>
+
+  <div class="playbook">
+    <div class="tip">
+      <div class="tip-num">TACTIC 01</div>
+      <h3>Pre-scan with free tools</h3>
+      <p>OWASP ZAP, Fluid Attacks' free tier, Qualys SSL Labs, and a Security Headers scanner catch most issues before you pay an assessor to find them for you.</p>
+      <span class="tip-save">Saves re-scan fees</span>
+    </div>
+    <div class="tip">
+      <div class="tip-num">TACTIC 02</div>
+      <h3>Go straight to TAC Security</h3>
+      <p>Google's own discounted preferred partner. Confirmed cheapest across every provider comparison found — competitors start around $1,200–$1,500.</p>
+      <span class="tip-save">$540 vs $1,200+</span>
+    </div>
+    <div class="tip">
+      <div class="tip-num">TACTIC 03</div>
+      <h3>Choose DAST, not SAST</h3>
+      <p>DAST scans the running app from outside. SAST means handing over source code for review. If that's a concern, ask for DAST explicitly.</p>
+      <span class="tip-save">No code disclosure</span>
+    </div>
+    <div class="tip">
+      <div class="tip-num">TACTIC 04</div>
+      <h3>Mind your scope choice</h3>
+      <p>Requesting broader access than you need can escalate the whole assessment to Tier 3 — a different pricing tier entirely, not a bigger version of Tier 2.</p>
+      <span class="tip-save">$4,500+ avoided</span>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <div class="eyebrow">Reality Check</div>
+    <h2>Two developers, two real bills</h2>
+    <p>Both used TAC Security. Neither is a large team.</p>
+  </div>
+
+  <div class="bench-wrap">
+    <table class="bench">
+      <thead>
+        <tr><th>Team</th><th>Cost</th><th>Scan time</th><th>Notable detail</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="who">Orbis<small>SaaS + Gmail API</small></td>
+          <td class="num">$540</td>
+          <td class="num">~2 days</td>
+          <td>Used Claude Code to map findings to actual source files and auto-write remediation tests</td>
+        </tr>
+        <tr>
+          <td class="who">Workloop<small>Solo-founder SaaS</small></td>
+          <td class="num">$720</td>
+          <td class="num">3–4 days</td>
+          <td>Paid the higher tier deliberately for unlimited re-scans across future revalidations</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="scope-card">
+    <h3>Where Eagle View stands right now</h3>
+    <p>Checked directly against <code>src-tauri/src/lib.rs</code> — these are the exact scopes the app requests today:</p>
+    <div class="scope-pills">
+      <span class="scope-pill">gmail.modify</span>
+      <span class="scope-pill">calendar.readonly</span>
+    </div>
+    <p style="margin-top:12px;">Neither is the broadest possible Gmail scope, which is a reasonable sign — but Google's own notification, not this scope list, is what ultimately determines the exact assurance level required.</p>
+  </div>
+
+  <footer>
+    <p class="disclaimer">Researched September 2026. Costs, cadence, and process details come from Google/App Defense Alliance's own docs plus independent developer accounts — verify current figures on Google's official CASA page before committing a budget.</p>
+    <ul class="src-list">
+      <li>→ <a href="https://appdefensealliance.dev/casa/casa-tiering" target="_blank" rel="noopener">Assurance Levels — App Defense Alliance</a></li>
+      <li>→ <a href="https://appdefensealliance.dev/casa/tier-2/tier2-overview" target="_blank" rel="noopener">CASA Tier 2 Process — App Defense Alliance</a></li>
+      <li>→ <a href="https://meetorbis.com/blog/how-we-passed-google-casa-tier-2-with-claude" target="_blank" rel="noopener">How We Passed CASA Tier 2 in a Weekend — Orbis</a></li>
+      <li>→ <a href="https://dev.to/rem4ik4ever/my-saas-passed-casa-tier-2-assessment-and-yours-can-to-here-is-how-1b20" target="_blank" rel="noopener">My SaaS Passed CASA Tier 2 — dev.to</a></li>
+      <li>→ <a href="https://www.switchlabs.dev/post/casa-tier-2-tier-3-security-review-providers-pricing-and-the-cheapest-option" target="_blank" rel="noopener">Tier 2 &amp; 3 Provider Pricing — Switch Labs</a></li>
+      <li>→ <a href="https://developers.google.com/identity/protocols/oauth2/production-readiness/restricted-scope-verification" target="_blank" rel="noopener">Restricted Scope Verification — Google for Developers</a></li>
+      <li>→ <a href="https://www.youtube.com/watch?v=e_hFSSsIfp4" target="_blank" rel="noopener">How to Pass Google CASA Assessment — YouTube</a></li>
+    </ul>
+  </footer>
+
+</div>
+
+<script>
+(function () {
+  var STORAGE_KEY = 'casa-roadmap-checks';
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch (e) {}
+
+  document.querySelectorAll('.check-item').forEach(function (el) {
+    var key = el.getAttribute('data-key');
+    if (saved[key]) el.classList.add('checked');
+    el.addEventListener('click', function () {
+      el.classList.toggle('checked');
+      saved[key] = el.classList.contains('checked');
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(saved)); } catch (e) {}
+    });
+  });
+})();
+</script>
