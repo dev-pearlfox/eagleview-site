@@ -1,0 +1,327 @@
+<title>Timeline Calendar</title>
+<meta name="description" content="Eagle View's Product Launch Roadmap laid out as a Gantt-style calendar — checkpoints as rows, months as columns, real start/end bars.">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,900&family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+  :root {
+    --bg: #FFFFFF;
+    --bg-soft: #FFF8EF;
+    --cream: #241A0E;
+    --cream-dim: #6B5C48;
+    --cream-faint: #9C8F7C;
+    --line: #EBDFC9;
+    --orange: #E87722;
+    --orange-check: #C05A00;
+    --teal: #1C6E8C;
+    --teal-check: #00786D;
+    --done: #4B7A1F;
+    --done-bg: #E9F1DF;
+    --casa: #B0271E;
+    --casa-bg: #FBE4E2;
+    --launch: #009B8D;
+    --today: #241A0E;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--bg); color: var(--cream);
+    font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif;
+    line-height: 1.5; padding: 36px 20px 60px;
+  }
+  .wrap[hidden] { display: none; }
+  .outer { max-width: 1080px; margin: 0 auto; }
+  h1, h2 { font-family: 'Fraunces', Georgia, serif; text-wrap: balance; margin: 0; }
+
+  .title-block { text-align: center; margin-bottom: 8px; }
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--orange); font-weight: 500; margin-bottom: 8px;
+  }
+  h1 { font-size: clamp(28px, 4.5vw, 40px); font-weight: 700; line-height: 1.12; }
+  h1 .rule { display: block; font-size: 0.42em; font-weight: 600; color: var(--teal-check); letter-spacing: 0.08em; margin-top: 6px; }
+  .back-link {
+    display: inline-flex; align-items: center; gap: 6px; margin-top: 16px;
+    font-size: 13px; font-weight: 600; color: var(--cream-dim); text-decoration: none;
+  }
+  .back-link:hover { color: var(--orange-check); }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; margin: 22px 0 30px; font-size: 12px; color: var(--cream-dim); }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .legend i { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+
+  .note {
+    max-width: 640px; margin: 0 auto 30px; background: var(--bg-soft); border: 1px solid var(--line);
+    border-radius: 12px; padding: 12px 16px; font-size: 12.5px; color: var(--cream-dim); text-align: center;
+  }
+
+  /* ── Gantt ────────────────────────────────────────────── */
+  .gantt-scroll { border: 1px solid var(--line); border-radius: 14px; }
+  .gantt { width: 100%; }
+
+  .months-row { display: flex; position: sticky; top: 0; background: var(--bg); z-index: 3; border-bottom: 1px solid var(--line); }
+  .row-label-col { width: 260px; flex-shrink: 0; }
+  .month-col {
+    flex: 1; text-align: center; font-family: 'IBM Plex Mono', monospace; font-size: 11.5px;
+    font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--cream-dim);
+    padding: 10px 0; border-left: 1px solid var(--line);
+  }
+
+  .weeks-row { display: flex; position: sticky; top: 40px; background: var(--bg); z-index: 3; border-bottom: 2px solid var(--line); }
+  .weeks-track { flex: 1; position: relative; height: 22px; }
+  .week-label {
+    position: absolute; top: 0; bottom: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; font-weight: 600;
+    color: var(--cream-faint); border-left: 1px solid var(--line);
+  }
+
+  .phase-row {
+    display: flex; align-items: center; background: var(--bg-soft);
+    border-bottom: 1px solid var(--line);
+  }
+  .phase-row .row-label-col {
+    padding: 8px 14px; font-size: 11.5px; font-weight: 700; letter-spacing: 0.04em;
+    text-transform: uppercase; color: var(--cream-dim);
+  }
+
+  .task-row { display: flex; align-items: center; border-bottom: 1px solid var(--line); min-height: 44px; }
+  .task-row:last-child { border-bottom: none; }
+  .task-row .row-label-col { padding: 6px 14px; font-size: 13px; color: var(--cream); }
+  .task-row .row-label-col small { display: block; font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: var(--cream-faint); margin-top: 1px; }
+
+  .track { flex: 1; position: relative; height: 44px; }
+  .track::before {
+    content: ''; position: absolute; inset: 0;
+    background-image: repeating-linear-gradient(to right, var(--line) 0, var(--line) 1px, transparent 1px, transparent var(--week-width, 5.7%));
+    opacity: 0.6;
+  }
+  .bar {
+    position: absolute; top: 50%; transform: translateY(-50%); height: 20px; border-radius: 999px;
+    display: flex; align-items: center; padding: 0 10px; font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px; font-weight: 600; white-space: nowrap; overflow: hidden;
+    box-shadow: 0 2px 6px -2px rgba(36,26,14,0.25);
+  }
+  .bar.orange { background: var(--orange); color: #fff; }
+  .bar.teal { background: var(--teal); color: #fff; }
+  .bar.done { background: var(--done); color: #fff; border: none; box-shadow: 0 8px 22px -3px rgba(75,122,31,0.75), 0 3px 8px -1px rgba(75,122,31,0.5); }
+  .bar.casa { background: var(--casa); color: #fff; }
+  .bar.launch { background: var(--launch); color: #fff; }
+
+  .today-line { position: absolute; top: -4px; bottom: -4px; width: 2px; background: var(--today); z-index: 2; opacity: 0.55; }
+  .today-line.labeled { opacity: 1; }
+  .today-line.labeled::after {
+    content: 'Today'; position: absolute; top: -18px; left: 50%; transform: translateX(-50%);
+    font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; font-weight: 700; color: var(--today);
+    white-space: nowrap;
+  }
+
+  @media (max-width: 680px) {
+    .row-label-col { width: 170px; }
+  }
+</style>
+
+<div class="pw-gate" id="pw-gate">
+  <div class="pw-card">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    <h2>This page is private</h2>
+    <p>Enter the password to continue.</p>
+    <form id="pw-form">
+      <input type="password" id="pw-input" autocomplete="off" autofocus>
+      <button type="submit">Unlock</button>
+      <div class="pw-error" id="pw-error"></div>
+    </form>
+  </div>
+</div>
+
+<div class="wrap" id="pw-content" hidden>
+  <div class="outer">
+
+    <div class="title-block">
+      <div class="eyebrow">Eagle View — Business &amp; Distribution</div>
+      <h1>Timeline Calendar<span class="rule">— Product Launch Roadmap —</span></h1>
+      <a class="back-link" href="product-launch.html">&larr; Back to Roadmap</a>
+    </div>
+
+    <div class="legend">
+      <span><i style="background:var(--orange)"></i> Admin / mailbox</span>
+      <span><i style="background:var(--teal)"></i> Code signing / OAuth</span>
+      <span><i style="background:var(--casa)"></i> CASA (critical path)</span>
+      <span><i style="background:var(--done)"></i> Already done</span>
+      <span><i style="background:var(--launch)"></i> Launch</span>
+    </div>
+
+    <div class="note">Bars are estimated from each checkpoint's stated duration in the Product Launch Roadmap, placed against the doc's own target window (Nov 19–Dec 17, 2026). Not confirmed calendar bookings — a planning view, not a commitment.</div>
+
+    <div class="gantt-scroll">
+      <div class="gantt" id="gantt-body"></div>
+    </div>
+
+  </div>
+</div>
+
+<style>
+  .pw-gate {
+    position: fixed; inset: 0; background: var(--bg);
+    display: flex; align-items: center; justify-content: center; z-index: 9999; padding: 20px;
+  }
+  .pw-gate[hidden] { display: none; }
+  .pw-card {
+    max-width: 340px; width: 100%; text-align: center;
+    background: var(--bg-soft); border: 1px solid var(--line); border-radius: 16px; padding: 32px 28px;
+  }
+  .pw-card svg { width: 28px; height: 28px; color: var(--orange); margin-bottom: 10px; }
+  .pw-card h2 { font-size: 19px; font-weight: 700; margin-bottom: 6px; }
+  .pw-card p { font-size: 13px; color: var(--cream-dim); margin: 0 0 18px; }
+  .pw-card input {
+    width: 100%; font-family: 'Source Sans 3', sans-serif; font-size: 14px;
+    padding: 10px 14px; border-radius: 10px; border: 1px solid var(--line);
+    background: #fff; color: var(--cream); margin-bottom: 10px;
+  }
+  .pw-card input:focus { outline: 2px solid var(--orange); outline-offset: 1px; }
+  .pw-card button {
+    width: 100%; font-family: 'Source Sans 3', sans-serif; font-size: 14px; font-weight: 600;
+    padding: 10px 14px; border-radius: 10px; border: none; background: var(--orange); color: #fff; cursor: pointer;
+  }
+  .pw-card button:hover { background: var(--orange-check); }
+  .pw-error { font-size: 12.5px; color: #C0392B; margin-top: 10px; min-height: 1em; }
+</style>
+
+<script>
+(function () {
+  // ── Data: real durations pulled from product-launch.html ──────────────
+  var RANGE_START = new Date('2026-09-01');
+  var RANGE_END   = new Date('2026-12-31');
+  var TODAY       = new Date('2026-09-12');
+
+  var phases = [
+    { name: 'App readiness', tasks: [
+      { label: 'Feature development complete', sub: 'Core app, all sub-apps, 5 themes', start: '2026-09-01', end: '2026-09-14', cls: 'done' },
+      { label: 'Full QA pass (550 TCs)', sub: 'In progress · 46 sections', start: '2026-09-14', end: '2026-09-28', cls: 'orange' }
+    ]},
+    { name: 'Domain & mailbox', tasks: [
+      { label: 'Business domain — pearlfox.io', sub: 'Porkbun', start: '2026-09-08', end: '2026-09-12', cls: 'done' },
+      { label: 'Business mailbox (Zoho Mail)', sub: 'Free plan', start: '2026-09-08', end: '2026-09-13', cls: 'done' }
+    ]},
+    { name: 'Websites', tasks: [
+      { label: 'Home / marketing website', sub: 'Live, more polish needed', start: '2026-09-10', end: '2026-10-05', cls: 'orange' },
+      { label: 'Product website (Eagle View)', sub: 'Already live', start: '2026-09-10', end: '2026-09-14', cls: 'done' },
+      { label: 'Payment website', sub: 'Already live', start: '2026-09-10', end: '2026-09-14', cls: 'done' }
+    ]},
+    { name: 'Company & finance', tasks: [
+      { label: 'PAN, MSME (Udyam), GST', sub: 'Filed, awaiting approval', start: '2026-09-05', end: '2026-09-20', cls: 'orange' },
+      { label: 'Business current account', sub: 'IDFC First, 3-yr zero-AMB', start: '2026-09-14', end: '2026-09-21', cls: 'orange' },
+      { label: 'Razorpay business KYC', sub: '3–7 days', start: '2026-09-21', end: '2026-09-28', cls: 'orange' },
+      { label: 'GST invoicing + first return', sub: '1–2 weeks, free year one', start: '2026-09-28', end: '2026-10-12', cls: 'orange' }
+    ]},
+    { name: 'Code signing', tasks: [
+      { label: 'Apple Developer ID (org)', sub: '$99/yr', start: '2026-09-21', end: '2026-10-01', cls: 'teal' },
+      { label: 'Windows EV code-signing cert', sub: '₹25,100/yr, SSL.com', start: '2026-09-21', end: '2026-10-01', cls: 'teal' }
+    ]},
+    { name: 'OAuth verification', tasks: [
+      { label: 'Microsoft Partner Network ID', sub: '1–3 days', start: '2026-09-14', end: '2026-09-17', cls: 'teal' },
+      { label: 'D-U-N-S + Publisher Verification', sub: '1–4 weeks · after MPN ID', start: '2026-09-17', end: '2026-10-15', cls: 'teal' },
+      { label: 'Google OAuth consent verification', sub: '1–2 weeks', start: '2026-09-21', end: '2026-10-05', cls: 'teal' },
+      { label: 'CASA Tier 2 security assessment', sub: '4–8 weeks · flag arrives a few days into OAuth review', start: '2026-09-24', end: '2026-11-16', cls: 'casa' }
+    ]},
+    { name: 'Launch', tasks: [
+      { label: 'Eagle View goes live', sub: 'Launch date', start: '2026-12-01', end: '2026-12-02', cls: 'launch' }
+    ]}
+  ];
+
+  var MS_DAY = 86400000;
+  var totalDays = Math.round((RANGE_END - RANGE_START) / MS_DAY);
+
+  function pct(dateStr) {
+    var d = new Date(dateStr);
+    var days = Math.round((d - RANGE_START) / MS_DAY);
+    return Math.max(0, Math.min(100, (days / totalDays) * 100));
+  }
+
+  function monthLabel(d) { return d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' }); }
+
+  function buildMonths() {
+    var months = [];
+    var cur = new Date(RANGE_START.getFullYear(), RANGE_START.getMonth(), 1);
+    while (cur <= RANGE_END) {
+      months.push(monthLabel(cur));
+      cur = new Date(cur.getFullYear(), cur.getMonth() + 1, 1);
+    }
+    return months;
+  }
+
+  var weekCount = Math.ceil(totalDays / 7);
+  var weekPct = 100 / weekCount;
+
+  function render() {
+    var root = document.getElementById('gantt-body');
+    root.style.setProperty('--week-width', weekPct + '%');
+
+    var html = '<div class="months-row"><div class="row-label-col"></div>';
+    buildMonths().forEach(function (m) { html += '<div class="month-col">' + m + '</div>'; });
+    html += '</div>';
+
+    html += '<div class="weeks-row"><div class="row-label-col"></div><div class="weeks-track">';
+    for (var w = 0; w < weekCount; w++) {
+      html += '<div class="week-label" style="left:' + (w * weekPct) + '%;width:' + weekPct + '%">W' + (w + 1) + '</div>';
+    }
+    html += '</div></div>';
+
+    phases.forEach(function (phase) {
+      html += '<div class="phase-row"><div class="row-label-col">' + phase.name + '</div></div>';
+      phase.tasks.forEach(function (t) {
+        var left = pct(t.start);
+        var width = Math.max(1.2, pct(t.end) - left);
+        html += '<div class="task-row">' +
+          '<div class="row-label-col">' + t.label + '<small>' + t.sub + '</small></div>' +
+          '<div class="track">' +
+            '<div class="bar ' + t.cls + '" style="left:' + left + '%;width:' + width + '%"></div>' +
+          '</div>' +
+        '</div>';
+      });
+    });
+
+    root.innerHTML = html;
+
+    // today line, positioned across the full track width via an overlay
+    var todayPct = pct(TODAY.toISOString().slice(0, 10));
+    var tracks = root.querySelectorAll('.track');
+    tracks.forEach(function (track, i) {
+      var line = document.createElement('div');
+      line.className = 'today-line' + (i === 0 ? ' labeled' : '');
+      line.style.left = todayPct + '%';
+      track.appendChild(line);
+    });
+  }
+
+  render();
+})();
+</script>
+
+<script>
+(function () {
+  var PW = 'janaki';
+  var SESSION_KEY = 'pw-gate-unlocked';
+  var gate = document.getElementById('pw-gate');
+  var content = document.getElementById('pw-content');
+  var form = document.getElementById('pw-form');
+  var input = document.getElementById('pw-input');
+  var errorEl = document.getElementById('pw-error');
+
+  function unlock() { gate.hidden = true; content.hidden = false; }
+
+  if (sessionStorage.getItem(SESSION_KEY) === '1') unlock();
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (input.value === PW) {
+      try { sessionStorage.setItem(SESSION_KEY, '1'); } catch (e) {}
+      unlock();
+    } else {
+      errorEl.textContent = 'Incorrect password.';
+      input.value = '';
+      input.focus();
+    }
+  });
+})();
+</script>
