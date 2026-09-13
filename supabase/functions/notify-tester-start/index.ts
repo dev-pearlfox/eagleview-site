@@ -4,8 +4,8 @@ import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
 
 const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY')!
 const TO_EMAIL       = 'manojkmahesh@gmail.com'
-const FROM_EMAIL     = 'tester@newmantech.in'
-const TESTCASE_URL   = 'https://newmantech.in/eagleview/testcase/'
+const FROM_EMAIL     = 'tester@pearlfox.io'
+const TESTCASE_URL   = 'https://eagleview.pearlfox.io/eagleview/testcase/'
 
 const CORS = {
   'Access-Control-Allow-Origin': '*',
