@@ -192,7 +192,7 @@
   // ── Data: real durations pulled from product-launch.html ──────────────
   var RANGE_START = new Date('2026-09-01');
   var RANGE_END   = new Date('2026-12-31');
-  var TODAY       = new Date('2026-09-12');
+  var TODAY       = new Date(); // always the real current date — was hardcoded to Sep 12, which froze the "Today" marker forever
 
   var phases = [
     { name: 'App readiness', tasks: [

@@ -410,7 +410,14 @@
       <div class="stat teal">Total cost <b>₹0.9L–3.7L</b></div>
       <div class="stat">Fastest win <b>3–5 days</b></div>
     </div>
-    <a class="jump-btn" href="timeline-calendar.html">Timeline Calendar <span aria-hidden="true">→</span></a>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:18px;">
+      <a class="jump-btn" href="timeline-calendar.html">Timeline Calendar <span aria-hidden="true">→</span></a>
+      <button class="jump-btn" id="target-date-btn" type="button" style="cursor:pointer;">Launch target: <b id="target-date-display">—</b> ✎</button>
+    </div>
+    <div id="target-date-editor" hidden style="margin-top:12px;display:flex;gap:8px;justify-content:center;align-items:center;">
+      <input type="date" id="target-date-input" style="padding:8px 10px;border:1px solid var(--line);border-radius:8px;font-family:inherit;font-size:13px;">
+      <button id="target-date-save" type="button" style="padding:8px 14px;border:none;border-radius:8px;background:var(--teal);color:#fff;font-weight:600;font-size:13px;cursor:pointer;font-family:inherit;">Save</button>
+    </div>
   </div>
 
   <div class="callout">
@@ -545,7 +552,7 @@
         <div class="card">
           <div class="card-title">Public launch</div>
           <div class="check-list">
-            <button class="check-item" data-key="p9-0" data-default="false"><span class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">Eagle View goes live<span class="check-meta">Launch date: Dec 1, 2026 · Week 13</span></span></button>
+            <button class="check-item" data-key="p9-0" data-default="false"><span class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">Eagle View goes live<span class="check-meta">Launch date: <span id="launch-target-meta">—</span></span></span></button>
           </div>
         </div>
       </div>
@@ -685,6 +692,63 @@
     clearTimeout(resizeT);
     resizeT = setTimeout(layoutTimelineLine, 150);
   });
+
+  // Launch target date — editable via the button at the top, stored in
+  // localStorage so it sticks in this browser. Drives both the "Launch
+  // target" stat button and checkpoint 8's "Launch date" text, so changing
+  // it once updates both instead of needing to hand-edit hardcoded dates.
+  (function initLaunchTarget() {
+    var STORE_KEY = 'ev-roadmap-target-date';
+    var DEFAULT_DATE = '2026-11-01';
+
+    function getTargetDate() {
+      var stored;
+      try { stored = localStorage.getItem(STORE_KEY); } catch (e) {}
+      return stored || DEFAULT_DATE;
+    }
+    function setTargetDate(iso) {
+      try { localStorage.setItem(STORE_KEY, iso); } catch (e) {}
+    }
+    function formatDate(iso) {
+      var d = new Date(iso + 'T00:00:00');
+      return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    }
+    function weekOf(iso) {
+      var target = new Date(iso + 'T00:00:00');
+      var rangeStart = new Date('2026-09-01T00:00:00');
+      var days = Math.round((target - rangeStart) / 86400000);
+      return Math.max(1, Math.ceil(days / 7));
+    }
+
+    var displayEl = document.getElementById('target-date-display');
+    var metaEl = document.getElementById('launch-target-meta');
+    var btn = document.getElementById('target-date-btn');
+    var editor = document.getElementById('target-date-editor');
+    var input = document.getElementById('target-date-input');
+    var saveBtn = document.getElementById('target-date-save');
+
+    function render() {
+      var iso = getTargetDate();
+      var formatted = formatDate(iso);
+      if (displayEl) displayEl.textContent = formatted;
+      if (metaEl) metaEl.textContent = formatted + ' · Week ' + weekOf(iso);
+      if (input) input.value = iso;
+    }
+
+    if (btn && editor) {
+      btn.addEventListener('click', function () { editor.hidden = !editor.hidden; });
+    }
+    if (saveBtn && input) {
+      saveBtn.addEventListener('click', function () {
+        if (!input.value) return;
+        setTargetDate(input.value);
+        editor.hidden = true;
+        render();
+      });
+    }
+
+    render();
+  })();
 })();
 </script>
 
