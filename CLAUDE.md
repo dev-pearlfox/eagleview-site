@@ -4,22 +4,21 @@
 
 - **Screenshots always live at `/Users/manojpro/Documents/Screenshots/`.** When Manvi says "check the latest screenshot," look there first (sorted by mtime), not on the Desktop.
 
-## `eagleview.html` — redirect stub (permanent duplicate-content fix, 2026-09-17)
+## `eagleview.html` — deleted (permanent duplicate-content fix, 2026-09-17)
 
-`eagleview.html` **used to be a byte-identical duplicate of `index.html`** (both 54,437 bytes serving identical content at two different URLs — classic duplicate-content SEO problem). As of 2026-09-17 it has been replaced with a ~1 KB **redirect stub** that bounces every visitor to `/`.
+`eagleview.html` **used to be a byte-identical duplicate of `index.html`** (both 54,437 bytes serving identical content at two different URLs — classic duplicate-content SEO problem). It was a **migration leftover** from when the site lived at `newmantech.in/eagleview.html` — during the move to the `eagleview.pearlfox.io` subdomain, someone copy-pasted `eagleview.html` → `index.html` to make the subdomain root work, but never deleted the original.
 
-The stub uses four layers of redirect signal (any one of them alone works — all four together = bulletproof):
-1. `<script>window.location.replace('/')` — instant JS redirect, and `.replace()` (not `.href =`) so `/eagleview.html` doesn't stay in the browser's back-button history.
-2. `<meta http-equiv="refresh" content="0; url=/">` — HTML-level fallback for anyone with JS disabled.
-3. `<link rel="canonical" href="https://eagleview.pearlfox.io/">` — tells search engines the real URL.
-4. `<meta name="robots" content="noindex, follow">` — tells crawlers not to index the stub URL itself, but do follow the redirect (so ranking signals flow to `/`).
+**Fixed on 2026-09-17 by deleting the file outright.** The URL `https://eagleview.pearlfox.io/eagleview.html` now returns a 404 from GitHub Pages. This is the cleanest possible fix — no maintenance, no redirect stub, no duplicate.
+
+Why deletion (not a redirect stub) was the right call:
+- **Semantic redundancy.** The whole subdomain IS Eagle View. Having `/eagleview.html` inside `eagleview.pearlfox.io` is like naming a room "House" inside your house.
+- **Nothing on the live site linked to it** — the only references in the codebase are archived buy-page drafts that point at the *old* `newmantech.in` domain (irrelevant to the current site).
+- **No known external inbound links** to the new-domain version of the URL (`eagleview.pearlfox.io/eagleview.html`) — it was never marketed. Any old external link that exists would still point at `newmantech.in/eagleview.html`, which is a separate problem (the whole old domain is dead).
 
 Rules going forward:
-- **Never restore content to `eagleview.html`.** If you do, undo the canonical/noindex, or Google will drop the resurrected page from its index.
-- The `sitemap.xml` intentionally lists **only `/` and `/privacy.html`** — `eagleview.html` is deliberately excluded because it's now a redirect, not a page.
-- If any external site or old email links to `/eagleview.html`, the stub keeps those links working — users just get bounced to `/`.
-- Google should drop `/eagleview.html` from its index within a few weeks of re-crawl (the `noindex` + canonical + redirect combo is stronger than canonical alone).
-- A textbook "proper" solution would be a real HTTP 301 redirect, but GitHub Pages doesn't do server-side redirects without enabling Jekyll's `jekyll-redirect-from` plugin (which would touch how every page on the site is built — risk not worth the marginal SEO gain here).
+- **Never re-create `eagleview.html`.** The whole subdomain is Eagle View — no need for a page inside called the same thing.
+- The `sitemap.xml` intentionally lists **only `/` and `/privacy.html`** — matches reality now.
+- If somehow a legit inbound link to `/eagleview.html` surfaces later, put a redirect stub back (see git history for the 2026-09-17 stub file that briefly existed).
 
 ## Favicon / GitHub Pages Octocat cache (SEO gotcha, fixed 2026-09-17)
 
@@ -39,6 +38,22 @@ Rules going forward:
 - Never let `/favicon.ico` 404 on GitHub Pages, even temporarily, or the octocat-cache trap re-arms.
 - Any newly-created HTML page in this site must copy the full favicon block + canonical from `index.html` — do not omit them "because browsers auto-request `/favicon.ico`"; Google's favicon indexer explicitly looks at the `<link>` tags.
 - When editing `index.html`, edit `eagleview.html` identically (see duplicate-HTML section above) unless you're intentionally de-duplicating them.
+
+## Payment page URL: flattened from `/eagleview/eagleview_payment.html` → `/eagleview_payment.html` (2026-09-17)
+
+The payment page used to live at `https://eagleview.pearlfox.io/eagleview/eagleview_payment.html` — same redundant-`eagleview`-prefix problem as the deleted `eagleview.html` (see above). Moved to root as `/eagleview_payment.html` and the old nested URL was deleted with **no redirect stub** (per Manvi's explicit call).
+
+**Files updated in the same commit as the move:**
+- `Websites/eagleview-site/index.html` — "Buy a License" button `href` updated
+- `Apps/Eagle View/src/App.jsx` — TWO occurrences updated (both `handleBuyLicense()` and `handleInfoPanelBuyLicense()`; grep for the URL to find them)
+
+**⚠️ Deployment-order matters.** The website change and the desktop-app change **must go live together**, or roughly so:
+- If you deploy the website *first* (delete old URL) and users on old app versions try to buy → they get 404s.
+- If you deploy the app *first* (points at new URL) before the website deploys the new file → same problem.
+- **Safest order:** ship the website first (both old and new URLs will 404 at old / work at new for a few seconds during deploy) — GitHub Pages deploys in seconds, so window is tiny. Then release the new app build.
+- **Even safer:** temporarily restore a redirect stub at `/eagleview/eagleview_payment.html` until the majority of installed app versions have updated, THEN delete the stub.
+
+**Historical note in testcase file:** `eagleview/testcase/index.html` line 1402 (TC-437) references `newmantech.in/eagleview/eagleview_payment.html` — that's the ancient pre-migration URL, kept as historical documentation of a v1.1.x test case. Not stale in the "needs fixing" sense — it's describing behavior of an old app version. Leave alone unless you're regenerating test cases.
 
 ## Known outstanding issues (NOT yet fixed as of 2026-09-17)
 
