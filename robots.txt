@@ -1,0 +1,7 @@
+# Eagle View — robots.txt
+# Allow all well-behaved crawlers everywhere.
+
+User-agent: *
+Allow: /
+
+Sitemap: https://eagleview.pearlfox.io/sitemap.xml
