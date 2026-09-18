@@ -3,6 +3,33 @@
 <head>
 <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Eagle View — License</title>
+<meta name="description" content="Buy an Eagle View license — activate the app on your Mac or Windows PC. One-time purchase, instant delivery."/>
+<meta name="robots" content="noindex,follow"/>
+<link rel="canonical" href="https://eagleview.pearlfox.io/eagleview_payment.html"/>
+
+<!-- Favicons + PWA -->
+<link rel="icon" type="image/x-icon" href="favicon.ico?v=2"/>
+<link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png?v=2"/>
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=2"/>
+<link rel="manifest" href="site.webmanifest"/>
+
+<!-- Open Graph -->
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="Eagle View"/>
+<meta property="og:title" content="Eagle View — License"/>
+<meta property="og:description" content="Buy an Eagle View license — activate the app on your Mac or Windows PC. One-time purchase, instant delivery."/>
+<meta property="og:url" content="https://eagleview.pearlfox.io/eagleview_payment.html"/>
+<meta property="og:image" content="https://eagleview.pearlfox.io/social-card.png"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="1200"/>
+<meta property="og:image:alt" content="Eagle View — smart desktop sidebar icon"/>
+
+<!-- Twitter / X -->
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Eagle View — License"/>
+<meta name="twitter:description" content="Buy an Eagle View license — activate the app on your Mac or Windows PC. One-time purchase, instant delivery."/>
+<meta name="twitter:image" content="https://eagleview.pearlfox.io/social-card.png"/>
+
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
@@ -13,12 +40,13 @@
   --tx:#E2E8F0;--tx2:#7A8FA8;--tx3:#364555;
   --mn:'SF Mono','Consolas','Monaco','Courier New',monospace;
 }
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;cursor:url('../eagle-cursor.svg') 32 32,auto !important;user-select:none;-webkit-user-select:none;}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
 body{
   min-height:100vh;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;
   background:var(--bg);color:var(--tx);overflow-x:hidden;
   display:flex;flex-direction:column;
+  cursor:url('eagle-cursor.svg') 32 32,auto;
 }
 body::before{
   content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
@@ -66,7 +94,7 @@ h1 .grad,.grad-text{display:block;background:linear-gradient(135deg,var(--or) 0%
 .plans{position:relative;display:flex;flex-direction:column;gap:8px;margin-bottom:18px;}
 .plan-sel-indicator{position:absolute;left:0;right:0;top:0;height:0;border-radius:14px;background:rgba(0,229,255,.05);border:1.5px solid var(--cy);box-shadow:0 0 0 1px rgba(0,229,255,.15),0 0 24px rgba(0,229,255,.05);pointer-events:none;opacity:0;transition:transform .45s cubic-bezier(.4,0,.2,1),height .45s cubic-bezier(.4,0,.2,1),opacity .3s ease;}
 .plan-sel-indicator.show{opacity:1;}
-.plan{display:flex;align-items:center;background:var(--sf);border:1.5px solid rgba(0,229,255,.09);border-radius:14px;padding:14px 16px;cursor:pointer;gap:0;transition:border-color .35s cubic-bezier(.4,0,.2,1),background .35s cubic-bezier(.4,0,.2,1);}
+.plan{display:flex;align-items:center;background:var(--sf);border:1.5px solid rgba(0,229,255,.09);border-radius:14px;padding:14px 16px;gap:0;transition:border-color .35s cubic-bezier(.4,0,.2,1),background .35s cubic-bezier(.4,0,.2,1);}
 .plan:hover{border-color:rgba(0,229,255,.28);background:#0E1730;}
 .plan.sel{border-color:transparent;}
 .plan-left{flex:1;}
@@ -84,7 +112,7 @@ h1 .grad,.grad-text{display:block;background:linear-gradient(135deg,var(--or) 0%
 .plan-price{position:absolute;top:50%;right:0;font-size:19px;font-weight:800;color:var(--tx);font-variant-numeric:tabular-nums;opacity:0;transform:translateY(-50%) scale(.9);pointer-events:none;transition:opacity .3s ease,transform .3s ease,color .35s cubic-bezier(.4,0,.2,1);}
 .plan.revealed .plan-price{opacity:1;transform:translateY(-50%) scale(1);pointer-events:auto;}
 .plan.sel .plan-price{color:var(--cy);}
-.offer-btn{position:absolute;top:50%;right:0;transform:translateY(-50%) scale(1);opacity:1;pointer-events:auto;transition:opacity .3s ease,transform .3s ease,filter .2s ease;display:inline-flex;align-items:center;justify-content:center;min-width:74px;padding:6px 14px;border:none;border-radius:20px;font-size:12px;font-weight:800;letter-spacing:.02em;color:#1a1206;cursor:pointer;background:linear-gradient(135deg,var(--or) 0%,#FFB300 38%,var(--cy) 100%);background-size:200% auto;animation:shimmer 4s linear infinite;}
+.offer-btn{position:absolute;top:50%;right:0;transform:translateY(-50%) scale(1);opacity:1;pointer-events:auto;transition:opacity .3s ease,transform .3s ease,filter .2s ease;display:inline-flex;align-items:center;justify-content:center;min-width:74px;padding:6px 14px;border:none;border-radius:20px;font-size:12px;font-weight:800;letter-spacing:.02em;color:#1a1206;background:linear-gradient(135deg,var(--or) 0%,#FFB300 38%,var(--cy) 100%);background-size:200% auto;animation:shimmer 4s linear infinite;}
 .plan.revealed .offer-btn{opacity:0;transform:translateY(-50%) scale(.85);pointer-events:none;}
 .offer-btn:hover{filter:brightness(1.08);}
 .plan-period{font-size:10px;color:var(--tx3);}
@@ -114,7 +142,7 @@ h1 .grad,.grad-text{display:block;background:linear-gradient(135deg,var(--or) 0%
 .inp{width:100%;background:var(--sf);border:1.5px solid rgba(0,229,255,.1);border-radius:10px;padding:12px 15px;font-size:13px;color:var(--tx);font-family:inherit;outline:none;margin-bottom:10px;transition:border-color .2s,box-shadow .2s;}
 .inp:focus{border-color:var(--cy);box-shadow:0 0 0 3px rgba(0,229,255,.08);}
 .inp::placeholder{color:var(--tx2);}
-.inp[readonly]{background:#080D1C;color:var(--tx2);cursor:default;border-color:rgba(0,229,255,.06);}
+.inp[readonly]{background:#080D1C;color:var(--tx2);border-color:rgba(0,229,255,.06);}
 .mid-ok{display:none;align-items:center;gap:7px;font-size:12px;color:var(--tx2);margin-bottom:10px;}
 .mid-dot{width:7px;height:7px;border-radius:50%;background:var(--gr);box-shadow:0 0 6px var(--gr);flex-shrink:0;}
 .mid-ok strong{color:var(--gr);font-weight:600;}
@@ -123,10 +151,10 @@ h1 .grad,.grad-text{display:block;background:linear-gradient(135deg,var(--or) 0%
 .err{display:none;font-size:12px;color:#FF6B7A;margin-bottom:10px;}
 .coupon-row{display:flex;gap:8px;margin-bottom:10px;}
 .coupon-row .inp{margin-bottom:0;flex:1;min-width:0;}
-.coupon-apply-btn{padding:0 16px;background:rgba(255,104,32,.08);border:1.5px solid rgba(255,104,32,.35);border-radius:10px;color:#FF9A5C;font-size:12px;font-weight:700;font-family:inherit;cursor:pointer;transition:all .2s;white-space:nowrap;}
+.coupon-apply-btn{padding:0 16px;background:rgba(255,104,32,.08);border:1.5px solid rgba(255,104,32,.35);border-radius:10px;color:#FF9A5C;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;white-space:nowrap;}
 .coupon-apply-btn:hover{background:rgba(255,104,32,.16);border-color:rgba(255,104,32,.6);}
 
-.pay-btn{width:100%;padding:15px;background:linear-gradient(135deg,var(--or),var(--or2));color:#fff;font-size:14.5px;font-weight:700;border:none;border-radius:11px;cursor:pointer;font-family:inherit;box-shadow:0 0 28px rgba(255,104,32,.2),0 4px 20px rgba(0,0,0,.3);transition:all .25s;position:relative;overflow:hidden;}
+.pay-btn{width:100%;padding:15px;background:linear-gradient(135deg,var(--or),var(--or2));color:#fff;font-size:14.5px;font-weight:700;border:none;border-radius:11px;font-family:inherit;box-shadow:0 0 28px rgba(255,104,32,.2),0 4px 20px rgba(0,0,0,.3);transition:all .25s;position:relative;overflow:hidden;}
 .pay-btn::after{content:'';position:absolute;top:0;left:-100%;bottom:0;width:60%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.22),transparent);animation:beam 2.5s linear infinite;}
 .pay-btn:hover{transform:translateY(-2px);box-shadow:0 0 48px rgba(255,104,32,.45),0 8px 28px rgba(255,104,32,.3);}
 .pay-btn:disabled{opacity:.45;cursor:not-allowed;transform:none;}
@@ -196,11 +224,11 @@ h1 .grad,.grad-text{display:block;background:linear-gradient(135deg,var(--or) 0%
   </symbol>
 </svg>
 
-<div class="top">
+<header class="top">
   <a href="/" class="nl"><div class="ni"><svg width="22" height="22"><use href="#eagle"/></svg></div>Eagle View</a>
-</div>
+</header>
 
-<div class="wrap">
+<main class="wrap">
   <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
   <div class="inner">
     <div class="col-form">
@@ -210,11 +238,11 @@ h1 .grad,.grad-text{display:block;background:linear-gradient(135deg,var(--or) 0%
 
       <div class="card">
         <div class="price-cols-hdr"><div class="phdr-spacer"></div><div class="phdr-prices"><span>Standard Price</span><span class="grad-text">Launch offer</span></div><div class="phdr-radio"></div></div>
-        <div class="plans">
-          <div class="plan-sel-indicator" id="planSelInd"></div>
-          <div class="plan" data-days="180" onclick="selectPlan(180)"><div class="plan-left"><div class="plan-dur">6 Months</div><div class="plan-desc">Half-year access</div></div><div class="plan-right"><div class="plan-std-col"><div class="plan-std-price">₹6,100</div></div><div class="plan-offer-col"><button type="button" class="offer-btn" onclick="revealOffer(180,event)">Offer</button><div class="plan-price">₹1,999</div></div></div><div class="radio"></div></div>
-          <div class="plan sel" data-days="365" onclick="selectPlan(365)"><div class="plan-left"><div class="plan-dur">1 Year <span class="plan-badge">Popular</span></div><div class="plan-desc">Full-year access</div></div><div class="plan-right"><div class="plan-std-col"><div class="plan-std-price">₹9,100</div></div><div class="plan-offer-col"><button type="button" class="offer-btn" onclick="revealOffer(365,event)">Offer</button><div class="plan-price">₹2,199</div></div></div><div class="radio"></div></div>
-          <div class="plan" data-days="730" onclick="selectPlan(730)"><div class="plan-left"><div class="plan-dur">2 Years <span class="plan-badge">Best value</span></div><div class="plan-desc">Extended access</div></div><div class="plan-right"><div class="plan-std-col"><div class="plan-std-price">₹14,100</div></div><div class="plan-offer-col"><button type="button" class="offer-btn" onclick="revealOffer(730,event)">Offer</button><div class="plan-price">₹2,599</div></div></div><div class="radio"></div></div>
+        <div class="plans" role="radiogroup" aria-label="Choose license duration">
+          <div class="plan-sel-indicator" id="planSelInd" aria-hidden="true"></div>
+          <div class="plan" data-days="180" role="radio" aria-checked="false" tabindex="0" onclick="selectPlan(180)" onkeydown="planKey(event,180)"><div class="plan-left"><div class="plan-dur">6 Months</div><div class="plan-desc">Half-year access</div></div><div class="plan-right"><div class="plan-std-col"><div class="plan-std-price">₹6,100</div></div><div class="plan-offer-col"><button type="button" class="offer-btn" onclick="revealOffer(180,event)">Offer</button><div class="plan-price">₹1,999</div></div></div><div class="radio" aria-hidden="true"></div></div>
+          <div class="plan sel" data-days="365" role="radio" aria-checked="true" tabindex="0" onclick="selectPlan(365)" onkeydown="planKey(event,365)"><div class="plan-left"><div class="plan-dur">1 Year <span class="plan-badge">Popular</span></div><div class="plan-desc">Full-year access</div></div><div class="plan-right"><div class="plan-std-col"><div class="plan-std-price">₹9,100</div></div><div class="plan-offer-col"><button type="button" class="offer-btn" onclick="revealOffer(365,event)">Offer</button><div class="plan-price">₹2,199</div></div></div><div class="radio" aria-hidden="true"></div></div>
+          <div class="plan" data-days="730" role="radio" aria-checked="false" tabindex="0" onclick="selectPlan(730)" onkeydown="planKey(event,730)"><div class="plan-left"><div class="plan-dur">2 Years <span class="plan-badge">Best value</span></div><div class="plan-desc">Extended access</div></div><div class="plan-right"><div class="plan-std-col"><div class="plan-std-price">₹14,100</div></div><div class="plan-offer-col"><button type="button" class="offer-btn" onclick="revealOffer(730,event)">Offer</button><div class="plan-price">₹2,599</div></div></div><div class="radio" aria-hidden="true"></div></div>
         </div>
         <div class="coupon-row">
           <input class="inp" id="buyCoupon" type="text" placeholder="Coupon code (optional)" autocomplete="off" spellcheck="false" oninput="onCouponInput()" onkeydown="if(event.key==='Enter'){event.preventDefault();applyCoupon();}"/>
@@ -260,36 +288,41 @@ h1 .grad,.grad-text{display:block;background:linear-gradient(135deg,var(--or) 0%
             <div class="nr" style="border-bottom:none"><div class="nc2"></div><span class="nt ntp">Add a note...</span><span style="font-size:11px;opacity:.2">🔔</span></div>
           </div>
           <div class="sbc"><div class="sbct de"><span style="font-size:13px">🇩🇪</span><span class="sbcv" id="clock-de">--:--</span></div><div class="sbct us"><span style="font-size:13px">🇺🇸</span><span class="sbcv" id="clock-us">--:--</span></div></div>
-          <div class="sbf"><span style="font-size:14px;opacity:.3">🔓</span><div class="sbfs"><div class="sbfd"></div>Updated <span id="clock-upd" style="font-variant-numeric:tabular-nums">--:--:--</span></div><span style="font-size:14px;opacity:.3;cursor:pointer;user-select:none">↻</span></div>
+          <div class="sbf"><span style="font-size:14px;opacity:.3">🔓</span><div class="sbfs"><div class="sbfd"></div>Updated <span id="clock-upd" style="font-variant-numeric:tabular-nums">--:--:--</span></div><span style="font-size:14px;opacity:.3">↻</span></div>
         </div>
       </div>
     </div>
   </div>
-</div>
+</main>
 
 <script>
 ;(function(){var el=document.getElementById('tw');if(!el)return;var txt='One-time payment · No subscription · Mac & Windows.';var i=0;function next(){if(i<txt.length){el.textContent+=txt[i++];setTimeout(next,32+Math.random()*30)}}setTimeout(next,500)})();
 function clocks(){const now=new Date(),f2=tz=>new Intl.DateTimeFormat('en',{timeZone:tz,hour:'2-digit',minute:'2-digit',hour12:false}).format(now),f3=tz=>new Intl.DateTimeFormat('en',{timeZone:tz,hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(now);const de=document.getElementById('clock-de'),us=document.getElementById('clock-us'),upd=document.getElementById('clock-upd');if(de)de.textContent=f2('Europe/Berlin');if(us)us.textContent=f2('America/New_York');if(upd)upd.textContent=f3('Europe/Berlin')}
 clocks();setInterval(clocks,1000);
-updatePayBtn();
 </script>
 <script>
 var EDGE_URL='https://aerpehamlfipdzfsysre.supabase.co/functions/v1/activate-license';
 var PRICES={180:1999,365:2199,730:2599};
 var STD_PRICES={180:6100,365:9100,730:14100};
 var _revealed={180:false,365:false,730:false};
-var _plan=365,_mid='',_price=STD_PRICES[365],_coupon='';
-function effectivePrice(){return (_coupon&&_revealed[_plan])?1:_price;}
-function renderPlanPrices(){document.querySelectorAll('[data-days]').forEach(function(el){var d=parseInt(el.dataset.days,10),priceEl=el.querySelector('.plan-price');if(!priceEl)return;priceEl.innerHTML=(_coupon&&_revealed[d])?('<s style="opacity:.5;font-weight:400;font-size:13px">₹'+PRICES[d].toLocaleString('en-IN')+'</s> ₹1'):('₹'+PRICES[d].toLocaleString('en-IN'));});}
+// _coupon holds the user-typed code (only set once the server confirms it's valid).
+// _couponPrice holds the server-returned override price in INR (null = no coupon).
+// The client no longer knows which coupon codes exist — that's the server's job.
+var _plan=365,_mid='',_price=STD_PRICES[365],_coupon='',_couponPrice=null;
+function effectivePrice(){return (_couponPrice!==null&&_revealed[_plan])?_couponPrice:_price;}
+function renderPlanPrices(){document.querySelectorAll('[data-days]').forEach(function(el){var d=parseInt(el.dataset.days,10),priceEl=el.querySelector('.plan-price');if(!priceEl)return;priceEl.innerHTML=(_couponPrice!==null&&_revealed[d])?('<s style="opacity:.5;font-weight:400;font-size:13px">₹'+PRICES[d].toLocaleString('en-IN')+'</s> ₹'+_couponPrice.toLocaleString('en-IN')):('₹'+PRICES[d].toLocaleString('en-IN'));});}
 function updatePayBtn(){var btn=document.getElementById('buyBtn');if(!btn||btn.disabled)return;btn.textContent='Pay ₹'+effectivePrice().toLocaleString('en-IN')+' →';}
-function applyCoupon(){var v=(document.getElementById('buyCoupon').value||'').trim().toLowerCase(),ok=document.getElementById('couponOk'),err=document.getElementById('couponErr');_coupon=(v==='launchoffer01')?'launchoffer01':'';if(ok)ok.style.display=_coupon?'flex':'none';if(err)err.style.display=_coupon?'none':'block';renderPlanPrices();updatePayBtn();}
-function onCouponInput(){var ok=document.getElementById('couponOk'),err=document.getElementById('couponErr');if(!_coupon&&(!err||err.style.display!=='block'))return;_coupon='';if(ok)ok.style.display='none';if(err)err.style.display='none';renderPlanPrices();updatePayBtn();}
+function clearCoupon(){var ok=document.getElementById('couponOk'),err=document.getElementById('couponErr');_coupon='';_couponPrice=null;if(ok)ok.style.display='none';if(err)err.style.display='none';renderPlanPrices();updatePayBtn();}
+function applyCoupon(){var v=(document.getElementById('buyCoupon').value||'').trim().toLowerCase(),ok=document.getElementById('couponOk'),err=document.getElementById('couponErr'),btn=document.querySelector('.coupon-apply-btn');if(!v){clearCoupon();return;}if(btn){btn.disabled=true;btn.textContent='…';}fetch(EDGE_URL+'?action=validate-coupon',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({coupon:v})}).then(function(r){return r.json();}).then(function(data){if(btn){btn.disabled=false;btn.textContent='Apply';}if(data&&data.valid&&typeof data.price_override==='number'){_coupon=v;_couponPrice=data.price_override;if(ok){var span=ok.querySelector('span');if(span)span.innerHTML='Coupon applied — <strong>₹'+_couponPrice.toLocaleString('en-IN')+' on all plans</strong>';ok.style.display='flex';}if(err){err.textContent='Invalid coupon code.';err.style.display='none';}/* Auto-reveal every plan so the discounted price is actually visible — otherwise the "₹X on all plans" banner would lie until the user clicked each Offer button. */[180,365,730].forEach(function(d){_revealed[d]=true;var p=document.querySelector('.plan[data-days="'+d+'"]');if(p)p.classList.add('revealed');});_price=PRICES[_plan];}else{_coupon='';_couponPrice=null;if(ok)ok.style.display='none';if(err){err.textContent='Invalid coupon code.';err.style.display='block';}}renderPlanPrices();updatePayBtn();}).catch(function(){if(btn){btn.disabled=false;btn.textContent='Apply';}_coupon='';_couponPrice=null;if(ok)ok.style.display='none';if(err){err.textContent='Network error, try again.';err.style.display='block';}renderPlanPrices();updatePayBtn();});}
+function onCouponInput(){if(!_coupon){var err=document.getElementById('couponErr');if(err&&err.style.display==='block')err.style.display='none';return;}clearCoupon();}
 (function(){var p=new URLSearchParams(window.location.search),mid=(p.get('mid')||'').trim(),email=(p.get('email')||'').trim();if(mid){_mid=mid;var ok=document.getElementById('buyMidOk'),mn=document.getElementById('buyMidManual');if(ok)ok.style.display='flex';if(mn)mn.style.display='none';}if(email){var el=document.getElementById('buyEmail');if(el){el.value=email;el.readOnly=true;}}})();
 function moveSelIndicator(){var ind=document.getElementById('planSelInd'),wrap=document.querySelector('.plans'),el=document.querySelector('.plan.sel');if(!ind||!wrap||!el)return;var wrapRect=wrap.getBoundingClientRect(),elRect=el.getBoundingClientRect();ind.style.height=elRect.height+'px';ind.style.transform='translateY('+(elRect.top-wrapRect.top)+'px)';ind.classList.add('show');}
-function selectPlan(d){_plan=d;_price=_revealed[d]?PRICES[d]:STD_PRICES[d];document.querySelectorAll('[data-days]').forEach(function(el){el.classList.toggle('sel',parseInt(el.dataset.days,10)===d);});renderPlanPrices();updatePayBtn();moveSelIndicator();}
+function selectPlan(d){_plan=d;_price=_revealed[d]?PRICES[d]:STD_PRICES[d];document.querySelectorAll('[data-days]').forEach(function(el){var on=parseInt(el.dataset.days,10)===d;el.classList.toggle('sel',on);if(el.getAttribute('role')==='radio')el.setAttribute('aria-checked',on?'true':'false');});renderPlanPrices();updatePayBtn();moveSelIndicator();}
+function planKey(e,d){if(e.key===' '||e.key==='Enter'){e.preventDefault();selectPlan(d);}}
 window.addEventListener('resize',moveSelIndicator);
 moveSelIndicator();
 function revealOffer(d,event){_revealed[d]=true;var planEl=document.querySelector('.plan[data-days="'+d+'"]');if(planEl)planEl.classList.add('revealed');renderPlanPrices();if(d===_plan){_price=PRICES[d];updatePayBtn();}}
+updatePayBtn();
 function showErr(m){var el=document.getElementById('buyErr');el.textContent=m;el.style.display='block';}
 function startPayment(){var email=(document.getElementById('buyEmail').value||'').trim().toLowerCase(),mid=_mid||(document.getElementById('buyMachineId')?(document.getElementById('buyMachineId').value||'').trim():'');document.getElementById('buyErr').style.display='none';if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){showErr('Enter a valid email address.');return;}if(!mid){showErr('Paste your Machine ID from Eagle View.');return;}var btn=document.getElementById('buyBtn');btn.disabled=true;btn.textContent='Opening…';fetch(EDGE_URL+'?action=create-payment-link',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:email,machine_id:mid,license_days:_plan,amount_inr:effectivePrice(),coupon:(_coupon&&_revealed[_plan])?_coupon:''})}).then(function(r){return r.json();}).then(function(data){if(data.payment_link_url){window.location.href=data.payment_link_url;}else{showErr(data.error||'Try again.');btn.disabled=false;btn.textContent='Pay now →';}}).catch(function(){showErr('Network error.');btn.disabled=false;btn.textContent='Pay now →';});}
 </script>
