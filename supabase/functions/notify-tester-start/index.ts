@@ -1,19 +1,49 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
 
-// Secrets: RESEND_API_KEY — from resend.com (set via Supabase Dashboard → Secrets)
+// Secrets (set via Supabase Dashboard → Edge Functions → Secrets):
+//   RESEND_API_KEY  — from resend.com
+//   NOTIFY_TO_EMAIL — recipient of the QA-started emails (defaults to the
+//                     historic hardcoded address if unset, so existing
+//                     deployments keep working until the secret is added)
 
 const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY')!
-const TO_EMAIL       = 'manojkmahesh@gmail.com'
+const TO_EMAIL       = Deno.env.get('NOTIFY_TO_EMAIL') || 'manojkmahesh@gmail.com'
 const FROM_EMAIL     = 'tester@pearlfox.io'
 const TESTCASE_URL   = 'https://eagleview.pearlfox.io/eagleview/testcase/'
 
-const CORS = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'Content-Type',
+// Origin allowlist — anything else gets a 403. Browsers stamp Origin
+// automatically; bots and drive-by curl attackers usually don't (or set it
+// wrong), so this blocks 99% of casual abuse with zero client changes.
+// A determined attacker can still spoof Origin with curl — for that level of
+// threat we'd need rate-limiting (Supabase row + timestamp check) or a real
+// signed token. Not worth the complexity for a QA-notification endpoint yet;
+// revisit if abuse actually appears in the logs.
+const ALLOWED_ORIGINS = new Set<string>([
+  'https://eagleview.pearlfox.io',
+])
+
+function corsHeadersFor(origin: string): Record<string, string> {
+  const allowed = ALLOWED_ORIGINS.has(origin)
+  return {
+    'Access-Control-Allow-Origin': allowed ? origin : '',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Vary': 'Origin',
+  }
 }
 
 serve(async (req) => {
+  const origin = req.headers.get('Origin') || ''
+  const CORS = corsHeadersFor(origin)
+
   if (req.method === 'OPTIONS') return new Response('ok', { headers: CORS })
+
+  if (!ALLOWED_ORIGINS.has(origin)) {
+    console.warn(`[notify-tester-start] rejected request from origin="${origin}"`)
+    return new Response(JSON.stringify({ error: 'Forbidden' }), {
+      status: 403, headers: { ...CORS, 'Content-Type': 'application/json' },
+    })
+  }
 
   try {
     const { tester, platform, display, version, timestamp } = await req.json()
@@ -75,7 +105,7 @@ serve(async (req) => {
         </td></tr>
         <!-- Footer -->
         <tr><td style="padding:16px 32px;border-top:1px solid #f0f0f0">
-          <p style="margin:0;font-size:11px;color:#aaa;text-align:center">Eagle View · Newman Tech · This is an automated notification</p>
+          <p style="margin:0;font-size:11px;color:#aaa;text-align:center">Eagle View · PearlFox · This is an automated notification</p>
         </td></tr>
       </table>
     </td></tr>
