@@ -112,9 +112,6 @@ h1 .grad,.grad-text{display:block;background:linear-gradient(135deg,var(--or) 0%
 .plan-price{position:absolute;top:50%;right:0;font-size:19px;font-weight:800;color:var(--tx);font-variant-numeric:tabular-nums;opacity:0;transform:translateY(-50%) scale(.9);pointer-events:none;transition:opacity .3s ease,transform .3s ease,color .35s cubic-bezier(.4,0,.2,1);}
 .plan.revealed .plan-price{opacity:1;transform:translateY(-50%) scale(1);pointer-events:auto;}
 .plan.sel .plan-price{color:var(--cy);}
-.offer-btn{position:absolute;top:50%;right:0;transform:translateY(-50%) scale(1);opacity:1;pointer-events:auto;transition:opacity .3s ease,transform .3s ease,filter .2s ease;display:inline-flex;align-items:center;justify-content:center;min-width:74px;padding:6px 14px;border:none;border-radius:20px;font-size:12px;font-weight:800;letter-spacing:.02em;color:#1a1206;background:linear-gradient(135deg,var(--or) 0%,#FFB300 38%,var(--cy) 100%);background-size:200% auto;animation:shimmer 4s linear infinite;}
-.plan.revealed .offer-btn{opacity:0;transform:translateY(-50%) scale(.85);pointer-events:none;}
-.offer-btn:hover{filter:brightness(1.08);}
 .plan-period{font-size:10px;color:var(--tx3);}
 .price-cols-hdr{display:flex;align-items:center;padding:0 16px;margin-bottom:8px;}
 .phdr-spacer{flex:1;}
@@ -129,7 +126,6 @@ h1 .grad,.grad-text{display:block;background:linear-gradient(135deg,var(--or) 0%
   .plan-price{font-size:16px;}
   .plan-std-col,.plan-offer-col{min-width:56px;}
   .plan-offer-col{height:24px;}
-  .offer-btn{min-width:56px;padding:5px 10px;font-size:10px;}
   .phdr-prices{gap:10px;}
   .phdr-prices span{font-size:10px;min-width:56px;}
 }
@@ -238,11 +234,11 @@ h1 .grad,.grad-text{display:block;background:linear-gradient(135deg,var(--or) 0%
 
       <div class="card">
         <div class="price-cols-hdr"><div class="phdr-spacer"></div><div class="phdr-prices"><span>Standard Price</span><span class="grad-text">Launch offer</span></div><div class="phdr-radio"></div></div>
-        <div class="plans" role="radiogroup" aria-label="Choose license duration">
+        <!-- Plan cards are rendered from the PLANS array in JS (see renderPlans below) —
+             prices live in exactly one place now, so changing them is a one-line edit
+             instead of hunting through three synchronised sources. -->
+        <div class="plans" role="radiogroup" aria-label="Choose license duration" id="plansRoot">
           <div class="plan-sel-indicator" id="planSelInd" aria-hidden="true"></div>
-          <div class="plan" data-days="180" role="radio" aria-checked="false" tabindex="0" onclick="selectPlan(180)" onkeydown="planKey(event,180)"><div class="plan-left"><div class="plan-dur">6 Months</div><div class="plan-desc">Half-year access</div></div><div class="plan-right"><div class="plan-std-col"><div class="plan-std-price">₹6,100</div></div><div class="plan-offer-col"><button type="button" class="offer-btn" onclick="revealOffer(180,event)">Offer</button><div class="plan-price">₹1,999</div></div></div><div class="radio" aria-hidden="true"></div></div>
-          <div class="plan sel" data-days="365" role="radio" aria-checked="true" tabindex="0" onclick="selectPlan(365)" onkeydown="planKey(event,365)"><div class="plan-left"><div class="plan-dur">1 Year <span class="plan-badge">Popular</span></div><div class="plan-desc">Full-year access</div></div><div class="plan-right"><div class="plan-std-col"><div class="plan-std-price">₹9,100</div></div><div class="plan-offer-col"><button type="button" class="offer-btn" onclick="revealOffer(365,event)">Offer</button><div class="plan-price">₹2,199</div></div></div><div class="radio" aria-hidden="true"></div></div>
-          <div class="plan" data-days="730" role="radio" aria-checked="false" tabindex="0" onclick="selectPlan(730)" onkeydown="planKey(event,730)"><div class="plan-left"><div class="plan-dur">2 Years <span class="plan-badge">Best value</span></div><div class="plan-desc">Extended access</div></div><div class="plan-right"><div class="plan-std-col"><div class="plan-std-price">₹14,100</div></div><div class="plan-offer-col"><button type="button" class="offer-btn" onclick="revealOffer(730,event)">Offer</button><div class="plan-price">₹2,599</div></div></div><div class="radio" aria-hidden="true"></div></div>
         </div>
         <div class="coupon-row">
           <input class="inp" id="buyCoupon" type="text" placeholder="Coupon code (optional)" autocomplete="off" spellcheck="false" oninput="onCouponInput()" onkeydown="if(event.key==='Enter'){event.preventDefault();applyCoupon();}"/>
@@ -303,29 +299,44 @@ clocks();setInterval(clocks,1000);
 </script>
 <script>
 var EDGE_URL='https://aerpehamlfipdzfsysre.supabase.co/functions/v1/activate-license';
-var PRICES={180:1999,365:2199,730:2599};
-var STD_PRICES={180:6100,365:9100,730:14100};
-var _revealed={180:false,365:false,730:false};
+// Single source of truth for every plan's marketing copy + prices. Adding, removing,
+// or repricing a plan is a one-line change here — the DOM, PRICES map, STD_PRICES
+// map, and initial selection all derive from it. Keep prices as raw numbers (INR);
+// display formatting happens at render time via toLocaleString('en-IN').
+var PLANS=[
+  {days:180,label:'6 Months',desc:'Half-year access',badge:null,        std:6100, offer:1999},
+  {days:365,label:'1 Year',  desc:'Full-year access',badge:'Popular',   std:9100, offer:2199,selected:true},
+  {days:730,label:'2 Years', desc:'Extended access', badge:'Best value',std:14100,offer:2599}
+];
+var PRICES={},STD_PRICES={};
+PLANS.forEach(function(p){PRICES[p.days]=p.offer;STD_PRICES[p.days]=p.std;});
 // _coupon holds the user-typed code (only set once the server confirms it's valid).
 // _couponPrice holds the server-returned override price in INR (null = no coupon).
 // The client no longer knows which coupon codes exist — that's the server's job.
-var _plan=365,_mid='',_price=STD_PRICES[365],_coupon='',_couponPrice=null;
-function effectivePrice(){return (_couponPrice!==null&&_revealed[_plan])?_couponPrice:_price;}
-function renderPlanPrices(){document.querySelectorAll('[data-days]').forEach(function(el){var d=parseInt(el.dataset.days,10),priceEl=el.querySelector('.plan-price');if(!priceEl)return;priceEl.innerHTML=(_couponPrice!==null&&_revealed[d])?('<s style="opacity:.5;font-weight:400;font-size:13px">₹'+PRICES[d].toLocaleString('en-IN')+'</s> ₹'+_couponPrice.toLocaleString('en-IN')):('₹'+PRICES[d].toLocaleString('en-IN'));});}
+// _plan / _price track the currently-selected plan; initialised from PLANS[selected].
+var _initial=PLANS.filter(function(p){return p.selected;})[0]||PLANS[0];
+var _plan=_initial.days,_mid='',_price=PRICES[_plan],_coupon='',_couponPrice=null;
+// Render the plan cards into #plansRoot from PLANS. No 'Offer' reveal button —
+// every card shows its offer price + struck-through standard price from the start
+// (a11y: role=radio must not contain interactive descendants, so we killed the
+// reveal button and just show the discount up-front, matching the coupon-applied UX).
+function renderPlans(){var root=document.getElementById('plansRoot');if(!root)return;PLANS.forEach(function(p){var el=document.createElement('div');el.className='plan revealed'+(p.selected?' sel':'');el.setAttribute('data-days',p.days);el.setAttribute('role','radio');el.setAttribute('aria-checked',p.selected?'true':'false');el.setAttribute('tabindex','0');el.innerHTML='<div class="plan-left"><div class="plan-dur">'+p.label+(p.badge?' <span class="plan-badge">'+p.badge+'</span>':'')+'</div><div class="plan-desc">'+p.desc+'</div></div>'+'<div class="plan-right">'+'<div class="plan-std-col"><div class="plan-std-price">₹'+p.std.toLocaleString('en-IN')+'</div></div>'+'<div class="plan-offer-col"><div class="plan-price">₹'+p.offer.toLocaleString('en-IN')+'</div></div>'+'</div>'+'<div class="radio" aria-hidden="true"></div>';el.addEventListener('click',function(){selectPlan(p.days);});el.addEventListener('keydown',function(e){planKey(e,p.days);});root.appendChild(el);});}
+renderPlans();
+function effectivePrice(){return _couponPrice!==null?_couponPrice:_price;}
+function renderPlanPrices(){document.querySelectorAll('[data-days]').forEach(function(el){var d=parseInt(el.dataset.days,10),priceEl=el.querySelector('.plan-price');if(!priceEl)return;priceEl.innerHTML=(_couponPrice!==null)?('<s style="opacity:.5;font-weight:400;font-size:13px">₹'+PRICES[d].toLocaleString('en-IN')+'</s> ₹'+_couponPrice.toLocaleString('en-IN')):('₹'+PRICES[d].toLocaleString('en-IN'));});}
 function updatePayBtn(){var btn=document.getElementById('buyBtn');if(!btn||btn.disabled)return;btn.textContent='Pay ₹'+effectivePrice().toLocaleString('en-IN')+' →';}
 function clearCoupon(){var ok=document.getElementById('couponOk'),err=document.getElementById('couponErr');_coupon='';_couponPrice=null;if(ok)ok.style.display='none';if(err)err.style.display='none';renderPlanPrices();updatePayBtn();}
-function applyCoupon(){var v=(document.getElementById('buyCoupon').value||'').trim().toLowerCase(),ok=document.getElementById('couponOk'),err=document.getElementById('couponErr'),btn=document.querySelector('.coupon-apply-btn');if(!v){clearCoupon();return;}if(btn){btn.disabled=true;btn.textContent='…';}fetch(EDGE_URL+'?action=validate-coupon',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({coupon:v})}).then(function(r){return r.json();}).then(function(data){if(btn){btn.disabled=false;btn.textContent='Apply';}if(data&&data.valid&&typeof data.price_override==='number'){_coupon=v;_couponPrice=data.price_override;if(ok){var span=ok.querySelector('span');if(span)span.innerHTML='Coupon applied — <strong>₹'+_couponPrice.toLocaleString('en-IN')+' on all plans</strong>';ok.style.display='flex';}if(err){err.textContent='Invalid coupon code.';err.style.display='none';}/* Auto-reveal every plan so the discounted price is actually visible — otherwise the "₹X on all plans" banner would lie until the user clicked each Offer button. */[180,365,730].forEach(function(d){_revealed[d]=true;var p=document.querySelector('.plan[data-days="'+d+'"]');if(p)p.classList.add('revealed');});_price=PRICES[_plan];}else{_coupon='';_couponPrice=null;if(ok)ok.style.display='none';if(err){err.textContent='Invalid coupon code.';err.style.display='block';}}renderPlanPrices();updatePayBtn();}).catch(function(){if(btn){btn.disabled=false;btn.textContent='Apply';}_coupon='';_couponPrice=null;if(ok)ok.style.display='none';if(err){err.textContent='Network error, try again.';err.style.display='block';}renderPlanPrices();updatePayBtn();});}
+function applyCoupon(){var v=(document.getElementById('buyCoupon').value||'').trim().toLowerCase(),ok=document.getElementById('couponOk'),err=document.getElementById('couponErr'),btn=document.querySelector('.coupon-apply-btn');if(!v){clearCoupon();return;}if(btn){btn.disabled=true;btn.textContent='…';}fetch(EDGE_URL+'?action=validate-coupon',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({coupon:v})}).then(function(r){return r.json();}).then(function(data){if(btn){btn.disabled=false;btn.textContent='Apply';}if(data&&data.valid&&typeof data.price_override==='number'){_coupon=v;_couponPrice=data.price_override;if(ok){var span=ok.querySelector('span');if(span)span.innerHTML='Coupon applied — <strong>₹'+_couponPrice.toLocaleString('en-IN')+' on all plans</strong>';ok.style.display='flex';}if(err){err.textContent='Invalid coupon code.';err.style.display='none';}}else{_coupon='';_couponPrice=null;if(ok)ok.style.display='none';if(err){err.textContent='Invalid coupon code.';err.style.display='block';}}renderPlanPrices();updatePayBtn();}).catch(function(){if(btn){btn.disabled=false;btn.textContent='Apply';}_coupon='';_couponPrice=null;if(ok)ok.style.display='none';if(err){err.textContent='Network error, try again.';err.style.display='block';}renderPlanPrices();updatePayBtn();});}
 function onCouponInput(){if(!_coupon){var err=document.getElementById('couponErr');if(err&&err.style.display==='block')err.style.display='none';return;}clearCoupon();}
 (function(){var p=new URLSearchParams(window.location.search),mid=(p.get('mid')||'').trim(),email=(p.get('email')||'').trim();if(mid){_mid=mid;var ok=document.getElementById('buyMidOk'),mn=document.getElementById('buyMidManual');if(ok)ok.style.display='flex';if(mn)mn.style.display='none';}/* Prefill email from URL but keep it editable + visibly flag it, so a phishy shared link (?email=attacker@x.com) can't silently ship the license key to the wrong inbox. Old behaviour: readonly, no warning. */ if(email){var el=document.getElementById('buyEmail');if(el){el.value=email;var hint=document.getElementById('emailPrefillHint');if(hint)hint.style.display='block';}}})();
 function moveSelIndicator(){var ind=document.getElementById('planSelInd'),wrap=document.querySelector('.plans'),el=document.querySelector('.plan.sel');if(!ind||!wrap||!el)return;var wrapRect=wrap.getBoundingClientRect(),elRect=el.getBoundingClientRect();ind.style.height=elRect.height+'px';ind.style.transform='translateY('+(elRect.top-wrapRect.top)+'px)';ind.classList.add('show');}
-function selectPlan(d){_plan=d;_price=_revealed[d]?PRICES[d]:STD_PRICES[d];document.querySelectorAll('[data-days]').forEach(function(el){var on=parseInt(el.dataset.days,10)===d;el.classList.toggle('sel',on);if(el.getAttribute('role')==='radio')el.setAttribute('aria-checked',on?'true':'false');});renderPlanPrices();updatePayBtn();moveSelIndicator();}
+function selectPlan(d){_plan=d;_price=PRICES[d];document.querySelectorAll('[data-days]').forEach(function(el){var on=parseInt(el.dataset.days,10)===d;el.classList.toggle('sel',on);if(el.getAttribute('role')==='radio')el.setAttribute('aria-checked',on?'true':'false');});renderPlanPrices();updatePayBtn();moveSelIndicator();}
 function planKey(e,d){if(e.key===' '||e.key==='Enter'){e.preventDefault();selectPlan(d);}}
 window.addEventListener('resize',moveSelIndicator);
 moveSelIndicator();
-function revealOffer(d,event){if(event)event.stopPropagation();/* keep the click on the Offer button; don't let it bubble to the parent .plan and silently switch the selected plan */ _revealed[d]=true;var planEl=document.querySelector('.plan[data-days="'+d+'"]');if(planEl)planEl.classList.add('revealed');renderPlanPrices();if(d===_plan){_price=PRICES[d];updatePayBtn();}}
 updatePayBtn();
 function showErr(m){var el=document.getElementById('buyErr');el.textContent=m;el.style.display='block';}
-function startPayment(){var email=(document.getElementById('buyEmail').value||'').trim().toLowerCase(),mid=_mid||(document.getElementById('buyMachineId')?(document.getElementById('buyMachineId').value||'').trim():'');document.getElementById('buyErr').style.display='none';if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){showErr('Enter a valid email address.');return;}if(!mid){showErr('Paste your Machine ID from Eagle View.');return;}var btn=document.getElementById('buyBtn');btn.disabled=true;btn.textContent='Opening…';/* 15s timeout so a hung Supabase edge never leaves the user staring at a disabled 'Opening…' button forever */ var controller=new AbortController(),timeoutId=setTimeout(function(){controller.abort();},15000),resetBtn=function(){btn.disabled=false;btn.textContent='Pay now →';};fetch(EDGE_URL+'?action=create-payment-link',{method:'POST',headers:{'Content-Type':'application/json'},signal:controller.signal,body:JSON.stringify({email:email,machine_id:mid,license_days:_plan,amount_inr:effectivePrice(),coupon:(_coupon&&_revealed[_plan])?_coupon:''})}).then(function(r){clearTimeout(timeoutId);return r.json();}).then(function(data){if(data.payment_link_url){window.location.href=data.payment_link_url;}else{showErr(data.error||'Try again.');resetBtn();}}).catch(function(err){clearTimeout(timeoutId);showErr(err&&err.name==='AbortError'?'Request timed out — please try again.':'Network error.');resetBtn();});}
+function startPayment(){var email=(document.getElementById('buyEmail').value||'').trim().toLowerCase(),mid=_mid||(document.getElementById('buyMachineId')?(document.getElementById('buyMachineId').value||'').trim():'');document.getElementById('buyErr').style.display='none';if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){showErr('Enter a valid email address.');return;}if(!mid){showErr('Paste your Machine ID from Eagle View.');return;}var btn=document.getElementById('buyBtn');btn.disabled=true;btn.textContent='Opening…';/* 15s timeout so a hung Supabase edge never leaves the user staring at a disabled 'Opening…' button forever */ var controller=new AbortController(),timeoutId=setTimeout(function(){controller.abort();},15000),resetBtn=function(){btn.disabled=false;btn.textContent='Pay now →';};fetch(EDGE_URL+'?action=create-payment-link',{method:'POST',headers:{'Content-Type':'application/json'},signal:controller.signal,body:JSON.stringify({email:email,machine_id:mid,license_days:_plan,amount_inr:effectivePrice(),coupon:_coupon||''})}).then(function(r){clearTimeout(timeoutId);return r.json();}).then(function(data){if(data.payment_link_url){window.location.href=data.payment_link_url;}else{showErr(data.error||'Try again.');resetBtn();}}).catch(function(err){clearTimeout(timeoutId);showErr(err&&err.name==='AbortError'?'Request timed out — please try again.':'Network error.');resetBtn();});}
 </script>
 </body>
 </html>
