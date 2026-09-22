@@ -155,12 +155,8 @@ h1 .grad,.grad-text{display:block;background:linear-gradient(135deg,var(--or) 0%
 .hint strong{color:var(--tx2);}
 .err{display:none;font-size:12px;color:#FF6B7A;margin-bottom:10px;}
 .coupon-row{display:flex;gap:8px;margin-bottom:10px;}
-.hp-price{font-size:19px;font-weight:800;color:var(--tx);font-variant-numeric:tabular-nums;transition:color .35s cubic-bezier(.4,0,.2,1),font-size .3s ease;}
-.plan.hp-locked{opacity:.55;cursor:pointer;margin-bottom:10px;}
-.plan.hp-locked:hover{opacity:.85;}
-.plan.hp-locked .hp-price{font-size:12.5px;font-weight:600;color:var(--tx3);}
-.plan.hp-unlocked{margin-bottom:10px;}
-.plan.hp-unlocked .hp-price{color:var(--cy);}
+#hpCard{display:none;margin-bottom:10px;}
+.hp-price{font-size:19px;font-weight:800;color:var(--cy);font-variant-numeric:tabular-nums;}
 @keyframes hpPulse{0%{box-shadow:0 0 0 0 rgba(0,229,255,.4);}70%{box-shadow:0 0 0 12px rgba(0,229,255,0);}100%{box-shadow:0 0 0 0 rgba(0,229,255,0);}}
 .hp-just-unlocked{animation:hpPulse 1.1s ease-out;}
 .coupon-row .inp{margin-bottom:0;flex:1;min-width:0;}
@@ -263,9 +259,9 @@ h1 .grad,.grad-text{display:block;background:linear-gradient(135deg,var(--or) 0%
         </div>
         <div class="mid-ok" id="couponOk"><div class="mid-dot"></div><span>Coupon applied</span></div>
         <div class="err" id="couponErr">Invalid coupon code.</div>
-        <div class="plan hp-locked" id="hpCard" data-days="90" role="button" tabindex="0" aria-pressed="false" aria-label="3 Months plan, unlocked by a valid coupon code">
-          <div class="plan-left"><div class="plan-dur">3 Months</div><div class="plan-desc" id="hpDesc">Have a coupon? Enter it above to unlock this plan.</div></div>
-          <div class="plan-right"><div class="hp-price" id="hpPrice">Coupon only</div></div>
+        <div class="plan" id="hpCard" data-days="90" role="button" tabindex="0" aria-pressed="false" aria-label="3 Months plan, unlocked by your coupon code">
+          <div class="plan-left"><div class="plan-dur">3 Months</div><div class="plan-desc" id="hpDesc">Unlocked by your coupon code</div></div>
+          <div class="plan-right"><div class="hp-price" id="hpPrice"></div></div>
           <div class="radio" aria-hidden="true"></div>
         </div>
         <div class="divider"></div>
@@ -358,7 +354,7 @@ function revealPlan(d){var el=document.querySelector('[data-days="'+d+'"]');if(!
 // and the auto-fill hint (they've explicitly opted into editing at this point).
 function unsealEmail(){var el=document.getElementById('buyEmail');if(el){el.readOnly=false;el.focus();el.select();}var btn=document.getElementById('buyEmailEdit');if(btn)btn.style.display='none';var hint=document.getElementById('emailPrefillHint');if(hint)hint.style.display='none';}
 renderPlans();
-(function(){var hp=document.getElementById('hpCard');if(!hp)return;hp.addEventListener('click',function(){if(hp.classList.contains('hp-locked')){var inp=document.getElementById('buyCoupon');if(inp){inp.focus();inp.scrollIntoView({behavior:'smooth',block:'center'});}return;}selectPlan(90);});hp.addEventListener('keydown',function(e){if(e.key===' '||e.key==='Enter'){e.preventDefault();hp.click();}});})();
+(function(){var hp=document.getElementById('hpCard');if(!hp)return;hp.addEventListener('click',function(){selectPlan(90);});hp.addEventListener('keydown',function(e){if(e.key===' '||e.key==='Enter'){e.preventDefault();hp.click();}});})();
 // Price the user actually pays (drives both the button label AND the amount sent
 // to activate-license). Precedence:
 //   1. Valid coupon                  → coupon override (any plan)
@@ -372,21 +368,17 @@ function renderPlanPrices(){document.querySelectorAll('[data-days]').forEach(fun
 function updatePayBtn(){var btn=document.getElementById('buyBtn');if(!btn||btn.disabled)return;btn.textContent='Pay ₹'+effectivePrice().toLocaleString('en-IN')+' →';}
 function updateHiddenPlanCard(){
   var el=document.getElementById('hpCard');if(!el)return;
-  var priceEl=document.getElementById('hpPrice'),descEl=document.getElementById('hpDesc');
-  var wasLocked=el.classList.contains('hp-locked');
+  var priceEl=document.getElementById('hpPrice');
+  var wasHidden=(el.style.display==='none'||el.style.display==='');
   var unlocked=(_couponPrice!==null&&_couponDays===90);
-  el.classList.toggle('hp-locked',!unlocked);
-  el.classList.toggle('hp-unlocked',unlocked);
+  el.style.display=unlocked?'flex':'none';
   el.setAttribute('aria-pressed',unlocked&&_plan===90?'true':'false');
   if(unlocked){
     if(priceEl)priceEl.textContent='₹'+_couponPrice.toLocaleString('en-IN');
-    if(descEl)descEl.textContent='Unlocked by your coupon code';
-    // "point to this container" — draw the eye to it the moment it unlocks, not on
-    // every re-render (e.g. switching back to it later shouldn't re-pulse each time).
-    if(wasLocked){el.scrollIntoView({behavior:'smooth',block:'center'});el.classList.add('hp-just-unlocked');setTimeout(function(){el.classList.remove('hp-just-unlocked');},1150);}
-  }else{
-    if(priceEl)priceEl.textContent='Coupon only';
-    if(descEl)descEl.textContent='Have a coupon? Enter it above to unlock this plan.';
+    // "point to this container" — the card appears out of nowhere, so draw the eye to
+    // it right when it does, not on every re-render (e.g. switching back to it later
+    // shouldn't re-pulse each time — only the moment it actually appears matters).
+    if(wasHidden){el.scrollIntoView({behavior:'smooth',block:'center'});el.classList.add('hp-just-unlocked');setTimeout(function(){el.classList.remove('hp-just-unlocked');},1150);}
   }
 }
 function clearCoupon(){var ok=document.getElementById('couponOk'),err=document.getElementById('couponErr');_coupon='';_couponPrice=null;_couponDays=null;if(ok)ok.style.display='none';if(err)err.style.display='none';if(_plan===90){selectPlan(_initial.days);}else{renderPlanPrices();updatePayBtn();}}
