@@ -110,16 +110,26 @@ body::before{
 @keyframes fadeUp{from{opacity:0;transform:translateY(36px);}to{opacity:1;transform:none;}}
 
 /* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:16px 64px;background:rgba(3,6,18,.6);backdrop-filter:blur(28px) saturate(1.4);border-bottom:1px solid rgba(0,229,255,.06);transition:all .4s;}
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:16px 64px;background:rgba(3,6,18,.6);backdrop-filter:blur(28px) saturate(1.4);border-bottom:1px solid rgba(0,229,255,.06);transition:all .4s;}
+/* Nav content wrapper mirrors the hero .hi container (max-width 1280px,
+   auto-centered) so the nav logo lines up horizontally with the hero
+   logo/heading no matter how wide the viewport gets. */
+.nwrap{max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;}
 nav.sc{background:rgba(3,6,18,.94);border-bottom-color:rgba(0,229,255,.14);box-shadow:0 4px 40px rgba(0,0,0,.6);}
 .nl{display:flex;align-items:center;gap:12px;text-decoration:none;font-size:17px;font-weight:800;color:var(--tx);}
-.ni{width:36px;height:36px;background:linear-gradient(135deg,#001628,#003355);border:1px solid rgba(0,229,255,.3);border-radius:10px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 16px rgba(0,229,255,.15),inset 0 0 8px rgba(0,229,255,.06);animation:glowBorder 3s ease-in-out infinite;}
+/* PearlFox nav-logo (ported from pearlfox-site/shared.css): icon + wordmark
+   sit tight together via a negative left margin on the word, so the mark
+   reads as a single lockup. */
+.nav-logo-target{display:flex;align-items:center;gap:0;width:244px;height:50px;opacity:1;}
+.nav-logo-target-icon{width:47px;height:47px;flex-shrink:0;}
+.nav-logo-target-word{width:188px;height:31px;margin-left:-34px;}
+.nav-landing-img{display:block;width:100%;height:100%;object-fit:contain;}
 .nv{display:flex;gap:32px;}
 .nv a{color:var(--tx2);text-decoration:none;font-size:13.5px;font-weight:500;transition:color .2s;position:relative;padding-bottom:4px;}
 .nv a::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:var(--cy);transform:scaleX(0);transform-origin:left;transition:transform .25s;}
 .nv a:hover{color:var(--cy);}
 .nv a:hover::after{transform:scaleX(1);}
-.nc{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--or),var(--or2));color:#fff;border:none;padding:10px 22px;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;box-shadow:0 0 24px rgba(255,104,32,.18);transition:all .25s;position:relative;overflow:hidden;}
+.nc{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#FDA149,#FC8215);color:#fff;border:none;padding:10px 22px;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;box-shadow:0 0 24px rgba(252,130,21,.28);transition:all .25s;position:relative;overflow:hidden;}
 .nc::after{content:'';position:absolute;top:0;left:-100%;bottom:0;width:60%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.22),transparent);animation:beam 2.5s linear infinite;}
 .nc:hover{transform:translateY(-1px);box-shadow:0 0 44px rgba(255,104,32,.5),0 6px 20px rgba(255,104,32,.25);}
 
@@ -133,6 +143,7 @@ nav.sc{background:rgba(3,6,18,.94);border-bottom-color:rgba(0,229,255,.14);box-s
 .hi{position:relative;z-index:1;display:flex;align-items:center;gap:80px;max-width:1280px;width:100%;margin:0 auto;}
 .ht{flex:1;min-width:0;}
 .hbadge{display:inline-flex;align-items:center;gap:8px;background:rgba(0,229,255,.05);border:1px solid rgba(0,229,255,.22);color:var(--cy);padding:7px 18px;border-radius:100px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:32px;animation:fadeUp .6s ease both,glowBorder 3s ease-in-out infinite;}
+.hlogo{display:block;width:72px;height:72px;margin-bottom:18px;filter:drop-shadow(0 6px 20px rgba(252,130,21,.35));animation:fadeUp .6s .05s ease both;}
 .bdot{width:6px;height:6px;border-radius:50%;background:var(--cy);box-shadow:0 0 8px var(--cy);animation:pulse 1.5s ease-in-out infinite;flex-shrink:0;}
 h1.hh{font-size:82px;font-weight:900;line-height:.93;letter-spacing:-3.5px;margin-bottom:28px;animation:fadeUp .6s .1s ease both;}
 .l1{display:block;color:var(--tx);animation:glitch 5s ease-in-out infinite,glitchColor 5s ease-in-out infinite;}
@@ -140,7 +151,7 @@ h1.hh{font-size:82px;font-weight:900;line-height:.93;letter-spacing:-3.5px;margi
 .hsub{font-size:18px;color:var(--tx2);line-height:1.8;max-width:460px;margin-bottom:44px;font-weight:400;animation:fadeUp .6s .2s ease both;}
 .cur{display:inline-block;width:2px;height:1.1em;background:var(--cy);vertical-align:text-bottom;margin-left:1px;animation:blink .75s steps(1) infinite;}
 .hbtns{display:flex;gap:14px;align-items:center;animation:fadeUp .6s .3s ease both;}
-.bp{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--or),var(--or2));color:#fff;padding:15px 34px;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none;transition:all .3s;border:none;box-shadow:0 0 28px rgba(255,104,32,.2),0 4px 20px rgba(0,0,0,.3);position:relative;overflow:hidden;}
+.bp{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,#FDA149,#FC8215);color:#fff;padding:15px 34px;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none;transition:all .3s;border:none;box-shadow:0 0 28px rgba(252,130,21,.3),0 4px 20px rgba(0,0,0,.3);position:relative;overflow:hidden;}
 .bp::after{content:'';position:absolute;top:0;left:-100%;bottom:0;width:60%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent);animation:beam 2.5s linear infinite;}
 .bp:hover{transform:translateY(-2px);box-shadow:0 0 56px rgba(255,104,32,.5),0 8px 32px rgba(255,104,32,.3);}
 .bs{display:inline-flex;align-items:center;gap:10px;background:rgba(0,229,255,.06);border:1px solid rgba(0,229,255,.25);color:var(--cy);padding:15px 34px;border-radius:10px;font-size:15px;font-weight:600;text-decoration:none;transition:all .3s;}
@@ -199,10 +210,10 @@ h1.hh{font-size:82px;font-weight:900;line-height:.93;letter-spacing:-3.5px;margi
 .testirole{font-size:11px;color:var(--tx3);}
 
 /* MOCKUP */
-.hm{flex:0 0 auto;position:relative;animation:fadeUp .6s .15s ease both;}
+.hm{flex:0 0 auto;position:relative;animation:fadeUp .6s .15s ease both;left:-220px;}
 .mr{position:absolute;inset:-50px;border-radius:50%;border:1px solid rgba(0,229,255,.06);animation:pulseRing 4s ease-in-out infinite;pointer-events:none;}
 .mr2{position:absolute;inset:-80px;border-radius:50%;border:1px solid rgba(0,229,255,.03);animation:pulseRing 4s 2s ease-in-out infinite;pointer-events:none;}
-.asb{width:244px;background:linear-gradient(160deg,#0C1A38 0%,#050D20 100%);border-radius:18px;overflow:hidden;border:1px solid rgba(0,229,255,.14);box-shadow:0 0 0 1px rgba(0,229,255,.04),0 40px 100px rgba(0,0,0,.7),0 0 80px rgba(0,229,255,.06),inset 0 0 30px rgba(0,229,255,.02);position:relative;animation:float1 7s ease-in-out infinite;}
+.asb{width:215px;background:linear-gradient(160deg,#0C1A38 0%,#050D20 100%);border-radius:18px;overflow:hidden;border:1px solid #FC8215;box-shadow:0 40px 100px rgba(0,0,0,.7),0 0 80px rgba(0,229,255,.06),inset 0 0 30px rgba(0,229,255,.02);position:relative;animation:float1 7s ease-in-out infinite;}
 .asb::before{content:'';position:absolute;left:0;right:0;height:2px;z-index:10;background:linear-gradient(90deg,transparent,var(--cy) 40%,var(--cy) 60%,transparent);box-shadow:0 0 16px var(--cy),0 0 32px rgba(0,229,255,.5);animation:scanDown 5s linear infinite;pointer-events:none;}
 .ah{padding:11px 14px;display:flex;align-items:center;gap:10px;background:linear-gradient(100deg,#0D1F3A,#152A50,#0D1F3A);border-bottom:1px solid rgba(0,229,255,.1);position:relative;overflow:hidden;}
 .ah::after{content:'';position:absolute;top:0;left:-80%;bottom:0;width:40%;background:linear-gradient(90deg,transparent,rgba(0,229,255,.06),transparent);animation:beam 4s linear infinite;}
@@ -228,10 +239,13 @@ h1.hh{font-size:82px;font-weight:900;line-height:.93;letter-spacing:-3.5px;margi
 .sbf{padding:6px 10px;display:flex;align-items:center;justify-content:space-between;background:rgba(0,0,0,.35);border-top:1px solid rgba(0,229,255,.05);}
 .sbfs{display:flex;align-items:center;gap:5px;font-size:9px;color:var(--tx3);font-family:var(--mn);}
 .sbfd{width:5px;height:5px;border-radius:50%;background:#00E676;box-shadow:0 0 6px #00E676;animation:pulse 2s ease-in-out infinite;}
-.fc{position:absolute;background:rgba(8,16,42,.92);border:1px solid rgba(0,229,255,.14);border-radius:12px;padding:12px 16px;backdrop-filter:blur(16px);box-shadow:0 8px 32px rgba(0,0,0,.5),0 0 24px rgba(0,229,255,.06);font-size:12px;white-space:nowrap;}
-.fc1{top:-18px;right:-150px;animation:float2 5s ease-in-out infinite;}
-.fc2{bottom:90px;right:-142px;animation:float1 6s ease-in-out infinite;}
-.fc3{bottom:18px;left:-122px;animation:float3 5.5s ease-in-out infinite;}
+.fc{position:absolute;background:#1A1410;border:1px solid #FC8215;border-radius:12px;padding:12px 16px;box-shadow:0 8px 32px #000,0 0 24px rgba(252,130,21,.15);font-size:12px;white-space:nowrap;}
+/* Chip layout mirrors PearlFox product-page chips: fc1 top-left, fc2
+   right-middle, fc3 bottom-left — two chips flanking the panel on the
+   left and one anchoring the right side. */
+.fc1{top:32px;left:-170px;animation:float2 5s ease-in-out infinite;}
+.fc2{bottom:340px;right:-142px;animation:float1 6s ease-in-out infinite;}
+.fc3{bottom:88px;left:-170px;animation:float3 5.5s ease-in-out infinite;}
 .fcl{font-size:9px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;}
 .fcv{font-size:16px;font-weight:800;color:var(--tx);}
 .fcs{font-size:10px;margin-top:3px;font-weight:600;}
@@ -344,6 +358,9 @@ footer{padding:38px 64px;display:flex;align-items:center;justify-content:space-b
 
 @media(max-width:960px){
   nav{padding:14px 24px;}.nv{display:none;}
+  .nav-logo-target{width:165px;height:36px;}
+  .nav-logo-target-icon{width:33px;height:33px;}
+  .nav-logo-target-word{width:132px;height:22px;margin-left:-24px;}
   .hero{padding:90px 24px 60px;}
   .hi{flex-direction:column;gap:48px;}
   h1.hh{font-size:52px;letter-spacing:-2px;}
@@ -399,12 +416,17 @@ footer{padding:38px 64px;display:flex;align-items:center;justify-content:space-b
 </svg>
 
 <nav id="nav">
-  <a href="/" class="nl"><div class="ni"><svg width="24" height="24"><use href="#eagle"/></svg></div>Eagle View</a>
-  <div class="nv">
-    <a href="#features">Features</a><a href="#how">How it works</a>
-    <a href="#platforms">Platforms</a><a href="#themes">Themes</a><a href="#feedback">Happy Users</a>
+  <div class="nwrap">
+    <a href="/" class="nl nav-logo-target" aria-label="PearlFox">
+      <span class="nav-logo-target-icon"><img src="pearlfox-icon.png" alt="" class="nav-landing-img"></span>
+      <span class="nav-logo-target-word"><img src="wordmark.webp" alt="" class="nav-landing-img"></span>
+    </a>
+    <div class="nv">
+      <a href="#features">Features</a><a href="#how">How it works</a>
+      <a href="#platforms">Platforms</a><a href="#themes">Themes</a><a href="#feedback">Happy Users</a>
+    </div>
+    <a href="eagleview_payment.html" class="nc">Buy a License</a>
   </div>
-  <a href="eagleview_payment.html" class="nc">Buy a License</a>
 </nav>
 
 <main>
@@ -414,6 +436,7 @@ footer{padding:38px 64px;display:flex;align-items:center;justify-content:space-b
   <div class="hi">
     <div class="ht">
       <div class="hbadge"><span class="bdot"></span>Now available — macOS &amp; Windows</div>
+      <img class="hlogo" src="web-app-manifest-192x192.png" alt="Eagle View logo" width="72" height="72">
       <h1 class="hh"><span class="l1">Eagle View</span><span class="l2">always in view</span></h1>
       <p class="hsub"><span id="tw"></span><span class="cur"></span></p>
       <div class="hbtns">
@@ -430,7 +453,7 @@ footer{padding:38px 64px;display:flex;align-items:center;justify-content:space-b
       <div class="mr"></div><div class="mr2"></div>
       <div class="fc fc1"><div class="fcl">Unread mails</div><div class="fcv" style="color:var(--cy)">15 new today</div><div class="fcs" style="color:var(--cy)">↑ Just synced</div></div>
       <div class="fc fc2"><div class="fcl">Next meeting</div><div class="fcv" style="color:#FF3D5A">● in 12 min</div><div class="fcs" style="color:var(--tx2)">Team standup</div></div>
-      <div class="fc fc3"><div style="display:flex;align-items:center;gap:5px"><span style="width:5px;height:5px;border-radius:50%;background:var(--cy);box-shadow:0 0 6px var(--cy);display:inline-block"></span><span style="color:var(--cy);font-weight:700;font-size:10px;letter-spacing:1px">CONNECTED</span></div><div style="color:var(--tx3);font-size:10px;margin-top:3px">Outlook · Gmail · Jira</div></div>
+      <div class="fc fc3"><div class="fcl">Checklist</div><div class="fcv" style="color:var(--cy)">1 due today</div><div class="fcs" style="color:var(--tx2)">Reply to client</div></div>
       <div class="asb">
         <!-- Real Eagle View screenshot fills the .asb panel; the .asb container
              still contributes its cyan glow border and .asb::before scan-line
