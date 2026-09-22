@@ -10,7 +10,6 @@
 <!-- Favicons + PWA -->
 <link rel="icon" type="image/x-icon" href="favicon.ico?v=2"/>
 <link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png?v=2"/>
-<link rel="icon" type="image/png" href="icon.png?v=2"/>
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=2"/>
 <link rel="manifest" href="site.webmanifest"/>
 
@@ -26,7 +25,7 @@
 <meta property="og:image:alt" content="Eagle View — smart desktop sidebar icon"/>
 
 <!-- Twitter / X -->
-<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Eagle View — Your Smart Desktop Sidebar"/>
 <meta name="twitter:description" content="Eagle View sits quietly on the edge of your screen — showing mails, meetings, tasks and more. One glance. Zero clicks."/>
 <meta name="twitter:image" content="https://eagleview.pearlfox.io/social-card.png"/>
@@ -59,11 +58,12 @@
   --tx:#E2E8F0;--tx2:#7A8FA8;--tx3:#364555;
   --mn:'SF Mono','Consolas','Monaco','Courier New',monospace;
 }
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;cursor:url('eagle-cursor.svg') 32 32,auto !important;user-select:none;-webkit-user-select:none;}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
 body{
   font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica Neue',Arial,sans-serif;
   background:var(--bg);color:var(--tx);overflow-x:hidden;
+  cursor:url('eagle-cursor.svg') 32 32,auto;
 }
 body::before{
   content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
@@ -119,7 +119,7 @@ nav.sc{background:rgba(3,6,18,.94);border-bottom-color:rgba(0,229,255,.14);box-s
 .nv a::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:var(--cy);transform:scaleX(0);transform-origin:left;transition:transform .25s;}
 .nv a:hover{color:var(--cy);}
 .nv a:hover::after{transform:scaleX(1);}
-.nc{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--or),var(--or2));color:#fff;border:none;padding:10px 22px;border-radius:8px;font-size:13px;font-weight:700;cursor:url('eagle-cursor.svg') 32 32,auto;text-decoration:none;box-shadow:0 0 24px rgba(255,104,32,.18);transition:all .25s;position:relative;overflow:hidden;}
+.nc{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--or),var(--or2));color:#fff;border:none;padding:10px 22px;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;box-shadow:0 0 24px rgba(255,104,32,.18);transition:all .25s;position:relative;overflow:hidden;}
 .nc::after{content:'';position:absolute;top:0;left:-100%;bottom:0;width:60%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.22),transparent);animation:beam 2.5s linear infinite;}
 .nc:hover{transform:translateY(-1px);box-shadow:0 0 44px rgba(255,104,32,.5),0 6px 20px rgba(255,104,32,.25);}
 
@@ -140,10 +140,10 @@ h1.hh{font-size:82px;font-weight:900;line-height:.93;letter-spacing:-3.5px;margi
 .hsub{font-size:18px;color:var(--tx2);line-height:1.8;max-width:460px;margin-bottom:44px;font-weight:400;animation:fadeUp .6s .2s ease both;}
 .cur{display:inline-block;width:2px;height:1.1em;background:var(--cy);vertical-align:text-bottom;margin-left:1px;animation:blink .75s steps(1) infinite;}
 .hbtns{display:flex;gap:14px;align-items:center;animation:fadeUp .6s .3s ease both;}
-.bp{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--or),var(--or2));color:#fff;padding:15px 34px;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none;transition:all .3s;cursor:url('eagle-cursor.svg') 32 32,auto;border:none;box-shadow:0 0 28px rgba(255,104,32,.2),0 4px 20px rgba(0,0,0,.3);position:relative;overflow:hidden;}
+.bp{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--or),var(--or2));color:#fff;padding:15px 34px;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none;transition:all .3s;border:none;box-shadow:0 0 28px rgba(255,104,32,.2),0 4px 20px rgba(0,0,0,.3);position:relative;overflow:hidden;}
 .bp::after{content:'';position:absolute;top:0;left:-100%;bottom:0;width:60%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent);animation:beam 2.5s linear infinite;}
 .bp:hover{transform:translateY(-2px);box-shadow:0 0 56px rgba(255,104,32,.5),0 8px 32px rgba(255,104,32,.3);}
-.bs{display:inline-flex;align-items:center;gap:10px;background:rgba(0,229,255,.06);border:1px solid rgba(0,229,255,.25);color:var(--cy);padding:15px 34px;border-radius:10px;font-size:15px;font-weight:600;text-decoration:none;transition:all .3s;cursor:url('eagle-cursor.svg') 32 32,auto;}
+.bs{display:inline-flex;align-items:center;gap:10px;background:rgba(0,229,255,.06);border:1px solid rgba(0,229,255,.25);color:var(--cy);padding:15px 34px;border-radius:10px;font-size:15px;font-weight:600;text-decoration:none;transition:all .3s;}
 .bs:hover{background:rgba(0,229,255,.12);border-color:rgba(0,229,255,.5);box-shadow:0 0 28px rgba(0,229,255,.15);}
 .hstats{display:flex;gap:0;margin-top:64px;animation:fadeUp .6s .4s ease both;}
 .stat{padding:0 32px 0 0;position:relative;}
@@ -252,7 +252,7 @@ h1.hh{font-size:82px;font-weight:900;line-height:.93;letter-spacing:-3.5px;margi
 
 /* FEATURES */
 .fg{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
-.fcard{background:var(--sf);border:1px solid rgba(0,229,255,.07);border-radius:18px;padding:32px;position:relative;overflow:hidden;transition:transform .3s ease,border-color .3s,box-shadow .3s;cursor:url('eagle-cursor.svg') 32 32,auto;transform-style:preserve-3d;will-change:transform;}
+.fcard{background:var(--sf);border:1px solid rgba(0,229,255,.07);border-radius:18px;padding:32px;position:relative;overflow:hidden;transition:transform .3s ease,border-color .3s,box-shadow .3s;transform-style:preserve-3d;will-change:transform;}
 .fcard::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--cy) 50%,transparent);opacity:0;transition:opacity .3s;}
 .fcard::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 0%,rgba(0,229,255,.06) 0%,transparent 60%);opacity:0;transition:opacity .3s;}
 .fcard:hover{border-color:rgba(0,229,255,.22);transform:translateY(-6px);box-shadow:0 24px 60px rgba(0,0,0,.5),0 0 40px rgba(0,229,255,.05);}
@@ -287,7 +287,7 @@ h1.hh{font-size:82px;font-weight:900;line-height:.93;letter-spacing:-3.5px;margi
 
 /* THEMES */
 .tg{display:flex;gap:14px;flex-wrap:wrap;}
-.tpill{display:flex;align-items:center;gap:12px;background:var(--sf);border:1px solid rgba(0,229,255,.07);border-radius:100px;padding:8px 22px 8px 8px;transition:all .3s;cursor:url('eagle-cursor.svg') 32 32,auto;position:relative;overflow:hidden;}
+.tpill{display:flex;align-items:center;gap:12px;background:var(--sf);border:1px solid rgba(0,229,255,.07);border-radius:100px;padding:8px 22px 8px 8px;transition:all .3s;position:relative;overflow:hidden;}
 .tpill::after{content:'';position:absolute;top:0;left:-100%;bottom:0;width:100%;background:linear-gradient(90deg,transparent,rgba(0,229,255,.07),transparent);transition:left .5s ease;}
 .tpill:hover::after{left:100%;}
 .tpill:hover{border-color:rgba(0,229,255,.22);transform:translateY(-3px);box-shadow:0 8px 28px rgba(0,0,0,.4);}
@@ -399,7 +399,7 @@ footer{padding:38px 64px;display:flex;align-items:center;justify-content:space-b
 </svg>
 
 <nav id="nav">
-  <a href="#" class="nl"><div class="ni"><svg width="24" height="24"><use href="#eagle"/></svg></div>Eagle View</a>
+  <a href="/" class="nl"><div class="ni"><svg width="24" height="24"><use href="#eagle"/></svg></div>Eagle View</a>
   <div class="nv">
     <a href="#features">Features</a><a href="#how">How it works</a>
     <a href="#platforms">Platforms</a><a href="#themes">Themes</a><a href="#feedback">Happy Users</a>
@@ -407,6 +407,7 @@ footer{padding:38px 64px;display:flex;align-items:center;justify-content:space-b
   <a href="eagleview_payment.html" class="nc">Buy a License</a>
 </nav>
 
+<main>
 <section class="hero">
   <canvas id="hc"></canvas>
   <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
@@ -431,24 +432,13 @@ footer{padding:38px 64px;display:flex;align-items:center;justify-content:space-b
       <div class="fc fc2"><div class="fcl">Next meeting</div><div class="fcv" style="color:#FF3D5A">● in 12 min</div><div class="fcs" style="color:var(--tx2)">Team standup</div></div>
       <div class="fc fc3"><div style="display:flex;align-items:center;gap:5px"><span style="width:5px;height:5px;border-radius:50%;background:var(--cy);box-shadow:0 0 6px var(--cy);display:inline-block"></span><span style="color:var(--cy);font-weight:700;font-size:10px;letter-spacing:1px">CONNECTED</span></div><div style="color:var(--tx3);font-size:10px;margin-top:3px">Outlook · Gmail · Jira</div></div>
       <div class="asb">
-        <div class="ah"><div class="ahi"><svg width="22" height="22"><use href="#eagle"/></svg></div><div><div style="font-size:14px;font-weight:800;color:#fff;letter-spacing:.4px">Eagle View</div><div style="font-size:8px;font-weight:700;color:var(--cy);letter-spacing:1.5px;text-transform:uppercase;opacity:.8">WORKSPACE HUD</div></div></div>
-        <div style="background:rgba(0,0,0,.15)">
-          <div class="ar"><div class="ri" style="background:linear-gradient(145deg,#1B6FD8,#0D47A1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="5" width="20" height="15" rx="2" fill="white" opacity=".2" stroke="white" stroke-width="1.5"/><polyline points="2,7 12,13 22,7" stroke="white" stroke-width="1.5" stroke-linecap="round"/><circle cx="18" cy="17" r="4" fill="#FFD700"/><path d="M17 17h2M18 16v2" stroke="#1B6FD8" stroke-width="1.2" stroke-linecap="round"/></svg></div><span class="rl">Mails</span><span class="rb">15</span></div>
-          <div class="ar"><div class="ri" style="background:#fff;flex-direction:column;gap:0;padding:0;overflow:hidden"><div style="background:#E53935;width:100%;text-align:center;font-size:7px;font-weight:800;color:#fff;padding:2px 0;letter-spacing:1px">JUN</div><div style="font-size:13px;font-weight:900;color:#1A1A1A;line-height:1;padding:2px 0">29</div></div><span class="rl">Meetings</span><span class="rb">0</span></div>
-          <div class="ar"><div class="ri" style="background:linear-gradient(145deg,#2979FF,#1565C0)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 3L5 21" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="M5 5L18 5L18 14L5 14Z" fill="#FF5252"/><path d="M5 5L18 5L18 14L5 14" fill="none" stroke="white" stroke-width="1.2"/></svg></div><span class="rl">To Do</span><span class="rb">6</span></div>
-          <div class="ar"><div class="ri" style="background:linear-gradient(145deg,#CC5500,#7A2800)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="rl">Incidents</span><span class="rb o">5</span></div>
-          <div class="ar"><div class="ri" style="background:linear-gradient(145deg,#E87722,#A04400)"><span style="font-size:10px;font-weight:900;color:#fff;letter-spacing:-.5px">4U</span></div><span class="rl">Learn4U</span><span class="rb">3</span></div>
-          <div class="ar"><div class="ri" style="background:linear-gradient(145deg,#4E6B7A,#263238)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="white" stroke-width="1.5"/><polyline points="12,7 12,12 15,14" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div><span class="rl">Time Sheet</span><span class="rb">2d</span></div>
-          <div class="ar"><div class="ri" style="background:linear-gradient(145deg,#5C35CC,#330E7A)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="3" y="14" width="4" height="7" rx="1" fill="white" opacity=".6"/><rect x="10" y="9" width="4" height="12" rx="1" fill="white" opacity=".8"/><rect x="17" y="4" width="4" height="17" rx="1" fill="white"/></svg></div><span class="rl">Peakon</span><span class="rb w">⚠️</span></div>
-          <div class="ar" style="border-bottom:none"><div class="ri" style="background:linear-gradient(145deg,#0065FF,#003DAB)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><polygon points="13,2 4,14 11,14 11,22 20,10 13,10" fill="white"/></svg></div><span class="rl">Jira</span><span class="rb">4</span></div>
-        </div>
-        <div style="background:rgba(0,0,0,.12);border-top:1px solid rgba(0,229,255,.04)">
-          <div class="nr"><div class="nc2"></div><span class="nt">hide icon on tray</span><span style="font-size:11px;opacity:.25">🔔</span></div>
-          <div class="nr"><div class="nc2"></div><span class="nt">time sheet icon</span><span style="font-size:11px;opacity:.25">🔔</span></div>
-          <div class="nr" style="border-bottom:none"><div class="nc2"></div><span class="nt ntp">Add a note...</span><span style="font-size:11px;opacity:.2">🔔</span></div>
-        </div>
-        <div class="sbc"><div class="sbct de"><span style="font-size:13px">🇩🇪</span><span class="sbcv" id="clock-de">--:--</span></div><div class="sbct us"><span style="font-size:13px">🇺🇸</span><span class="sbcv" id="clock-us">--:--</span></div></div>
-        <div class="sbf"><span style="font-size:14px;opacity:.3">🔓</span><div class="sbfs"><div class="sbfd"></div>Updated <span id="clock-upd" style="font-variant-numeric:tabular-nums">--:--:--</span></div><span style="font-size:14px;opacity:.3;cursor:url('eagle-cursor.svg') 32 32,auto;user-select:none">↻</span></div>
+        <!-- Real Eagle View screenshot fills the .asb panel; the .asb container
+             still contributes its cyan glow border and .asb::before scan-line
+             animation, so the panel visual language stays consistent with the
+             rest of the page. All the hand-coded row/notification/clock/footer
+             mockup markup that used to live here was replaced by this single
+             image — one source of truth, no drift between mockup and app. -->
+        <img src="app-screenshot.webp" alt="Eagle View sidebar screenshot showing Mails, Meetings, To Do, and more" width="416" height="1298" style="display:block;width:100%;height:auto;">
       </div>
     </div>
   </div>
@@ -523,14 +513,14 @@ footer{padding:38px 64px;display:flex;align-items:center;justify-content:space-b
         <div class="dlc">
           <div class="dlch"><div class="dloi"><svg width="30" height="30" viewBox="0 0 24 24" fill="#F2F2F2"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zm3.63-3.33c.836-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.71-.688 3.559-1.701z"/></svg></div><div><div class="dlon">macOS</div><div class="dlos">v1.1.7 · Requires macOS 12+</div></div></div>
           <div class="dlbs">
-            <a class="dlb pd" href="https://github.com/dev-pearlfox/eagleview-site/releases/download/v1.1.7/Eagle.View_1.1.7_aarch64.dmg" download><div class="dlbl"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2v13M5 15l7 7 7-7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="dlba">Apple Silicon</span><span class="dlbc">M1 · M2 · M3 · M4</span></div><div style="display:flex;align-items:center;gap:10px"><span class="dlsz">7.5 MB</span><span class="dlarr">↓</span></div></a>
-            <a class="dlb" href="https://github.com/dev-pearlfox/eagleview-site/releases/download/v1.1.7/Eagle.View_1.1.7_x64.dmg" download><div class="dlbl"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2v13M5 15l7 7 7-7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="dlba">Intel Mac</span><span class="dlbc">x64</span></div><div style="display:flex;align-items:center;gap:10px"><span class="dlsz">7.4 MB</span><span class="dlarr">↓</span></div></a>
+            <a class="dlb pd" href="https://github.com/dev-pearlfox/eagleview-site/releases/download/v1.1.7/Eagle.View_1.1.7_aarch64.dmg" download aria-label="Download Eagle View 1.1.7 for Apple Silicon Mac (7.5 MB DMG)"><div class="dlbl"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2v13M5 15l7 7 7-7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="dlba">Apple Silicon</span><span class="dlbc">M1 · M2 · M3 · M4</span></div><div style="display:flex;align-items:center;gap:10px"><span class="dlsz">7.5 MB</span><span class="dlarr">↓</span></div></a>
+            <a class="dlb" href="https://github.com/dev-pearlfox/eagleview-site/releases/download/v1.1.7/Eagle.View_1.1.7_x64.dmg" download aria-label="Download Eagle View 1.1.7 for Intel Mac (7.4 MB DMG)"><div class="dlbl"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2v13M5 15l7 7 7-7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="dlba">Intel Mac</span><span class="dlbc">x64</span></div><div style="display:flex;align-items:center;gap:10px"><span class="dlsz">7.4 MB</span><span class="dlarr">↓</span></div></a>
           </div>
         </div>
         <div class="dlc">
           <div class="dlch"><div class="dloi"><svg width="28" height="28" viewBox="0 0 24 24"><rect x="1" y="1" width="10" height="10" fill="#00ADEF"/><rect x="13" y="1" width="10" height="10" fill="#00ADEF"/><rect x="1" y="13" width="10" height="10" fill="#00ADEF"/><rect x="13" y="13" width="10" height="10" fill="#00ADEF"/></svg></div><div><div class="dlon">Windows</div><div class="dlos">v1.1.7 · Windows 10 / 11</div></div></div>
           <div class="dlbs">
-            <a class="dlb pd" href="https://github.com/dev-pearlfox/eagleview-site/releases/download/v1.1.7/Eagle.View_1.1.7_x64-setup.exe" download><div class="dlbl"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2v13M5 15l7 7 7-7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="dlba">Portable EXE</span><span class="dlbc w">x64</span></div><div style="display:flex;align-items:center;gap:10px"><span class="dlsz">5.9 MB</span><span class="dlarr">↓</span></div></a>
+            <a class="dlb pd" href="https://github.com/dev-pearlfox/eagleview-site/releases/download/v1.1.7/Eagle.View_1.1.7_x64-setup.exe" download aria-label="Download Eagle View 1.1.7 for Windows 10/11 x64 (5.9 MB portable EXE)"><div class="dlbl"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2v13M5 15l7 7 7-7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="dlba">Portable EXE</span><span class="dlbc w">x64</span></div><div style="display:flex;align-items:center;gap:10px"><span class="dlsz">5.9 MB</span><span class="dlarr">↓</span></div></a>
             <div class="ww">⚠️ Windows SmartScreen may warn on first run — click <strong>More info → Run anyway</strong> to proceed. The app is safe.</div>
           </div>
         </div>
@@ -550,11 +540,12 @@ footer{padding:38px 64px;display:flex;align-items:center;justify-content:space-b
     </div>
   </div>
 </section>
+</main>
 
 <footer>
   <div class="flogo"><div class="fico2"><svg width="20" height="20"><use href="#eagle"/></svg></div>Eagle View</div>
   <div class="fcopy">© 2026 Eagle View — Built with Tauri + React</div>
-  <div class="flinks"><a href="https://github.com/manoj-mkn/eagleview-site" target="_blank">GitHub</a><a href="privacy.html">Privacy</a><a href="mailto:manojkmahesh@gmail.com">Contact</a></div>
+  <div class="flinks"><a href="https://github.com/dev-pearlfox/eagleview-site" target="_blank" rel="noopener noreferrer">GitHub</a><a href="privacy.html">Privacy</a><a href="mailto:manojkmahesh@gmail.com">Contact</a></div>
 </footer>
 
 <script>

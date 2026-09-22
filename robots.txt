@@ -1,7 +1,15 @@
 # Eagle View — robots.txt
-# Allow all well-behaved crawlers everywhere.
+# Public site: root + privacy policy.
+# Everything under /eagleview/, /tools/, and /supabase/ is internal
+# (roadmaps, test cases, QA tools, edge fns) — kept in the repo for
+# convenience but not intended for search indexing.
 
 User-agent: *
 Allow: /
+Disallow: /eagleview/
+Disallow: /tools/
+Disallow: /supabase/
+# Note: /eagleview_payment.html is intentionally left crawlable so bots can see
+# its <meta name="robots" content="noindex"> tag. Do NOT Disallow it here.
 
 Sitemap: https://eagleview.pearlfox.io/sitemap.xml
