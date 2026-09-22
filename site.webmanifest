@@ -1,4 +1,5 @@
 {
+  "id": "/",
   "name": "Eagle View",
   "short_name": "Eagle View",
   "description": "Your smart desktop sidebar — mails, meetings, tasks at a glance.",
@@ -7,17 +8,18 @@
       "src": "web-app-manifest-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "maskable"
+      "purpose": "any maskable"
     },
     {
       "src": "web-app-manifest-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "maskable"
+      "purpose": "any maskable"
     }
   ],
   "theme_color": "#030612",
   "background_color": "#030612",
   "display": "standalone",
+  "scope": "/",
   "start_url": "/"
 }
