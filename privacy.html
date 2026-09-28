@@ -449,7 +449,7 @@
 <!-- Hero -->
 <div class="hero">
   <h1>Privacy Policy for <span>Eagle View</span></h1>
-  <p class="hero-meta">Effective Date: August 26, 2026 &nbsp;·&nbsp; Version 1.1 &nbsp;·&nbsp; PearlFox, India</p>
+  <p class="hero-meta">Effective Date: September 28, 2026 &nbsp;·&nbsp; Version 1.2 &nbsp;·&nbsp; PearlFox, India</p>
   <div class="compliance-badges">
     <span class="badge">GDPR Compliant</span>
     <span class="badge">CCPA Compliant</span>
@@ -517,7 +517,7 @@
         <div class="section-num">2</div>
         <h2>Data We Access</h2>
       </div>
-      <p>Eagle View requests the following permissions from your connected accounts. All access is read-only. We never write, modify, or delete data in your accounts.</p>
+      <p>Eagle View requests the following permissions from your connected accounts. Most access is read-only, used to display your mail, calendar, and tasks. A small number of write actions are also available — see below — and every one of them only happens when you directly trigger it (e.g. clicking a button in the app); Eagle View never performs any of them automatically or in the background.</p>
 
       <table class="data-table">
         <thead>
@@ -534,6 +534,12 @@
             <td>Sender name, subject line, received time, unread count, flag status</td>
             <td>Display unread count and flagged mail list</td>
             <td>In-memory only; not persisted to disk</td>
+          </tr>
+          <tr>
+            <td><strong>Email message body</strong></td>
+            <td>Full text of a specific message — only when you open it to read it in-app</td>
+            <td>Display the message content so you can read it without leaving Eagle View</td>
+            <td>In-memory only, for that session; not persisted to disk</td>
           </tr>
           <tr>
             <td><strong>Calendar events</strong></td>
@@ -569,8 +575,16 @@
       </table>
 
       <div class="highlight">
-        <strong>Email content is never accessed.</strong> Eagle View reads only metadata (sender, subject, time). The body of your emails is not read, stored, or transmitted under any circumstances.
+        <strong>Message content is only accessed when you open a specific message.</strong> Eagle View's mail list reads only metadata (sender, subject, time) — the body of a message is fetched only at the moment you click to read that specific message in-app, never in bulk and never automatically. Whether reading metadata or a message body, content is processed only in memory for that session and is never stored to disk or transmitted to our servers.
       </div>
+      <h3>Write actions you can trigger</h3>
+      <p>These actions are available directly from Eagle View's interface. Each one is performed on your connected account only when you click the corresponding button — never automatically, never in the background, and never without you initiating it:</p>
+      <ul>
+        <li><strong>Mark as read</strong> — marks a message as read on your account</li>
+        <li><strong>Flag / unflag (star)</strong> — flags or unflags a message for follow-up</li>
+        <li><strong>Delete</strong> — deletes a specific message from your account</li>
+        <li><strong>Complete</strong> — marks a flagged/to-do item as done</li>
+      </ul>
       <div class="highlight" style="margin-top:0.75rem;">
         <strong>License data is minimal and purpose-limited.</strong> The email address and device hardware identifier collected during licensing are used exclusively for license validation. They are never used for marketing, analytics, or any purpose beyond license enforcement.
       </div>
@@ -802,7 +816,7 @@
 
 <footer class="doc-footer">
   <p>© 2026 PearlFox. All rights reserved. &nbsp;·&nbsp; <a href="mailto:dev@pearlfox.io">Contact</a></p>
-  <p style="margin-top:0.5rem; opacity:0.6;">Eagle View is a product of PearlFox. This document was last updated on August 26, 2026. Version 1.1 — added license data disclosures (device identifier, Supabase, Razorpay, Resend).</p>
+  <p style="margin-top:0.5rem; opacity:0.6;">Eagle View is a product of PearlFox. This document was last updated on September 28, 2026. Version 1.2 — corrected Section 2 to accurately disclose that message body content is accessed when a user opens a specific message, and that mark-as-read, flag/unflag, delete, and complete are user-triggered write actions (previously the section understated both as read-only/metadata-only).</p>
 </footer>
 </body>
 </html>
