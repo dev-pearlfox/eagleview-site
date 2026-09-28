@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terms of Service — Eagle View by PearlFox</title>
+<meta name="description" content="Eagle View's Terms of Service — license terms, acceptable use, purchases, and your rights as a user.">
+
+<link rel="canonical" href="https://eagleview.pearlfox.io/terms.html">
+
+<!-- Favicons + PWA -->
+<link rel="icon" type="image/x-icon" href="favicon.ico?v=2">
+<link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png?v=2">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=2">
+<link rel="manifest" href="site.webmanifest">
+
+<!-- Open Graph -->
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Eagle View">
+<meta property="og:title" content="Eagle View — Terms of Service">
+<meta property="og:description" content="License terms, acceptable use, purchases, and your rights as an Eagle View user.">
+<meta property="og:url" content="https://eagleview.pearlfox.io/terms.html">
+<meta property="og:image" content="https://eagleview.pearlfox.io/social-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="1200">
+
+<!-- Twitter / X -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Eagle View — Terms of Service">
+<meta name="twitter:description" content="License terms, acceptable use, purchases, and your rights as an Eagle View user.">
+<meta name="twitter:image" content="https://eagleview.pearlfox.io/social-card.png">
+
+<style>
+  /* ── Tokens (matches privacy.html exactly) ── */
+  :root {
+    --navy:       #0D1B2A;
+    --navy-mid:   #162032;
+    --navy-light: #1E2E42;
+    --teal:       #00B4D8;
+    --teal-dim:   #0090AD;
+    --bg:         #F4F7FB;
+    --card:       #FFFFFF;
+    --border:     #E2E8F0;
+    --text:       #1A2332;
+    --muted:      #4A5568;
+    --accent-bg:  #EBF8FC;
+    --badge-bg:   #E8F4F8;
+    --success:    #059669;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg:       #0A1520;
+      --card:     #162032;
+      --border:   #243348;
+      --text:     #E8EDF4;
+      --muted:    #8FA3BC;
+      --accent-bg:#0D2233;
+      --badge-bg: #0D2233;
+    }
+  }
+  :root[data-theme="light"] {
+    --bg:       #F4F7FB;
+    --card:     #FFFFFF;
+    --border:   #E2E8F0;
+    --text:     #1A2332;
+    --muted:    #4A5568;
+    --accent-bg:#EBF8FC;
+    --badge-bg: #E8F4F8;
+  }
+  :root[data-theme="dark"] {
+    --bg:       #0A1520;
+    --card:     #162032;
+    --border:   #243348;
+    --text:     #E8EDF4;
+    --muted:    #8FA3BC;
+    --accent-bg:#0D2233;
+    --badge-bg: #0D2233;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* ── Header ── */
+  .site-header {
+    background: var(--navy);
+    padding: 0 2rem;
+  }
+  .header-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 0;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .brand-name {
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+  .brand-sub {
+    color: rgba(255,255,255,0.45);
+    font-size: 0.78rem;
+    margin-top: 1px;
+  }
+  .header-tag {
+    color: rgba(255,255,255,0.5);
+    font-size: 0.78rem;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 4px;
+    padding: 0.25rem 0.6rem;
+  }
+
+  /* ── Hero banner ── */
+  .hero {
+    background: linear-gradient(135deg, var(--navy) 0%, #0E2440 60%, #0D3A52 100%);
+    padding: 3.5rem 2rem 3rem;
+    text-align: center;
+    border-bottom: 1px solid rgba(0,180,216,0.2);
+  }
+  .hero h1 {
+    color: #fff;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    text-wrap: balance;
+  }
+  .hero h1 span { color: var(--teal); }
+  .hero-meta {
+    margin-top: 0.75rem;
+    color: rgba(255,255,255,0.5);
+    font-size: 0.85rem;
+  }
+  .compliance-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-top: 1.75rem;
+  }
+  .badge {
+    background: rgba(0,180,216,0.12);
+    border: 1px solid rgba(0,180,216,0.3);
+    color: var(--teal);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.75rem;
+    border-radius: 100px;
+  }
+
+  /* ── Local processing callout ── */
+  .local-callout {
+    background: linear-gradient(135deg, #003D52, #004D3A);
+    border-top: 3px solid var(--teal);
+    padding: 1.5rem 2rem;
+    text-align: center;
+  }
+  .local-callout-inner {
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  .local-callout .icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
+  .local-callout strong {
+    display: block;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+  }
+  .local-callout p {
+    color: rgba(255,255,255,0.65);
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+
+  /* ── Layout ── */
+  .layout {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 4rem;
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 2.5rem;
+    align-items: start;
+  }
+  @media (max-width: 768px) {
+    .layout { grid-template-columns: 1fr; }
+    .toc { display: none; }
+  }
+
+  /* ── Table of Contents ── */
+  .toc {
+    position: sticky;
+    top: 1.5rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.25rem;
+  }
+  .toc-title {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.75rem;
+  }
+  .toc ol {
+    list-style: none;
+    counter-reset: toc;
+  }
+  .toc ol li {
+    counter-increment: toc;
+    margin-bottom: 0.3rem;
+  }
+  .toc ol li::before {
+    content: counter(toc) ". ";
+    color: var(--teal);
+    font-size: 0.72rem;
+    font-weight: 600;
+  }
+  .toc a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.78rem;
+    line-height: 1.4;
+    transition: color 0.15s;
+  }
+  .toc a:hover { color: var(--teal); }
+  .toc-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0.9rem 0;
+  }
+  .toc-contact {
+    font-size: 0.72rem;
+    color: var(--muted);
+  }
+  .toc-contact a { color: var(--teal); text-decoration: none; }
+
+  /* ── Content ── */
+  .content { min-width: 0; }
+
+  .section {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 1.25rem;
+    scroll-margin-top: 1.5rem;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-num {
+    width: 28px;
+    height: 28px;
+    background: var(--teal);
+    color: #fff;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.72rem;
+    font-weight: 800;
+    flex-shrink: 0;
+    font-variant-numeric: tabular-nums;
+  }
+  .section h2 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.01em;
+  }
+  .section p {
+    color: var(--muted);
+    margin-bottom: 0.85rem;
+    max-width: 65ch;
+  }
+  .section p:last-child { margin-bottom: 0; }
+  .section h3 {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 1.25rem 0 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .section ul, .section ol {
+    padding-left: 1.25rem;
+    color: var(--muted);
+    margin-bottom: 0.85rem;
+  }
+  .section li { margin-bottom: 0.35rem; }
+
+  /* data table */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.82rem;
+    overflow-x: auto;
+    display: block;
+  }
+  .data-table th {
+    background: var(--bg);
+    color: var(--text);
+    font-weight: 700;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 0.6rem 0.9rem;
+    text-align: left;
+    border-bottom: 2px solid var(--border);
+  }
+  .data-table td {
+    padding: 0.65rem 0.9rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+    vertical-align: top;
+  }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table td strong { color: var(--text); }
+
+  /* highlight box */
+  .highlight {
+    background: var(--accent-bg);
+    border-left: 3px solid var(--teal);
+    border-radius: 0 8px 8px 0;
+    padding: 0.9rem 1.1rem;
+    margin: 1rem 0;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  .highlight strong { color: var(--teal); }
+
+  /* rights grid */
+  .rights-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin: 1rem 0;
+  }
+  @media (max-width: 600px) { .rights-grid { grid-template-columns: 1fr; } }
+  .right-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.9rem 1rem;
+  }
+  .right-card .right-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.3rem;
+  }
+  .right-card p {
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin: 0;
+    max-width: none;
+  }
+
+  /* contact card */
+  .contact-card {
+    background: linear-gradient(135deg, var(--navy), #0E2A3E);
+    border-radius: 10px;
+    padding: 1.5rem;
+    text-align: center;
+  }
+  .contact-card h3 {
+    color: #fff;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .contact-card p { color: rgba(255,255,255,0.55); font-size: 0.85rem; max-width: none; }
+  .contact-card a {
+    display: inline-block;
+    margin-top: 1rem;
+    background: var(--teal);
+    color: #fff;
+    text-decoration: none;
+    padding: 0.6rem 1.5rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  /* flag tags */
+  .flag { display: inline-block; font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; padding: 0.15rem 0.5rem; border-radius: 4px; margin-left: 0.4rem; vertical-align: middle; }
+  .flag-gdpr  { background: #EEF2FF; color: #4F46E5; }
+  .flag-ccpa  { background: #FEF3C7; color: #92400E; }
+  .flag-dpdp  { background: #ECFDF5; color: #065F46; }
+  :root[data-theme="dark"] .flag-gdpr { background: #1E1B4B; color: #A5B4FC; }
+  :root[data-theme="dark"] .flag-ccpa { background: #451A03; color: #FCD34D; }
+  :root[data-theme="dark"] .flag-dpdp { background: #022C22; color: #6EE7B7; }
+
+  /* footer */
+  .doc-footer {
+    text-align: center;
+    padding: 2rem 1.5rem 3rem;
+    color: var(--muted);
+    font-size: 0.78rem;
+    border-top: 1px solid var(--border);
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .doc-footer a { color: var(--teal); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="site-header">
+  <div class="header-inner">
+    <div class="brand">
+      <div>
+        <div class="brand-name">Eagle View</div>
+        <div class="brand-sub">by PearlFox</div>
+      </div>
+    </div>
+    <div class="header-tag">Legal Document</div>
+  </div>
+</header>
+
+<!-- Hero -->
+<div class="hero">
+  <h1>Terms of Service for <span>Eagle View</span></h1>
+  <p class="hero-meta">Effective Date: September 28, 2026 &nbsp;·&nbsp; Version 1.0 &nbsp;·&nbsp; PearlFox, India</p>
+  <div class="compliance-badges">
+    <span class="badge">India Contract Act, 1872</span>
+    <span class="badge">IT Act, 2000</span>
+    <span class="badge">Consumer Protection Act, 2019</span>
+  </div>
+</div>
+
+<!-- Local Processing Callout -->
+<div class="local-callout">
+  <div class="icon">📄</div>
+  <div class="local-callout-inner">
+    <strong>These Terms govern your use of the Eagle View desktop application.</strong>
+    <p>By downloading, installing, or using Eagle View, you agree to be bound by these Terms of Service. Please also read our <a href="privacy.html" style="color:#fff;text-decoration:underline;">Privacy Policy</a>, which explains how your data is handled — entirely on your own device.</p>
+  </div>
+</div>
+
+<!-- Main Layout -->
+<div class="layout">
+
+  <!-- Sidebar TOC -->
+  <nav class="toc" aria-label="Table of contents">
+    <div class="toc-title">Contents</div>
+    <ol>
+      <li><a href="#s1">Acceptance of Terms</a></li>
+      <li><a href="#s2">Description of Service</a></li>
+      <li><a href="#s3">Eligibility &amp; Accounts</a></li>
+      <li><a href="#s4">License Grant &amp; Restrictions</a></li>
+      <li><a href="#s5">Trial &amp; Purchases</a></li>
+      <li><a href="#s6">Refunds &amp; Cancellations</a></li>
+      <li><a href="#s7">Acceptable Use</a></li>
+      <li><a href="#s8">Third-Party Services</a></li>
+      <li><a href="#s9">Intellectual Property</a></li>
+      <li><a href="#s10">Disclaimer of Warranties</a></li>
+      <li><a href="#s11">Limitation of Liability</a></li>
+      <li><a href="#s12">Termination</a></li>
+      <li><a href="#s13">Governing Law</a></li>
+      <li><a href="#s14">Changes to These Terms</a></li>
+      <li><a href="#s15">Contact</a></li>
+    </ol>
+    <hr class="toc-divider">
+    <div class="toc-contact">
+      Legal enquiries:<br>
+      <a href="mailto:dev@pearlfox.io">dev@pearlfox.io</a>
+    </div>
+  </nav>
+
+  <!-- Content -->
+  <main class="content">
+
+    <!-- 1. Acceptance -->
+    <section class="section" id="s1">
+      <div class="section-header">
+        <div class="section-num">1</div>
+        <h2>Acceptance of Terms</h2>
+      </div>
+      <p>These Terms of Service ("Terms") form a binding agreement between you ("User", "you") and <strong>PearlFox</strong> ("PearlFox", "we", "our", "us"), a technology company based in India, governing your access to and use of the <strong>Eagle View</strong> desktop application ("Application", "Service").</p>
+      <p>By downloading, installing, activating a trial, or purchasing a license for Eagle View, you confirm that you have read, understood, and agree to be bound by these Terms and our <a href="privacy.html" style="color:var(--teal)">Privacy Policy</a>. If you do not agree, do not install or use the Application.</p>
+      <div class="highlight">
+        <strong>Plain-language summary:</strong> Eagle View is licensed software, not sold outright. You get a personal, non-transferable right to run it on your own device(s) under an active trial or license. We don't access your email content, and most of what's in this document exists to set expectations around purchases, acceptable use, and liability.
+      </div>
+    </section>
+
+    <!-- 2. Description of Service -->
+    <section class="section" id="s2">
+      <div class="section-header">
+        <div class="section-num">2</div>
+        <h2>Description of Service</h2>
+      </div>
+      <p>Eagle View is a desktop productivity widget that connects to your Microsoft Outlook and/or Google Gmail account, using credentials and permissions you explicitly grant, to display a real-time summary of your emails, calendar meetings, and flagged tasks. It also offers optional integrations (e.g. Jira, Azure DevOps, Teams, Slack) and utility tools (notes, currency conversion, world clock, and similar), each activated at your discretion.</p>
+      <p>All email, calendar, and task data is processed locally on your device — see our <a href="privacy.html" style="color:var(--teal)">Privacy Policy</a> for full details on data handling.</p>
+    </section>
+
+    <!-- 3. Eligibility & Accounts -->
+    <section class="section" id="s3">
+      <div class="section-header">
+        <div class="section-num">3</div>
+        <h2>Eligibility &amp; Accounts</h2>
+      </div>
+      <p>You must be at least 18 years old, or the age of legal majority in your jurisdiction, to enter into these Terms. Eagle View is intended for professional and personal productivity use by individuals with a Microsoft or Google account in good standing.</p>
+      <p>You are responsible for maintaining the confidentiality of your Microsoft/Google account credentials and for all activity that occurs through your connected account while using the Application. PearlFox does not create or manage a separate PearlFox account or password on your behalf — your identity within Eagle View is your own Microsoft or Google account.</p>
+    </section>
+
+    <!-- 4. License Grant & Restrictions -->
+    <section class="section" id="s4">
+      <div class="section-header">
+        <div class="section-num">4</div>
+        <h2>License Grant &amp; Restrictions</h2>
+      </div>
+      <p>Subject to your compliance with these Terms and an active trial or paid license, PearlFox grants you a limited, non-exclusive, non-transferable, revocable license to install and use Eagle View on the device(s) permitted by your license type, solely for your own personal or internal business use.</p>
+      <h3>You may not</h3>
+      <ul>
+        <li>Copy, modify, reverse-engineer, decompile, or disassemble the Application, except to the extent such restriction is prohibited by applicable law</li>
+        <li>Rent, lease, sell, sublicense, distribute, or otherwise transfer the Application or your license to any third party</li>
+        <li>Remove or alter any proprietary notices, branding, or license-validation mechanisms in the Application</li>
+        <li>Use the Application to build a competing product or service</li>
+        <li>Circumvent, disable, or otherwise interfere with license-related or security-related features of the Application, including its device-binding mechanism</li>
+      </ul>
+      <p>Each license key is bound to a specific device via a hardware identifier at the time of activation. Using the same license on additional devices beyond what your license type permits may result in suspension of that license.</p>
+    </section>
+
+    <!-- 5. Trial & Purchases -->
+    <section class="section" id="s5">
+      <div class="section-header">
+        <div class="section-num">5</div>
+        <h2>Trial &amp; Purchases</h2>
+      </div>
+      <p>Eagle View offers a time-limited free trial period to new users on a given device, after which continued use requires an active paid license purchased through the payment flow at <strong>eagleview.pearlfox.io</strong>. Trial length, plan durations, and pricing are as displayed at the time of purchase and are subject to change without affecting licenses already purchased.</p>
+      <p>Payments are processed by our third-party payment processor, Razorpay Software Pvt. Ltd. PearlFox does not receive or store your full payment card details — see Section 8 (Third-Party Services).</p>
+      <p>Upon successful payment, a license key is generated and delivered to the email address you provide. You are responsible for providing an accurate, accessible email address and for safeguarding your license key.</p>
+    </section>
+
+    <!-- 6. Refunds & Cancellations -->
+    <section class="section" id="s6">
+      <div class="section-header">
+        <div class="section-num">6</div>
+        <h2>Refunds &amp; Cancellations</h2>
+      </div>
+      <p>Because Eagle View licenses are digital goods delivered immediately upon payment, purchases are generally non-refundable once a license key has been issued and activated, except where required by applicable law.</p>
+      <p>If you believe you were charged in error, experienced a failed activation, or have another legitimate concern about a purchase, contact <a href="mailto:dev@pearlfox.io" style="color:var(--teal)">dev@pearlfox.io</a> within a reasonable time of the transaction. Refund and cancellation requests are reviewed on a case-by-case basis at PearlFox's discretion, consistent with the Consumer Protection Act, 2019 and other applicable Indian consumer protection law.</p>
+    </section>
+
+    <!-- 7. Acceptable Use -->
+    <section class="section" id="s7">
+      <div class="section-header">
+        <div class="section-num">7</div>
+        <h2>Acceptable Use</h2>
+      </div>
+      <p>You agree not to use Eagle View to:</p>
+      <ul>
+        <li>Violate any applicable law, regulation, or third-party right, including the terms of service of Microsoft, Google, or any other connected provider</li>
+        <li>Attempt to gain unauthorized access to any account, system, or network connected to the Application</li>
+        <li>Introduce malware, or otherwise interfere with the integrity or performance of the Application or the services it connects to</li>
+        <li>Use automated means (bots, scripts) to interact with the Application's license or payment infrastructure other than through the Application itself</li>
+        <li>Misrepresent your identity or affiliation when contacting PearlFox support</li>
+      </ul>
+      <p>PearlFox reserves the right to suspend or terminate access for any user found to be in violation of this section.</p>
+    </section>
+
+    <!-- 8. Third-Party Services -->
+    <section class="section" id="s8">
+      <div class="section-header">
+        <div class="section-num">8</div>
+        <h2>Third-Party Services</h2>
+      </div>
+      <p>Eagle View integrates with third-party platforms at your direction, including Microsoft (Outlook Mail, Calendar), Google (Gmail), and optionally Jira, Azure DevOps, Microsoft Teams, and Slack. Your use of each connected platform remains subject to that platform's own terms of service and privacy policy, which PearlFox does not control.</p>
+      <table class="data-table">
+        <thead><tr><th>Provider</th><th>Role</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Microsoft Corporation</strong></td><td>Outlook email &amp; calendar access via Microsoft Graph API</td></tr>
+          <tr><td><strong>Google LLC</strong></td><td>Gmail access via the Gmail API</td></tr>
+          <tr><td><strong>Razorpay Software Pvt. Ltd.</strong></td><td>Payment processing for license purchases</td></tr>
+          <tr><td><strong>Supabase Inc.</strong></td><td>License validation server</td></tr>
+          <tr><td><strong>Resend Inc.</strong></td><td>Transactional email delivery (license key emails)</td></tr>
+        </tbody>
+      </table>
+      <p>PearlFox is not responsible for the availability, accuracy, or practices of these third-party services. If a third-party provider changes or discontinues an API that Eagle View relies on, related functionality may be affected and PearlFox will make reasonable efforts to notify users, but cannot guarantee uninterrupted access to any third-party integration.</p>
+    </section>
+
+    <!-- 9. Intellectual Property -->
+    <section class="section" id="s9">
+      <div class="section-header">
+        <div class="section-num">9</div>
+        <h2>Intellectual Property</h2>
+      </div>
+      <p>Eagle View, including its software, design, branding, logos, and documentation, is the property of PearlFox and is protected by applicable copyright, trademark, and other intellectual property laws. These Terms do not grant you any ownership rights in the Application — only the limited license described in Section 4.</p>
+      <p>Microsoft, Google, and other third-party names, logos, and trademarks referenced in the Application or on this website belong to their respective owners and are used solely to describe integration compatibility.</p>
+    </section>
+
+    <!-- 10. Disclaimer of Warranties -->
+    <section class="section" id="s10">
+      <div class="section-header">
+        <div class="section-num">10</div>
+        <h2>Disclaimer of Warranties</h2>
+      </div>
+      <p>Eagle View is provided "as is" and "as available", without warranties of any kind, whether express, implied, or statutory, including but not limited to implied warranties of merchantability, fitness for a particular purpose, and non-infringement, to the maximum extent permitted by applicable law.</p>
+      <p>PearlFox does not warrant that the Application will be uninterrupted, error-free, or free of harmful components, or that any data displayed by the Application (e.g. mail, calendar, or task information sourced from third-party providers) will always be accurate or current.</p>
+    </section>
+
+    <!-- 11. Limitation of Liability -->
+    <section class="section" id="s11">
+      <div class="section-header">
+        <div class="section-num">11</div>
+        <h2>Limitation of Liability</h2>
+      </div>
+      <p>To the maximum extent permitted by applicable law, PearlFox and its officers, employees, and affiliates shall not be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of profits, data, use, or goodwill, arising out of or related to your use of, or inability to use, Eagle View — even if advised of the possibility of such damages.</p>
+      <p>PearlFox's total aggregate liability arising out of or relating to these Terms or the Application shall not exceed the amount you paid to PearlFox for your Eagle View license in the twelve (12) months preceding the claim.</p>
+      <p>Nothing in these Terms limits liability that cannot be limited or excluded under applicable law.</p>
+    </section>
+
+    <!-- 12. Termination -->
+    <section class="section" id="s12">
+      <div class="section-header">
+        <div class="section-num">12</div>
+        <h2>Termination</h2>
+      </div>
+      <p>You may stop using Eagle View at any time by uninstalling the Application. PearlFox may suspend or terminate your license if you materially breach these Terms, including the restrictions in Sections 4 and 7, with notice where reasonably practicable.</p>
+      <p>Upon termination, your right to use the Application ceases immediately. Sections 9 (Intellectual Property), 10 (Disclaimer of Warranties), 11 (Limitation of Liability), and 13 (Governing Law) survive termination.</p>
+    </section>
+
+    <!-- 13. Governing Law -->
+    <section class="section" id="s13">
+      <div class="section-header">
+        <div class="section-num">13</div>
+        <h2>Governing Law &amp; Dispute Resolution</h2>
+      </div>
+      <p>These Terms are governed by the laws of India, without regard to conflict-of-law principles. Subject to applicable consumer protection law, any dispute arising out of or relating to these Terms or the Application shall be subject to the exclusive jurisdiction of the courts located in Tamil Nadu, India.</p>
+      <p>Before initiating formal proceedings, both parties agree to first attempt to resolve any dispute informally by contacting <a href="mailto:dev@pearlfox.io" style="color:var(--teal)">dev@pearlfox.io</a>.</p>
+    </section>
+
+    <!-- 14. Changes -->
+    <section class="section" id="s14">
+      <div class="section-header">
+        <div class="section-num">14</div>
+        <h2>Changes to These Terms</h2>
+      </div>
+      <p>PearlFox may update these Terms from time to time to reflect changes in our practices, legal requirements, or the features of Eagle View. When we make material changes, we will update the "Effective Date" above and, where appropriate, display a notice within the Application.</p>
+      <p>Your continued use of Eagle View after the effective date of a revised version of these Terms constitutes your acceptance of the changes. If you do not agree with the changes, you should discontinue use of the Application.</p>
+    </section>
+
+    <!-- 15. Contact -->
+    <section class="section" id="s15">
+      <div class="section-header">
+        <div class="section-num">15</div>
+        <h2>Contact</h2>
+      </div>
+      <div class="contact-card">
+        <h3>PearlFox — Legal &amp; Support</h3>
+        <p>For questions about these Terms, licensing, or billing, reach us at the address below.</p>
+        <a href="mailto:dev@pearlfox.io">dev@pearlfox.io</a>
+      </div>
+      <p style="margin-top:1.25rem; font-size:0.82rem; color:var(--muted);">
+        <strong style="color:var(--text)">Business address:</strong> PearlFox, Door No. A13, Gandhi Market W, (Opp. Police Station), Oddanchatram, Dindigul – 624619, India<br>
+        <strong style="color:var(--text)">Support:</strong> dev@pearlfox.io<br>
+        <strong style="color:var(--text)">Phone:</strong> +91 88258 90877
+      </p>
+    </section>
+
+  </main>
+</div>
+
+<footer class="doc-footer">
+  <p>© 2026 PearlFox. All rights reserved. &nbsp;·&nbsp; <a href="mailto:dev@pearlfox.io">Contact</a> &nbsp;·&nbsp; <a href="privacy.html">Privacy Policy</a></p>
+  <p style="margin-top:0.5rem; opacity:0.6;">Eagle View is a product of PearlFox. This document was last updated on September 28, 2026. Version 1.0.</p>
+</footer>
+</body>
+</html>
