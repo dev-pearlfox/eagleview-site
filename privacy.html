@@ -449,7 +449,7 @@
 <!-- Hero -->
 <div class="hero">
   <h1>Privacy Policy for <span>Eagle View</span></h1>
-  <p class="hero-meta">Effective Date: September 28, 2026 &nbsp;·&nbsp; Version 1.2 &nbsp;·&nbsp; PearlFox, India</p>
+  <p class="hero-meta">Effective Date: September 28, 2026 &nbsp;·&nbsp; Version 1.3 &nbsp;·&nbsp; PearlFox, India</p>
   <div class="compliance-badges">
     <span class="badge">GDPR Compliant</span>
     <span class="badge">CCPA Compliant</span>
@@ -504,7 +504,7 @@
         <h2>Overview</h2>
       </div>
       <p>This Privacy Policy describes how <strong>PearlFox</strong> ("we", "our", or "us"), a technology company based in India, handles information in connection with the <strong>Eagle View</strong> desktop application ("Application", "Service").</p>
-      <p>Eagle View is a productivity widget that connects to your Microsoft Outlook or Google Gmail account to display a real-time summary of emails, calendar meetings, and flagged tasks — all processed locally on your device.</p>
+      <p>Eagle View is a productivity widget that connects to your Microsoft Outlook or Google Gmail account to display a real-time summary of emails, calendar meetings, and flagged tasks — all processed locally on your device. You may optionally also connect Jira, Azure DevOps, and/or Slack for the same kind of at-a-glance summary of those accounts; each is entirely opt-in and none is contacted unless you explicitly connect it.</p>
       <p>This Policy is designed to meet the requirements of the <strong>EU General Data Protection Regulation (GDPR)</strong>, the <strong>California Consumer Privacy Act (CCPA/CPRA)</strong>, India's <strong>Digital Personal Data Protection Act 2023 (DPDP Act)</strong>, and internationally recognised privacy principles including OECD Privacy Guidelines and ISO/IEC 29101.</p>
       <div class="highlight">
         <strong>Plain-language summary:</strong> Eagle View reads data from your email and calendar providers using your own credentials. This data is shown to you inside the app. It is never sent to our servers. We do not sell, share, or monetise your personal data.
@@ -571,6 +571,24 @@
             <td>Bind the license key to a specific device; prevent unauthorised use on other machines</td>
             <td>Yes — stored on our licensing server (Supabase)</td>
           </tr>
+          <tr>
+            <td><strong>Jira issues</strong> <span class="flag flag-dpdp">Optional</span></td>
+            <td>Issue key, summary, status, priority, assignee</td>
+            <td>Display your assigned/relevant Jira issues</td>
+            <td>In-memory only; not persisted to disk</td>
+          </tr>
+          <tr>
+            <td><strong>Azure DevOps work items</strong> <span class="flag flag-dpdp">Optional</span></td>
+            <td>Work item ID, title, state, type, assigned fields</td>
+            <td>Display your Azure DevOps work items</td>
+            <td>In-memory only; not persisted to disk</td>
+          </tr>
+          <tr>
+            <td><strong>Slack channels &amp; profile</strong> <span class="flag flag-dpdp">Optional</span></td>
+            <td>Channel/DM/group list, your Slack user profile info</td>
+            <td>Display your Slack channels and identify your account</td>
+            <td>In-memory only; not persisted to disk</td>
+          </tr>
         </tbody>
       </table>
 
@@ -580,10 +598,12 @@
       <h3>Write actions you can trigger</h3>
       <p>These actions are available directly from Eagle View's interface. Each one is performed on your connected account only when you click the corresponding button — never automatically, never in the background, and never without you initiating it:</p>
       <ul>
-        <li><strong>Mark as read</strong> — marks a message as read on your account</li>
-        <li><strong>Flag / unflag (star)</strong> — flags or unflags a message for follow-up</li>
-        <li><strong>Delete</strong> — deletes a specific message from your account</li>
-        <li><strong>Complete</strong> — marks a flagged/to-do item as done</li>
+        <li><strong>Mark as read</strong> — marks a message as read on your account (Outlook/Gmail)</li>
+        <li><strong>Flag / unflag (star)</strong> — flags or unflags a message for follow-up (Outlook/Gmail)</li>
+        <li><strong>Delete</strong> — deletes a specific message from your account (Outlook/Gmail)</li>
+        <li><strong>Complete</strong> — marks a flagged/to-do item as done (Outlook/Gmail)</li>
+        <li><strong>Transition</strong> — changes a Jira issue's status (e.g. To Do → In Progress), if you connect Jira</li>
+        <li><strong>Update state</strong> — changes an Azure DevOps work item's state, if you connect Azure DevOps</li>
       </ul>
       <div class="highlight" style="margin-top:0.75rem;">
         <strong>License data is minimal and purpose-limited.</strong> The email address and device hardware identifier collected during licensing are used exclusively for license validation. They are never used for marketing, analytics, or any purpose beyond license enforcement.
@@ -667,6 +687,24 @@
             <td>OAuth authentication credentials; API requests containing your User ID</td>
             <td>Google Privacy Policy</td>
           </tr>
+          <tr>
+            <td><strong>Microsoft Corporation</strong> <span class="flag flag-dpdp">Optional</span></td>
+            <td>Azure DevOps work item access, if you connect it — uses either your existing Microsoft sign-in above or a Personal Access Token you enter yourself</td>
+            <td>OAuth or PAT credentials; API requests containing your organization name</td>
+            <td>Microsoft Privacy Statement</td>
+          </tr>
+          <tr>
+            <td><strong>Atlassian Pty Ltd</strong> <span class="flag flag-dpdp">Optional</span></td>
+            <td>Jira issue access via Atlassian's REST API, if you connect it</td>
+            <td>OAuth authentication credentials; API requests containing your User ID</td>
+            <td>Atlassian Privacy Policy</td>
+          </tr>
+          <tr>
+            <td><strong>Slack Technologies, LLC</strong> <span class="flag flag-dpdp">Optional</span></td>
+            <td>Channel, DM, and user profile access via Slack's Web API, if you connect it</td>
+            <td>OAuth authentication credentials (or a manually entered API token); API requests containing your User ID</td>
+            <td>Slack Privacy Policy</td>
+          </tr>
         </tbody>
       </table>
       <h3>Licensing &amp; Payment Services</h3>
@@ -694,7 +732,7 @@
         </tbody>
       </table>
 
-      <p>PearlFox is not responsible for the privacy practices of Microsoft or Google. Eagle View's use of data obtained from these APIs is limited to displaying information within the Application and is not used for any secondary purposes.</p>
+      <p>PearlFox is not responsible for the privacy practices of Microsoft, Google, Atlassian, or Slack. Eagle View's use of data obtained from these APIs is limited to displaying information within the Application and is not used for any secondary purposes. Jira, Azure DevOps, and Slack are all optional integrations — none of them are contacted unless you explicitly connect them.</p>
       <p>Eagle View's use and transfer to any other app of information received from Google APIs adheres to the <strong>Google API Services User Data Policy</strong>, including the Limited Use requirements.</p>
     </section>
 
@@ -816,7 +854,7 @@
 
 <footer class="doc-footer">
   <p>© 2026 PearlFox. All rights reserved. &nbsp;·&nbsp; <a href="mailto:dev@pearlfox.io">Contact</a></p>
-  <p style="margin-top:0.5rem; opacity:0.6;">Eagle View is a product of PearlFox. This document was last updated on September 28, 2026. Version 1.2 — corrected Section 2 to accurately disclose that message body content is accessed when a user opens a specific message, and that mark-as-read, flag/unflag, delete, and complete are user-triggered write actions (previously the section understated both as read-only/metadata-only).</p>
+  <p style="margin-top:0.5rem; opacity:0.6;">Eagle View is a product of PearlFox. This document was last updated on September 28, 2026. Version 1.3 — added disclosure for Jira (Atlassian), Azure DevOps, and Slack: the optional data these integrations access, that Azure DevOps reuses the existing Microsoft sign-in (or an optional Personal Access Token) rather than a separate account, and the Jira issue-transition / Azure work-item-state write actions. Version 1.2 corrected Section 2 to accurately disclose message-body access and the mark-as-read/flag/delete/complete write actions.</p>
 </footer>
 </body>
 </html>
