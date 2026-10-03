@@ -180,6 +180,17 @@
   .node.center .dot { width: 20px; height: 20px; border-width: 4px; }
   .node.center .pill-label { font-size: 15px; padding: 11px 28px; }
 
+  /* Center-variant nodes stack their pill + card directly under the dot in
+     a single column, so the vertical track line (z-index 1) runs behind
+     them. Lift the pill and card above the line so the track visually ends
+     at the dot and resumes at the next dot — instead of slicing through
+     the centered card like a stripe. */
+  .node.center .pill-label,
+  .node.center .card {
+    position: relative;
+    z-index: 2;
+  }
+
   .node.center .card {
     max-width: 540px;
     padding: 32px 38px;
@@ -245,14 +256,55 @@
     background: none; border: none; padding: 0; margin: 0;
     font: inherit; text-align: left; cursor: pointer; width: 100%;
   }
+  /* Read-only snapshot: items still display status via color/pulse but
+     aren't actionable — cursor stays as default and focus ring is dropped
+     so the UI doesn't advertise an interaction that won't happen. */
+  body.is-readonly .check-item { cursor: default; }
+  body.is-readonly .check-item:focus-visible .check-box { outline: none; }
   .check-box {
     flex-shrink: 0;
+    position: relative;
     width: 19px; height: 19px;
     margin-top: 1px;
     border-radius: 6px;
     border: 2px solid var(--orange-check);
     display: flex; align-items: center; justify-content: center;
     transition: background 0.15s ease, border-color 0.15s ease;
+  }
+  /* Center-dot indicator for the glow (in-progress) state. Rendered via a
+     pseudo-element so no extra DOM nodes are needed; absolutely positioned
+     so it coexists with (not displaces) the SVG tick that shows in the
+     checked state. Hidden by default; only .check-item.glow reveals it. */
+  .check-box::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--orange);
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.4);
+    transition: opacity 0.18s ease, transform 0.18s ease;
+    pointer-events: none;
+  }
+  .node.teal .check-box::after { background: var(--teal); }
+  .node.center .check-box::after { background: #FFB265; }
+  .check-item.glow .check-box::after {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    animation: evCheckDotPulse 1.4s ease-in-out infinite;
+    will-change: transform, opacity;
+  }
+  /* Dot breathes in sync-ish with the outer halo — slightly faster cadence
+     so the two layers of motion read as "actively ticking" rather than one
+     slow throb. Scale + opacity together make the pulse legible even if
+     the box-shadow glow is washed out by a bright background. */
+  @keyframes evCheckDotPulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(0.78); opacity: 0.75; }
+    50%      { transform: translate(-50%, -50%) scale(1.18); opacity: 1;    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .check-item.glow .check-box::after { animation: none; }
   }
   .node.teal .check-box { border-color: var(--teal-check); }
   .check-box svg {
@@ -265,6 +317,105 @@
   .check-item.checked .check-box svg { opacity: 1; transform: scale(1); }
   .check-item:focus-visible .check-box { outline: 2px solid var(--orange); outline-offset: 2px; }
   .node.teal .check-item:focus-visible .check-box { outline-color: var(--teal); }
+
+  /* Glow state (first click of the tri-state cycle: empty → glow → checked →
+     empty). Reads as "in progress / warming up" — a softer pulse in the
+     same hue as the final tick, so the item visually leans toward being
+     checked without claiming to be done. .checked still wins for
+     completion — only fully ticked items color the timeline.
+
+     PERF: pulse animations use transform + opacity only (compositor-layer,
+     GPU-accelerated), NOT box-shadow or text-shadow interpolation. The
+     earlier box-shadow animation forced a full repaint every frame and
+     visibly janked scroll on anything but desktop Chrome. The outer
+     "radar ring" ::before expands outward via transform:scale — cheap,
+     smooth, and more eye-catching than a shadow pulse anyway. */
+  .check-item.glow .check-box {
+    background: rgba(232, 119, 34, 0.14);
+    border-color: var(--orange);
+    box-shadow: 0 0 10px rgba(232, 119, 34, 0.45);
+  }
+  .node.teal .check-item.glow .check-box {
+    background: rgba(0, 155, 141, 0.14);
+    border-color: var(--teal);
+    box-shadow: 0 0 10px rgba(0, 155, 141, 0.45);
+  }
+  /* Text pulse via opacity only (compositor property) — old version also
+     animated text-shadow + color, both of which trigger text re-paint
+     every frame and visibly janked scroll. Opacity pulse still reads
+     clearly as "actively in progress" because it's a strong contrast
+     swing against the surrounding static text, and it stays smooth
+     even on mid-tier mobile. */
+  .check-item.glow .check-text {
+    color: var(--orange);
+    text-shadow: 0 0 8px rgba(232, 119, 34, 0.5);
+    animation: evCheckTextPulse 1.8s ease-in-out infinite;
+    will-change: opacity;
+  }
+  .node.teal .check-item.glow .check-text {
+    color: var(--teal);
+    text-shadow: 0 0 8px rgba(0, 155, 141, 0.5);
+  }
+  @keyframes evCheckTextPulse {
+    0%, 100% { opacity: 0.7; }
+    50%      { opacity: 1;   }
+  }
+  /* Dark "center" variant — use the brighter fox-orange so the glow pops
+     against the dark card background instead of blending into it. */
+  .node.center .check-item.glow .check-box {
+    background: rgba(255, 178, 101, 0.18);
+    border-color: #FFB265;
+    box-shadow: 0 0 0 2px rgba(255, 178, 101, 0.22), 0 0 14px rgba(255, 178, 101, 0.65);
+  }
+  .node.center .check-item.glow .check-text {
+    color: #FFB265;
+    text-shadow: 0 0 10px rgba(255, 178, 101, 0.6);
+  }
+  /* Outer "radar ring" pulse — a bordered ::before that lives OUTSIDE the
+     box and expands outward from the box edge via transform:scale while
+     fading. Transform + opacity are compositor-only properties so this
+     animates without touching the paint pipeline. Replaces the old
+     box-shadow pulse that was janking scroll. */
+  .check-box::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 9px;
+    border: 2px solid currentColor;
+    color: var(--orange);
+    opacity: 0;
+    transform: scale(1);
+    pointer-events: none;
+  }
+  .node.teal .check-box::before { color: var(--teal); }
+  .node.center .check-box::before { color: #FFB265; }
+  .check-item.glow .check-box::before {
+    animation: evCheckRingPulse 1.8s ease-out infinite;
+    will-change: transform, opacity;
+  }
+  @keyframes evCheckRingPulse {
+    0%        { opacity: 0.9; transform: scale(1);   }
+    70%, 100% { opacity: 0;   transform: scale(1.6); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .check-item.glow .check-box::before,
+    .check-item.glow .check-box::after,
+    .check-item.glow .check-text { animation: none; }
+    .check-item.glow .check-box::before { opacity: 0.6; }
+  }
+
+  /* While the user is actively scrolling, pause the glow animations so the
+     compositor isn't juggling scroll + animation at the same time. The
+     .is-scrolling class is toggled by the small scroll-idle script below;
+     when it comes off (after ~140ms idle), the animations resume where
+     they left off. Net effect: scroll stays glass-smooth, glow pulse
+     comes back the moment the user stops. */
+  body.is-scrolling .check-item.glow .check-box::before,
+  body.is-scrolling .check-item.glow .check-box::after,
+  body.is-scrolling .check-item.glow .check-text {
+    animation-play-state: paused;
+  }
+
   .check-text { font-size: 13.5px; color: var(--cream); }
   .check-meta {
     display: block;
@@ -429,7 +580,9 @@
           <div class="card-title">App development — production ready</div>
           <div class="check-list">
             <button class="check-item" data-key="p1-0" data-default="true"><span class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">Feature development complete<span class="check-meta">Core app, all sub-apps, all 5 themes</span></span></button>
-            <button class="check-item" data-key="p1-1" data-default="false"><span class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">Full QA pass — 100% of test cases verified<span class="check-meta">In progress · 550 TCs / 46 sections · ₹5k</span></span></button>
+            <button class="check-item" data-key="p1-1" data-default="glow"><span class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">Full QA pass — macOS (Intel)<span class="check-meta">In progress · 550 TCs / 46 sections</span></span></button>
+            <button class="check-item" data-key="p1-2" data-default="false"><span class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">Full QA pass — Windows 11<span class="check-meta">Pending · 550 TCs / 46 sections</span></span></button>
+            <button class="check-item" data-key="p1-3" data-default="false"><span class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">Full QA pass — macOS (Apple Silicon)<span class="check-meta">Pending · 550 TCs / 46 sections · ₹5k</span></span></button>
           </div>
         </div>
       </div>
@@ -551,9 +704,65 @@
       </div>
     </div>
 
+    <!-- 9 — growth milestone: first 10 users -->
+    <div class="node right">
+      <div class="dot-col"><div class="dot"></div></div>
+      <div class="content">
+        <span class="pill-label">9 · 10 users</span>
+        <div class="card">
+          <div class="card-title">First traction</div>
+          <div class="check-list">
+            <button class="check-item" data-key="p10-0" data-default="false"><span class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">Reach 10 active users<span class="check-meta">First real signal · Validate retention</span></span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 10 — growth milestone: first 100 users -->
+    <div class="node left teal">
+      <div class="dot-col"><div class="dot"></div></div>
+      <div class="content">
+        <span class="pill-label">10 · 100 users</span>
+        <div class="card">
+          <div class="card-title">Early community</div>
+          <div class="check-list">
+            <button class="check-item" data-key="p11-0" data-default="false"><span class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">Reach 100 active users<span class="check-meta">Early community · First case studies</span></span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 11 — growth milestone: first 500 users -->
+    <div class="node right">
+      <div class="dot-col"><div class="dot"></div></div>
+      <div class="content">
+        <span class="pill-label">11 · 500 users</span>
+        <div class="card">
+          <div class="card-title">Product–market fit signals</div>
+          <div class="check-list">
+            <button class="check-item" data-key="p12-0" data-default="false"><span class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">Reach 500 active users<span class="check-meta">PMF signals · Repeatable acquisition</span></span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 12 — growth milestone: first 1,000 users (celebration centerpiece) -->
+    <div class="node center teal">
+      <div class="dot-col"><div class="dot"></div></div>
+      <div class="content">
+        <span class="pill-label">12 · 1,000 users</span>
+        <div class="card">
+          <div class="card-title">Flywheel engaged</div>
+          <div class="check-list">
+            <button class="check-item" data-key="p13-0" data-default="false"><span class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="check-text">Reach 1,000 active users<span class="check-meta">Growth loops live · Compounding retention</span></span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 
-  <footer>Estimates only — confirm exact figures with your CA/company secretary and the relevant assessor before budgeting. Tap any item to check it off — your progress is saved on this device.</footer>
+  <footer>Estimates only — confirm exact figures with your CA/company secretary and the relevant assessor before budgeting. This is a live snapshot of our roadmap — status is maintained by the Eagle View team and reflects the current state of play.</footer>
 
 </div>
 
@@ -611,9 +820,42 @@
 
 <script>
 (function () {
+  // --- Read-only mode ------------------------------------------------------
+  // Live roadmap is a view-only snapshot: visitors see exactly the states
+  // declared in the HTML (via data-default) and can't change them. Progress
+  // is updated by editing this file directly — we're the only ones who can
+  // move items from empty → glow → checked, and we do it by committing an
+  // HTML change, not by clicking around. This keeps the roadmap honest:
+  // no "accidentally ticked" states, no device-specific drift, same view
+  // for everyone who loads the page.
+  //
+  // Flip to false locally if you ever want to experiment with click-cycling
+  // in a prototype session — nothing else in the script cares about this
+  // flag beyond the two guards below.
+  var READONLY = true;
+
+  // --- Scroll-idle class ---------------------------------------------------
+  // Add body.is-scrolling while the user is actively scrolling, strip it ~140ms
+  // after they stop. CSS uses this to pause the glow pulse animations so the
+  // compositor can commit scroll frames at 60fps without fighting animation
+  // commits in the same tick. Dirt-cheap, massively improves scroll feel on
+  // mobile and mid-tier laptops.
+  var body = document.body;
+  if (READONLY) body.classList.add('is-readonly');
+  var scrollIdleTimer;
+  window.addEventListener('scroll', function () {
+    if (!body.classList.contains('is-scrolling')) body.classList.add('is-scrolling');
+    clearTimeout(scrollIdleTimer);
+    scrollIdleTimer = setTimeout(function () { body.classList.remove('is-scrolling'); }, 140);
+  }, { passive: true });
+
   var STORAGE_KEY = 'ev-roadmap-checks-v1';
+  // In read-only mode skip localStorage entirely so prior device-saved state
+  // can't override the authoritative data-default values from the HTML.
   var saved = {};
-  try { saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch (e) {}
+  if (!READONLY) {
+    try { saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch (e) {}
+  }
 
   function updateCard(card) {
     var items = card.querySelectorAll('.check-item');
@@ -661,16 +903,54 @@
     });
   }
 
+  // Tri-state item: '' (empty) → 'glow' (in progress) → 'checked' (done)
+  //                                                       └─ cycles back to ''
+  // Only 'checked' counts toward card completion (see updateCard above),
+  // so the timeline segment only fills when every item is actually ticked
+  // — 'glow' is a visual marker, not a done-state. localStorage stores the
+  // string state directly ('', 'glow', 'checked'); legacy boolean values
+  // from the old 2-state logic are migrated on read (true → 'checked').
+  var STATES = ['', 'glow', 'checked'];
+  function stateOf(el) {
+    if (el.classList.contains('checked')) return 'checked';
+    if (el.classList.contains('glow')) return 'glow';
+    return '';
+  }
+  function setStateClass(el, s) {
+    el.classList.remove('glow', 'checked');
+    if (s === 'glow' || s === 'checked') el.classList.add(s);
+  }
+  function nextState(s) {
+    var i = STATES.indexOf(s);
+    return STATES[(i + 1) % STATES.length];
+  }
+  function normalizeSaved(raw, el) {
+    // Legacy: boolean true → checked, boolean false → empty.
+    if (raw === true) return 'checked';
+    if (raw === false) return '';
+    if (raw === 'checked' || raw === 'glow' || raw === '') return raw;
+    // Nothing stored (or garbage) — fall back to the HTML-declared default.
+    // data-default accepts 'true'/'checked' (fully done), 'glow' (in
+    // progress, pre-set by markup), or 'false'/anything-else (empty).
+    var def = el.getAttribute('data-default');
+    if (def === 'true' || def === 'checked') return 'checked';
+    if (def === 'glow') return 'glow';
+    return '';
+  }
+
   document.querySelectorAll('.check-item').forEach(function (el) {
     var key = el.getAttribute('data-key');
-    var isChecked = Object.prototype.hasOwnProperty.call(saved, key)
-      ? saved[key]
-      : el.getAttribute('data-default') === 'true';
-    if (isChecked) el.classList.add('checked');
+    var raw = Object.prototype.hasOwnProperty.call(saved, key) ? saved[key] : undefined;
+    setStateClass(el, normalizeSaved(raw, el));
+
+    // Read-only skips wiring click — the item still renders its state from
+    // HTML/localStorage via setStateClass above, but tapping it is a no-op.
+    if (READONLY) return;
 
     el.addEventListener('click', function () {
-      el.classList.toggle('checked');
-      saved[key] = el.classList.contains('checked');
+      var next = nextState(stateOf(el));
+      setStateClass(el, next);
+      saved[key] = next;
       try { localStorage.setItem(STORAGE_KEY, JSON.stringify(saved)); } catch (e) {}
       updateCard(el.closest('.card'));
       updateTimelineLineColors();
