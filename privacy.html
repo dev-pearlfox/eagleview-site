@@ -551,7 +551,7 @@
             <td><strong>Authentication tokens</strong></td>
             <td>OAuth 2.0 access token, refresh token, expiry timestamp</td>
             <td>Maintain authenticated session without repeated login</td>
-            <td>Yes — kept on your device only. Versions after 1.1.7: the Gmail sign-in token is stored in your operating system's secure storage (macOS Keychain; Windows Credential Manager), and the Outlook, Jira, Azure DevOps and Slack tokens are encrypted in the local settings file, with the encryption key held in that same secure storage. Versions up to and including 1.1.7 kept these tokens in the settings file without encryption.</td>
+            <td>Yes — kept on your device only. Version 1.1.7 and later: the Gmail sign-in token is stored in your operating system's secure storage (macOS Keychain; Windows Credential Manager), and the Outlook, Jira, Azure DevOps and Slack tokens are encrypted in the local settings file, with the encryption key held in that same secure storage. Versions before 1.1.7 kept these tokens in the settings file without encryption.</td>
           </tr>
           <tr>
             <td><strong>App settings</strong></td>
@@ -659,7 +659,7 @@
 
       <h3>Security Measures</h3>
       <ul>
-        <li>Versions after 1.1.7: the Gmail sign-in token is stored in your operating system's secure storage (macOS Keychain; Windows Credential Manager); the Outlook, Jira, Azure DevOps and Slack tokens are encrypted with AES-256-GCM before being written to disk, and the key is held in that secure storage. Versions up to and including 1.1.7 stored these tokens in the settings file without encryption</li>
+        <li>Version 1.1.7 and later: the Gmail sign-in token is stored in your operating system's secure storage (macOS Keychain; Windows Credential Manager); the Outlook, Jira, Azure DevOps and Slack tokens are encrypted with AES-256-GCM before being written to disk, and the key is held in that secure storage. Versions before 1.1.7 stored these tokens in the settings file without encryption</li>
         <li>All API communication uses TLS 1.2 or higher (HTTPS only)</li>
         <li>The Application requests minimum necessary OAuth scopes (principle of least privilege)</li>
         <li>No telemetry, crash reporting, or usage analytics data is transmitted from the Application</li>
@@ -859,7 +859,7 @@
 
 <footer class="doc-footer">
   <p>© 2026 PearlFox. All rights reserved. &nbsp;·&nbsp; <a href="mailto:dev@pearlfox.io">Contact</a></p>
-  <p style="margin-top:0.5rem; opacity:0.6;">Eagle View is a product of PearlFox. This document was last updated on October 8, 2026. Version 1.4 — corrected how sign-in tokens are stored (secure storage and encryption, and that versions up to 1.1.7 did not encrypt them), where notes are stored, and how to erase all local data. Version 1.3 — added disclosure for Jira (Atlassian), Azure DevOps, and Slack: the optional data these integrations access, that Azure DevOps reuses the existing Microsoft sign-in (or an optional Personal Access Token) rather than a separate account, and the Jira issue-transition / Azure work-item-state write actions. Version 1.2 corrected Section 2 to accurately disclose message-body access and the mark-as-read/flag/delete/complete write actions.</p>
+  <p style="margin-top:0.5rem; opacity:0.6;">Eagle View is a product of PearlFox. This document was last updated on October 8, 2026. Version 1.4 — corrected how sign-in tokens are stored (secure storage and encryption, and that versions before 1.1.7 did not encrypt them), where notes are stored, and how to erase all local data. Version 1.3 — added disclosure for Jira (Atlassian), Azure DevOps, and Slack: the optional data these integrations access, that Azure DevOps reuses the existing Microsoft sign-in (or an optional Personal Access Token) rather than a separate account, and the Jira issue-transition / Azure work-item-state write actions. Version 1.2 corrected Section 2 to accurately disclose message-body access and the mark-as-read/flag/delete/complete write actions.</p>
 </footer>
 </body>
 </html>
