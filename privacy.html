@@ -449,7 +449,7 @@
 <!-- Hero -->
 <div class="hero">
   <h1>Privacy Policy for <span>Eagle View</span></h1>
-  <p class="hero-meta">Effective Date: September 28, 2026 &nbsp;·&nbsp; Version 1.3 &nbsp;·&nbsp; PearlFox, India</p>
+  <p class="hero-meta">Effective Date: October 8, 2026 &nbsp;·&nbsp; Version 1.4 &nbsp;·&nbsp; PearlFox, India</p>
   <div class="compliance-badges">
     <span class="badge">GDPR Compliant</span>
     <span class="badge">CCPA Compliant</span>
@@ -551,7 +551,7 @@
             <td><strong>Authentication tokens</strong></td>
             <td>OAuth 2.0 access token, refresh token, expiry timestamp</td>
             <td>Maintain authenticated session without repeated login</td>
-            <td>Yes — encrypted in local app settings file</td>
+            <td>Yes — kept on your device only. Versions after 1.1.7: the Gmail sign-in token is stored in your operating system's secure storage (macOS Keychain; Windows Credential Manager), and the Outlook, Jira, Azure DevOps and Slack tokens are encrypted in the local settings file, with the encryption key held in that same secure storage. Versions up to and including 1.1.7 kept these tokens in the settings file without encryption.</td>
           </tr>
           <tr>
             <td><strong>App settings</strong></td>
@@ -647,21 +647,26 @@
           <tr>
             <td><strong>eagle-view-settings.json</strong></td>
             <td>macOS: <code>~/Library/Application Support/com.manojpro.eagleview/</code><br>Windows: <code>%APPDATA%\com.manojpro.eagleview\</code></td>
-            <td>OAuth tokens (encrypted at rest), widget preferences, notes, reminder data</td>
+            <td>Encrypted sign-in tokens (see Security Measures), widget preferences, reminder data</td>
+          </tr>
+          <tr>
+            <td><strong>eagle-view-notes.json</strong></td>
+            <td>Same folder as above</td>
+            <td>Your notes (stored as plain text; not encrypted)</td>
           </tr>
         </tbody>
       </table>
 
       <h3>Security Measures</h3>
       <ul>
-        <li>OAuth tokens are stored using the platform's native secure storage primitives</li>
+        <li>Versions after 1.1.7: the Gmail sign-in token is stored in your operating system's secure storage (macOS Keychain; Windows Credential Manager); the Outlook, Jira, Azure DevOps and Slack tokens are encrypted with AES-256-GCM before being written to disk, and the key is held in that secure storage. Versions up to and including 1.1.7 stored these tokens in the settings file without encryption</li>
         <li>All API communication uses TLS 1.2 or higher (HTTPS only)</li>
         <li>The Application requests minimum necessary OAuth scopes (principle of least privilege)</li>
         <li>No telemetry, crash reporting, or usage analytics data is transmitted from the Application</li>
         <li>The Application's Rust backend enforces memory safety to prevent buffer overflow and injection attacks</li>
       </ul>
       <div class="highlight">
-        <strong>You are the data controller.</strong> Because all data stays on your device, you retain full control. You can delete all stored data at any time by removing the settings file above or uninstalling the Application.
+        <strong>You are the data controller.</strong> Because all data stays on your device, you retain full control. You can delete all stored data at any time with Settings → Log Out and Factory Reset in the Application. Deleting the files above or uninstalling the Application removes the files but does not remove the Gmail sign-in token or the encryption key held in your operating system's secure storage; to remove them, delete the entries named "EagleView" in Keychain Access (macOS) or Credential Manager (Windows).
       </div>
     </section>
 
@@ -747,8 +752,8 @@
         <thead><tr><th>Data</th><th>Retention Period</th><th>Deletion Method</th></tr></thead>
         <tbody>
           <tr><td>Email &amp; calendar data (in-memory)</td><td>Duration of app session only</td><td>Automatically cleared on app close</td></tr>
-          <tr><td>OAuth tokens</td><td>Until logout or uninstall</td><td>Settings → Log Out; or delete settings file</td></tr>
-          <tr><td>App preferences &amp; notes</td><td>Until uninstall</td><td>Delete settings file or uninstall app</td></tr>
+          <tr><td>OAuth tokens</td><td>Until logout or uninstall</td><td>Settings → Log Out or Factory Reset; also delete the "EagleView" entries in Keychain Access / Credential Manager if you uninstall without logging out</td></tr>
+          <tr><td>App preferences &amp; notes</td><td>Until uninstall</td><td>Delete the settings and notes files, or uninstall the app</td></tr>
           <tr><td>License records (email address, device identifier, license key)</td><td>Duration of license + 1 year for dispute resolution</td><td>Contact dev@pearlfox.io to request deletion</td></tr>
         </tbody>
       </table>
@@ -766,7 +771,7 @@
       <h3>Rights under GDPR <span class="flag flag-gdpr">GDPR</span></h3>
       <div class="rights-grid">
         <div class="right-card"><div class="right-title">Right of Access (Art. 15)</div><p>You can view all data the app accesses directly within Eagle View's interface.</p></div>
-        <div class="right-card"><div class="right-title">Right to Erasure (Art. 17)</div><p>Log out and delete the settings file to erase all locally stored data.</p></div>
+        <div class="right-card"><div class="right-title">Right to Erasure (Art. 17)</div><p>Use Settings → Log Out and Factory Reset to erase all locally stored data, including the entries in your operating system's secure storage.</p></div>
         <div class="right-card"><div class="right-title">Right to Restrict Processing (Art. 18)</div><p>Disconnect your account via Settings → Log Out to stop all data processing.</p></div>
         <div class="right-card"><div class="right-title">Right to Data Portability (Art. 20)</div><p>Your settings file is a standard JSON file you may copy or transfer freely.</p></div>
         <div class="right-card"><div class="right-title">Right to Object (Art. 21)</div><p>Uninstall the Application to cease all data processing immediately.</p></div>
@@ -776,7 +781,7 @@
       <h3>Rights under CCPA/CPRA <span class="flag flag-ccpa">CCPA</span></h3>
       <div class="rights-grid">
         <div class="right-card"><div class="right-title">Right to Know</div><p>This Policy fully describes the categories of personal information processed.</p></div>
-        <div class="right-card"><div class="right-title">Right to Delete</div><p>Delete your settings file or uninstall to remove all personal information.</p></div>
+        <div class="right-card"><div class="right-title">Right to Delete</div><p>Use Factory Reset in the app, or delete the settings and notes files and the "EagleView" entries in Keychain Access / Credential Manager.</p></div>
         <div class="right-card"><div class="right-title">Right to Opt-Out of Sale</div><p>We do not sell personal information. No opt-out is required.</p></div>
         <div class="right-card"><div class="right-title">Right to Non-Discrimination</div><p>Exercising your privacy rights will not affect your access to Eagle View.</p></div>
       </div>
@@ -784,7 +789,7 @@
       <h3>Rights under DPDP Act 2023 <span class="flag flag-dpdp">India</span></h3>
       <div class="rights-grid">
         <div class="right-card"><div class="right-title">Right to Information (S.11)</div><p>This Policy provides complete information about personal data processing activities.</p></div>
-        <div class="right-card"><div class="right-title">Right to Correction &amp; Erasure (S.12)</div><p>Contact us or delete your local settings file to erase processed data.</p></div>
+        <div class="right-card"><div class="right-title">Right to Correction &amp; Erasure (S.12)</div><p>Contact us or use Factory Reset in the app to erase processed data.</p></div>
         <div class="right-card"><div class="right-title">Right to Grievance Redressal (S.13)</div><p>Contact our Data Protection Officer at dev@pearlfox.io.</p></div>
         <div class="right-card"><div class="right-title">Right to Nominate (S.14)</div><p>You may nominate a representative to exercise your rights on your behalf.</p></div>
       </div>
@@ -854,7 +859,7 @@
 
 <footer class="doc-footer">
   <p>© 2026 PearlFox. All rights reserved. &nbsp;·&nbsp; <a href="mailto:dev@pearlfox.io">Contact</a></p>
-  <p style="margin-top:0.5rem; opacity:0.6;">Eagle View is a product of PearlFox. This document was last updated on September 28, 2026. Version 1.3 — added disclosure for Jira (Atlassian), Azure DevOps, and Slack: the optional data these integrations access, that Azure DevOps reuses the existing Microsoft sign-in (or an optional Personal Access Token) rather than a separate account, and the Jira issue-transition / Azure work-item-state write actions. Version 1.2 corrected Section 2 to accurately disclose message-body access and the mark-as-read/flag/delete/complete write actions.</p>
+  <p style="margin-top:0.5rem; opacity:0.6;">Eagle View is a product of PearlFox. This document was last updated on October 8, 2026. Version 1.4 — corrected how sign-in tokens are stored (secure storage and encryption, and that versions up to 1.1.7 did not encrypt them), where notes are stored, and how to erase all local data. Version 1.3 — added disclosure for Jira (Atlassian), Azure DevOps, and Slack: the optional data these integrations access, that Azure DevOps reuses the existing Microsoft sign-in (or an optional Personal Access Token) rather than a separate account, and the Jira issue-transition / Azure work-item-state write actions. Version 1.2 corrected Section 2 to accurately disclose message-body access and the mark-as-read/flag/delete/complete write actions.</p>
 </footer>
 </body>
 </html>
