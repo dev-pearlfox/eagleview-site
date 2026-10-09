@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Returning to Eagle View</title>
+<meta name="robots" content="noindex,nofollow"/>
+<meta name="referrer" content="no-referrer"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-YhIsND1UUVV3fC7ghUsHIMdLEpc/UQ9Ss5lJAjkGOZg='; style-src 'sha256-5CIhDWcyEcxyYC/ly0PA534IRiOeU3ILdQZHOHjpWzM='; img-src 'self'; base-uri 'none'; form-action 'none'"/>
+<link rel="canonical" href="https://eagleview.pearlfox.io/slack-callback.html"/>
+
+<!-- Favicons + PWA -->
+<link rel="icon" type="image/x-icon" href="favicon.ico?v=2"/>
+<link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png?v=2"/>
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=2"/>
+<link rel="manifest" href="site.webmanifest"/>
+<meta name="theme-color" content="#030612"/>
+
+<style>body{margin:0;display:flex;align-items:center;justify-content:center;min-height:100vh;background:#08111F;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;text-align:center}main{max-width:420px;padding:24px}h1{font-size:20px;margin:0 0 12px}p{margin:0 0 8px;color:#9fb0c8;font-size:15px;line-height:1.5}</style>
+</head>
+<body>
+<main>
+  <h1 id="title">Returning to Eagle View...</h1>
+  <p id="note">If nothing happens, make sure Eagle View is open, then start the Slack sign-in again from the app.</p>
+</main>
+<script>(function () {
+  // Slack sign-in relay. Slack only accepts https redirect addresses for apps shared with other
+  // workspaces, so Slack sends the browser here, and this page hands the one-time code to the
+  // Eagle View app that is listening on the user's own computer. No secret is stored or used here.
+  // The target is fixed; the link can never choose where the code goes.
+  var TARGET = 'http://localhost:3743/';
+  var ALLOWED = ['code', 'state', 'error'];
+  var MAX_LEN = 2048;
+
+  function buildForwardUrl(search) {
+    var p = new URLSearchParams(search);
+    if (!p.has('code') && !p.has('error')) return null;
+    var parts = [];
+    ALLOWED.forEach(function (k) {
+      var v = p.get(k);
+      if (v !== null && v.length <= MAX_LEN) parts.push(k + '=' + encodeURIComponent(v));
+    });
+    return TARGET + '?' + parts.join('&');
+  }
+
+  var url = buildForwardUrl(window.location.search);
+  if (url) {
+    window.location.replace(url);
+  } else {
+    document.getElementById('title').textContent = 'Nothing to do here';
+    document.getElementById('note').textContent = 'This page is part of the Eagle View Slack sign-in. Please close this tab and start again from the app.';
+  }
+})();</script>
+</body>
+</html>
