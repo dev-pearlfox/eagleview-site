@@ -449,7 +449,7 @@
 <!-- Hero -->
 <div class="hero">
   <h1>Privacy Policy for <span>Eagle View</span></h1>
-  <p class="hero-meta">Effective Date: October 8, 2026 &nbsp;·&nbsp; Version 1.4 &nbsp;·&nbsp; PearlFox, India</p>
+  <p class="hero-meta">Effective Date: October 12, 2026 &nbsp;·&nbsp; Version 1.5 &nbsp;·&nbsp; PearlFox, India</p>
   <div class="compliance-badges">
     <span class="badge">GDPR Compliant</span>
     <span class="badge">CCPA Compliant</span>
@@ -560,6 +560,12 @@
             <td>Yes — local settings file on your device</td>
           </tr>
           <tr>
+            <td><strong>Diagnostic log</strong></td>
+            <td>Technical events only: time, which part of the app, what it did, error codes, app version. Written so that it holds no email addresses, meeting titles, message text, account or project names, web addresses beyond the site name, or the user name in file paths.</td>
+            <td>Find and fix problems; you may send it to support yourself</td>
+            <td>Yes — log file on your device, last 5 days only. Never sent by the app (see Section 4)</td>
+          </tr>
+          <tr>
             <td><strong>Email address</strong> <span class="flag flag-dpdp">License</span></td>
             <td>Email address provided during license purchase or activation</td>
             <td>Generate and deliver license key; identify license holder</td>
@@ -640,7 +646,7 @@
         <div class="section-num">4</div>
         <h2>Local Storage &amp; Security</h2>
       </div>
-      <p>All data handled by Eagle View resides exclusively on your local device. The following file is created during normal operation:</p>
+      <p>All data handled by Eagle View resides exclusively on your local device. The following files are created during normal operation:</p>
       <table class="data-table">
         <thead><tr><th>File</th><th>Location</th><th>Contents</th></tr></thead>
         <tbody>
@@ -654,8 +660,27 @@
             <td>Same folder as above</td>
             <td>Your notes (stored as plain text; not encrypted)</td>
           </tr>
+          <tr>
+            <td><strong>Eagle View.log</strong></td>
+            <td>macOS: <code>~/Library/Logs/com.manojpro.eagleview/</code><br>Windows: <code>%LOCALAPPDATA%\com.manojpro.eagleview\logs\</code></td>
+            <td>Diagnostic log (see below). Plain text, not encrypted. Only the last 5 days are kept</td>
+          </tr>
+          <tr>
+            <td><strong>Eagle View-viewer-*.html</strong></td>
+            <td>Same folder as the log</td>
+            <td>A temporary page that shows the log in your browser when you open the Log Viewer. Deleted when Eagle View quits</td>
+          </tr>
         </tbody>
       </table>
+
+      <h3>Diagnostic log and Log Viewer</h3>
+      <ul>
+        <li>The log records technical events (for example "refresh finished", "sign-in cancelled", an error code) so problems can be diagnosed. It is written to be free of personal data: email addresses, meeting titles, message text, Jira / Azure DevOps / Slack names and ids, and full web addresses are not written, and your operating-system user name in file paths is replaced with <code>&lt;user&gt;</code>. Sign-in tokens are never written to it.</li>
+        <li>Eagle View never uploads or emails the log. It stays on your device unless you choose to send it. The Log Viewer (Settings, or Debug Logs on the sign-in screen) opens it in your browser and has two buttons, Download as TXT and Download as HTML, so you can save a copy and send it to PearlFox support yourself.</li>
+        <li>The downloaded file's name contains your license email address (or your operating-system user name if there is none), the app version and the date, for example <code style="word-break:break-all;">EagleView_Log_v1.1.7_you@example.com_2026-10-12_15-38-27.txt</code>. Check the name before you share it publicly.</li>
+        <li>Old lines are removed automatically: entries older than 5 days are deleted each time Eagle View starts and each time the Log Viewer is opened. Factory Reset erases the log and any saved viewer pages.</li>
+        <li>Log files written by older builds of Eagle View (before the October 12, 2026 update) may still contain data that newer builds no longer write, until those lines age out after 5 days or you use Factory Reset.</li>
+      </ul>
 
       <h3>Security Measures</h3>
       <ul>
@@ -754,6 +779,7 @@
           <tr><td>Email &amp; calendar data (in-memory)</td><td>Duration of app session only</td><td>Automatically cleared on app close</td></tr>
           <tr><td>OAuth tokens</td><td>Until logout or uninstall</td><td>Settings → Log Out or Factory Reset; also delete the "EagleView" entries in Keychain Access / Credential Manager if you uninstall without logging out</td></tr>
           <tr><td>App preferences &amp; notes</td><td>Until uninstall</td><td>Delete the settings and notes files, or uninstall the app</td></tr>
+          <tr><td>Diagnostic log</td><td>Last 5 days; older lines removed at each app start and when the Log Viewer is opened</td><td>Factory Reset, or delete the log folder shown in Section 4</td></tr>
           <tr><td>License records (email address, device identifier, license key)</td><td>Duration of license + 1 year for dispute resolution</td><td>Contact dev@pearlfox.io to request deletion</td></tr>
         </tbody>
       </table>
@@ -781,7 +807,7 @@
       <h3>Rights under CCPA/CPRA <span class="flag flag-ccpa">CCPA</span></h3>
       <div class="rights-grid">
         <div class="right-card"><div class="right-title">Right to Know</div><p>This Policy fully describes the categories of personal information processed.</p></div>
-        <div class="right-card"><div class="right-title">Right to Delete</div><p>Use Factory Reset in the app, or delete the settings and notes files and the "EagleView" entries in Keychain Access / Credential Manager.</p></div>
+        <div class="right-card"><div class="right-title">Right to Delete</div><p>Use Factory Reset in the app, or delete the settings, notes and log files and the "EagleView" entries in Keychain Access / Credential Manager.</p></div>
         <div class="right-card"><div class="right-title">Right to Opt-Out of Sale</div><p>We do not sell personal information. No opt-out is required.</p></div>
         <div class="right-card"><div class="right-title">Right to Non-Discrimination</div><p>Exercising your privacy rights will not affect your access to Eagle View.</p></div>
       </div>
@@ -859,7 +885,7 @@
 
 <footer class="doc-footer">
   <p>© 2026 PearlFox. All rights reserved. &nbsp;·&nbsp; <a href="mailto:dev@pearlfox.io">Contact</a></p>
-  <p style="margin-top:0.5rem; opacity:0.6;">Eagle View is a product of PearlFox. This document was last updated on October 8, 2026. Version 1.4 — corrected how sign-in tokens are stored (secure storage and encryption, and that versions before 1.1.7 did not encrypt them), where notes are stored, and how to erase all local data. Version 1.3 — added disclosure for Jira (Atlassian), Azure DevOps, and Slack: the optional data these integrations access, that Azure DevOps reuses the existing Microsoft sign-in (or an optional Personal Access Token) rather than a separate account, and the Jira issue-transition / Azure work-item-state write actions. Version 1.2 corrected Section 2 to accurately disclose message-body access and the mark-as-read/flag/delete/complete write actions.</p>
+  <p style="margin-top:0.5rem; opacity:0.6;">Eagle View is a product of PearlFox. This document was last updated on October 12, 2026. Version 1.5 — added the diagnostic log and Log Viewer (what it holds, where it is, 5-day retention, the downloaded file name, how to erase it). Version 1.4 — corrected how sign-in tokens are stored (secure storage and encryption, and that versions before 1.1.7 did not encrypt them), where notes are stored, and how to erase all local data. Version 1.3 — added disclosure for Jira (Atlassian), Azure DevOps, and Slack: the optional data these integrations access, that Azure DevOps reuses the existing Microsoft sign-in (or an optional Personal Access Token) rather than a separate account, and the Jira issue-transition / Azure work-item-state write actions. Version 1.2 corrected Section 2 to accurately disclose message-body access and the mark-as-read/flag/delete/complete write actions.</p>
 </footer>
 </body>
 </html>
