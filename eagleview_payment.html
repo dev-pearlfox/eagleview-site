@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Eagle View — License</title>
-<meta name="description" content="Buy an Eagle View license — activate the app on your Mac or Windows PC. One-time purchase, instant delivery."/>
+<meta name="description" content="Buy an Eagle View license for yourself or for your whole company — activate the app on your Mac or Windows PC."/>
 <meta name="robots" content="noindex,follow"/>
 <link rel="canonical" href="https://eagleview.pearlfox.io/eagleview_payment.html"/>
 
@@ -18,7 +18,7 @@
 <meta property="og:type" content="website"/>
 <meta property="og:site_name" content="Eagle View"/>
 <meta property="og:title" content="Eagle View — License"/>
-<meta property="og:description" content="Buy an Eagle View license — activate the app on your Mac or Windows PC. One-time purchase, instant delivery."/>
+<meta property="og:description" content="Buy an Eagle View license for yourself or for your whole company — activate the app on your Mac or Windows PC."/>
 <meta property="og:url" content="https://eagleview.pearlfox.io/eagleview_payment.html"/>
 <meta property="og:image" content="https://eagleview.pearlfox.io/social-card.png"/>
 <meta property="og:image:width" content="1200"/>
@@ -28,7 +28,7 @@
 <!-- Twitter / X -->
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Eagle View — License"/>
-<meta name="twitter:description" content="Buy an Eagle View license — activate the app on your Mac or Windows PC. One-time purchase, instant delivery."/>
+<meta name="twitter:description" content="Buy an Eagle View license for yourself or for your whole company — activate the app on your Mac or Windows PC."/>
 <meta name="twitter:image" content="https://eagleview.pearlfox.io/social-card.png"/>
 
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -37,7 +37,7 @@
 <!-- Shared design tokens, keyframes, nav lockup, panel effects, and chip
      styles live in one file so both home + payment pages stay in sync. -->
 <link rel="stylesheet" href="eagleview-shared.css"/>
-<link rel="stylesheet" href="eagleview_payment.css"/>
+<link rel="stylesheet" href="eagleview_payment.css?v=20261019"/>
 </head>
 <body>
 <header class="top">
@@ -49,7 +49,7 @@
   </div>
 </header>
 
-<main class="wrap">
+<main class="wrap" id="individualView" role="tabpanel" aria-labelledby="tabInd">
   <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
   <div class="inner">
     <div class="col-form">
@@ -57,15 +57,27 @@
       <h1>Unlock your<span class="grad">full license</span></h1>
       <p class="sub"><span id="tw"></span><span class="cur"></span></p>
 
+      <!-- One tab bar for all three views: the script moves it into the .seg-slot of the view that is showing. -->
+      <div class="seg-slot">
+      <div class="seg" role="tablist" aria-label="License type">
+        <span class="seg-pill" id="segPill" aria-hidden="true"></span>
+        <button type="button" role="tab" id="tabInd" aria-selected="true" aria-controls="individualView">Individual</button>
+        <button type="button" role="tab" id="tabSt" aria-selected="false" aria-controls="studentView" tabindex="-1">Student</button>
+        <button type="button" role="tab" id="tabCo" aria-selected="false" aria-controls="companyView" tabindex="-1">Company</button>
+      </div>
+      </div>
+
       <div class="card">
-        <div class="price-cols-hdr"><div class="phdr-spacer"></div><div class="phdr-prices"><span>Standard Price</span><span class="grad-text">Launch offer</span></div><div class="phdr-radio"></div></div>
         <!-- Plan cards are rendered from the PLANS array in JS (see renderPlans below) —
              prices live in exactly one place now, so changing them is a one-line edit
              instead of hunting through three synchronised sources. -->
         <div class="plans" role="radiogroup" aria-label="Choose license duration" id="plansRoot">
           <div class="plan-sel-indicator" id="planSelInd" aria-hidden="true"></div>
         </div>
-        <div class="coupon-row">
+        <!-- Coupon box: shows a button first; clicking it swaps the button for the input and Apply
+             (see the coupon script at the bottom). The button is the same size as the input row. -->
+        <button type="button" class="coupon-toggle" id="couponToggle" aria-expanded="false" aria-controls="couponRow">Have a coupon code?</button>
+        <div class="coupon-row" id="couponRow" hidden>
           <input class="inp" id="buyCoupon" type="text" placeholder="Coupon code (optional)" autocomplete="off" spellcheck="false" oninput="onCouponInput()" onkeydown="if(event.key==='Enter'){event.preventDefault();applyCoupon();}"/>
           <button type="button" class="coupon-apply-btn" onclick="applyCoupon()">Apply</button>
         </div>
@@ -105,6 +117,109 @@
                row/notification/clock/footer mockup that used to live here. -->
           <img src="app-screenshot.webp" alt="Eagle View sidebar screenshot showing Mails, Meetings, To Do, and more" width="416" height="1298" style="display:block;width:100%;height:auto;" decoding="async" fetchpriority="high">
         </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Student view: design placeholder only. Price, proof of being a student and how the key is
+     issued are not decided yet, so this shows no price and collects nothing. Shown by the tab
+     script at the bottom, which also moves the shared tab bar and screenshot panel into it. -->
+<main class="wrap" id="studentView" role="tabpanel" aria-labelledby="tabSt" hidden>
+  <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
+  <div class="inner">
+    <div class="col-form">
+      <div class="badge"><span class="bdot"></span>Student license</div>
+      <h1>Eagle View<span class="grad">for students</span></h1>
+      <p class="sub">A student license for your Mac or Windows PC is on its way.</p>
+      <div class="seg-slot"></div>
+      <div class="card">
+        <div class="co-price">
+          <div class="co-amt st-soon">Coming soon</div>
+          <div class="co-tax">Student pricing and how to verify you are a student will be announced here.</div>
+        </div>
+        <a class="pay-btn co-cta" href="mailto:dev@pearlfox.io?subject=Eagle%20View%20student%20license&amp;body=Hi%2C%20please%20tell%20me%20when%20the%20Eagle%20View%20student%20license%20is%20available.%0D%0A%0D%0ACountry%3A%0D%0ASchool%20or%20university%3A">Tell me when it opens</a>
+        <p class="hint co-hint">Or write to <strong>dev@pearlfox.io</strong>. In the meantime you can use the free 30-day trial inside the app.</p>
+        <div class="footer-links"><a href="/">Product</a><a href="/privacy.html">Privacy</a><a href="mailto:dev@pearlfox.io">Support</a></div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Company view: static content only (no payment script). A company asks for an invoice by
+     email; nothing is collected by this page. Shown by the tab script at the bottom. -->
+<main class="wrap" id="companyView" role="tabpanel" aria-labelledby="tabCo" hidden>
+  <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
+  <div class="inner">
+    <div class="col-form">
+      <div class="badge"><span class="bdot"></span>Company license &middot; Annual</div>
+      <h1>License your<span class="grad">whole company</span></h1>
+      <p class="sub">One annual license for every employee at your company. We send an invoice, you pay it online.</p>
+      <div class="seg-slot"></div>
+      <div class="card">
+        <div class="co-price">
+          <div class="co-amt">&#8377;28,999<span> / year</span></div>
+          <div class="co-tax">GST included &middot; any number of employees &middot; one email domain</div>
+        </div>
+        <div class="divider"></div>
+        <ol class="co-steps">
+          <li><strong>Request an invoice.</strong> Enter your company details below and send them to us by email.</li>
+          <li><strong>Receive the invoice.</strong> We email you an invoice for the company license.</li>
+          <li><strong>Pay online.</strong> Pay the invoice by card, UPI or net banking.</li>
+          <li><strong>We set you up within 1 working day</strong> after payment. Your employees then activate Eagle View with their company email address.</li>
+        </ol>
+        <button type="button" class="pay-btn" id="coRequest" aria-expanded="false" aria-controls="coForm">Request an invoice</button>
+        <form id="coForm" class="co-form" novalidate hidden>
+          <div class="fld">
+            <input class="inp" id="coName" type="text" placeholder="Company name" autocomplete="organization" maxlength="120" aria-required="true" aria-describedby="coName-e"/>
+            <p class="fe" id="coName-e"></p>
+          </div>
+          <div class="co-row">
+            <div class="fld">
+              <input class="inp" id="coDomain" type="text" placeholder="Email domain (acme.com)" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="100" aria-required="true" aria-describedby="coDomain-e"/>
+              <p class="fe" id="coDomain-e"></p>
+            </div>
+            <div class="fld">
+              <input class="inp" id="coEmail" type="email" placeholder="Contact email" autocomplete="email" maxlength="254" aria-required="true" aria-describedby="coEmail-e"/>
+              <p class="fe" id="coEmail-e"></p>
+            </div>
+          </div>
+          <div class="co-row">
+            <div class="fld">
+              <div class="cb" id="coCountryBox">
+                <input class="inp" id="coCountry" type="text" role="combobox" placeholder="Country" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="60" aria-autocomplete="list" aria-haspopup="listbox" aria-expanded="false" aria-controls="coCountryList" aria-label="Country" aria-required="true" aria-describedby="coCountry-e"/>
+                <span class="cb-chev" aria-hidden="true"></span>
+                <ul class="cb-list" id="coCountryList" role="listbox" aria-label="Countries" hidden></ul>
+              </div>
+              <p class="fe" id="coCountry-e"></p>
+            </div>
+            <div class="fld">
+              <input class="inp" id="coTax" type="text" placeholder="GSTIN / Tax ID (optional)" aria-label="GSTIN or Tax ID (optional)" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="30" aria-describedby="coTax-e"/>
+              <p class="fe" id="coTax-e"></p>
+            </div>
+          </div>
+          <div class="fld">
+            <input class="inp" id="coAddr" type="text" placeholder="Billing address" autocomplete="street-address" maxlength="200" aria-required="true" aria-describedby="coAddr-e"/>
+            <p class="fe" id="coAddr-e"></p>
+          </div>
+          <div class="fld">
+            <div class="co-phone">
+              <div class="cb cb-dial" id="coDialBox">
+                <input class="inp" id="coDial" type="text" role="combobox" placeholder="Code" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="20" aria-autocomplete="list" aria-haspopup="listbox" aria-expanded="false" aria-controls="coDialList" aria-label="Phone country code" aria-required="true" aria-describedby="coPhone-e"/>
+                <span class="cb-chev" aria-hidden="true"></span>
+                <ul class="cb-list" id="coDialList" role="listbox" aria-label="Phone country codes" hidden></ul>
+              </div>
+              <input class="inp" id="coPhone" type="tel" inputmode="tel" placeholder="Phone number" autocomplete="tel-national" maxlength="24" aria-label="Phone number" aria-required="true" aria-describedby="coPhone-e"/>
+            </div>
+            <p class="fe" id="coPhone-e"></p>
+          </div>
+          <p class="hint">The license covers everyone with an email on this domain. The contact email must be on the same domain; we send the invoice there.</p>
+          <div class="err" id="coErr" role="alert"></div>
+          <button type="submit" class="pay-btn" id="coBtn">Send by email</button>
+          <p class="hint co-hint">Your email app opens with these details filled in. Review it and press send. If nothing opens, write to <strong>dev@pearlfox.io</strong>.</p>
+        </form>
+        <p class="trust">Sign-in tokens are stored encrypted on each person's computer (version 1.1.7 and later). See the <a href="/privacy.html">Privacy</a> page.</p>
+        <div class="footer-links"><a href="/">Product</a><a href="/privacy.html">Privacy</a><a href="mailto:dev@pearlfox.io">Support</a></div>
       </div>
     </div>
   </div>
@@ -181,15 +296,15 @@ PLANS.forEach(function(p){PRICES[p.days]=p.offer;STD_PRICES[p.days]=p.std;});
 // _plan / _price track the currently-selected plan; initialised from PLANS[selected].
 var _initial=PLANS.filter(function(p){return p.selected;})[0]||PLANS[0];
 var _plan=_initial.days,_mid='',_price=PRICES[_plan],_coupon='',_couponPrice=null,_couponDays=null;
-// Render the plan cards into #plansRoot from PLANS. Each card starts UNREVEALED —
-// shows only the standard price + a 'See offer' pill in the launch-offer column.
-// Clicking the pill strikes the std price and fades in the launch offer for that
-// plan only (per-row, independent). Applying a valid coupon auto-reveals every
+// Render the plan cards (three square cards side by side) into #plansRoot from PLANS. Each card
+// starts UNREVEALED — period, then the standard price, then a 'See offer' pill.
+// Clicking the pill strikes the std price and fades in the launch offer below it for that
+// plan only (per-card, independent). Applying a valid coupon auto-reveals every
 // card so the 'X on all plans' banner never lies (audit finding #6).
 // The pill is a role=button span (NOT a <button>) with stopPropagation, so it's
 // not a nested interactive control inside role=radio and doesn't bubble a click
 // up into selectPlan (audit findings #7 + #8 stay fixed).
-function renderPlans(){var root=document.getElementById('plansRoot');if(!root)return;PLANS.forEach(function(p){var el=document.createElement('div');el.className='plan'+(p.selected?' sel':'');el.setAttribute('data-days',p.days);el.setAttribute('role','radio');el.setAttribute('aria-checked',p.selected?'true':'false');el.setAttribute('tabindex','0');el.innerHTML='<div class="plan-left"><div class="plan-dur">'+p.label+(p.badge?' <span class="plan-badge">'+p.badge+'</span>':'')+'</div><div class="plan-desc">'+p.desc+'</div></div>'+'<div class="plan-right">'+'<div class="plan-std-col"><div class="plan-std-price">₹'+p.std.toLocaleString('en-IN')+'</div></div>'+'<div class="plan-offer-col"><div class="plan-price">₹'+p.offer.toLocaleString('en-IN')+'</div><span class="reveal-offer" role="button" tabindex="0" aria-label="Show launch offer price">See offer</span></div>'+'</div>'+'<div class="radio" aria-hidden="true"></div>';el.addEventListener('click',function(){selectPlan(p.days);});el.addEventListener('keydown',function(e){planKey(e,p.days);});var rev=el.querySelector('.reveal-offer');rev.addEventListener('click',function(e){e.stopPropagation();revealPlan(p.days);});rev.addEventListener('keydown',function(e){if(e.key===' '||e.key==='Enter'){e.stopPropagation();e.preventDefault();revealPlan(p.days);}});root.appendChild(el);});}
+function renderPlans(){var root=document.getElementById('plansRoot');if(!root)return;PLANS.forEach(function(p){var el=document.createElement('div');el.className='plan'+(p.selected?' sel':'');el.setAttribute('data-days',p.days);el.setAttribute('role','radio');el.setAttribute('aria-checked',p.selected?'true':'false');el.setAttribute('tabindex','0');el.innerHTML='<div class="plan-dur">'+p.label+'</div>'+'<div class="plan-std-price">₹'+p.std.toLocaleString('en-IN')+'</div>'+'<div class="plan-offer-col"><div class="plan-price">₹'+p.offer.toLocaleString('en-IN')+'</div><span class="reveal-offer" role="button" tabindex="0" aria-label="Show launch offer price">See offer</span></div>'+(p.badge?'<span class="plan-badge">'+p.badge+'</span>':'');el.addEventListener('click',function(){selectPlan(p.days);});el.addEventListener('keydown',function(e){planKey(e,p.days);});var rev=el.querySelector('.reveal-offer');rev.addEventListener('click',function(e){e.stopPropagation();revealPlan(p.days);});rev.addEventListener('keydown',function(e){if(e.key===' '||e.key==='Enter'){e.stopPropagation();e.preventDefault();revealPlan(p.days);}});root.appendChild(el);});}
 // revealPlan does two things so the visual strike-through has an a11y-visible peer:
 //   1. adds .revealed (drives the animated CSS ::after strike + offer price fade-in)
 //   2. wraps the std price text in <s> (screen readers announce "struck through";
@@ -253,14 +368,102 @@ function onCouponInput(){if(!_coupon){var err=document.getElementById('couponErr
    ?email=attacker@x.com no longer locks the field without the user knowing —
    they can see the Edit affordance and the hint the moment the page loads. */
 if(email){var el=document.getElementById('buyEmail');if(el){el.value=email;el.readOnly=true;var btn=document.getElementById('buyEmailEdit');if(btn)btn.style.display='block';var hint=document.getElementById('emailPrefillHint');if(hint)hint.style.display='block';}}})();
-function moveSelIndicator(){var ind=document.getElementById('planSelInd'),wrap=document.querySelector('.plans'),el=document.querySelector('.plan.sel');if(!ind||!wrap)return;if(!el||!wrap.contains(el)){ind.classList.remove('show');return;}var wrapRect=wrap.getBoundingClientRect(),elRect=el.getBoundingClientRect();ind.style.height=elRect.height+'px';ind.style.transform='translateY('+(elRect.top-wrapRect.top)+'px)';ind.classList.add('show');}
 function selectPlan(d){_plan=d;_price=PRICES[d];document.querySelectorAll('[data-days]').forEach(function(el){var on=parseInt(el.dataset.days,10)===d;el.classList.toggle('sel',on);if(el.getAttribute('role')==='radio')el.setAttribute('aria-checked',on?'true':'false');});renderPlanPrices();updatePayBtn();moveSelIndicator();}
+// The selection ring: one element that slides (and resizes) from card to card, so switching plans
+// glides instead of jumping. Measured with offset* so it works for the side-by-side cards and for the
+// stacked phone rows alike. The first placement skips the animation so it does not fly in from the corner.
+function moveSelIndicator(){var ind=document.getElementById('planSelInd'),wrap=document.getElementById('plansRoot'),el=document.querySelector('#plansRoot .plan.sel');if(!ind||!wrap)return;if(!el||!el.offsetWidth){ind.classList.remove('show');return;}var first=!ind.classList.contains('show');if(first)ind.classList.add('no-anim');ind.style.width=el.offsetWidth+'px';ind.style.height=el.offsetHeight+'px';ind.style.transform='translate('+el.offsetLeft+'px,'+el.offsetTop+'px)';if(first){void ind.offsetWidth;ind.classList.add('show');requestAnimationFrame(function(){ind.classList.remove('no-anim');});}}
 function planKey(e,d){if(e.key===' '||e.key==='Enter'){e.preventDefault();selectPlan(d);}}
+updatePayBtn();
 window.addEventListener('resize',moveSelIndicator);
 moveSelIndicator();
-updatePayBtn();
 function showErr(m){var el=document.getElementById('buyErr');el.textContent=m;el.style.display='block';}
 function startPayment(){var email=(document.getElementById('buyEmail').value||'').trim().toLowerCase(),mid=_mid||(document.getElementById('buyMachineId')?(document.getElementById('buyMachineId').value||'').trim():'');document.getElementById('buyErr').style.display='none';if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){showErr('Enter a valid email address.');return;}if(!mid){showErr('Paste your Machine ID from Eagle View.');return;}var btn=document.getElementById('buyBtn');btn.disabled=true;btn.textContent='Opening…';/* 15s timeout so a hung Supabase edge never leaves the user staring at a disabled 'Opening…' button forever */ var controller=new AbortController(),timeoutId=setTimeout(function(){controller.abort();},15000),resetBtn=function(){btn.disabled=false;btn.textContent='Pay now →';};fetch(EDGE_URL+'?action=create-payment-link',{method:'POST',headers:{'Content-Type':'application/json'},signal:controller.signal,body:JSON.stringify({email:email,machine_id:mid,license_days:_plan,amount_inr:effectivePrice(),coupon:_coupon||''})}).then(function(r){clearTimeout(timeoutId);return r.json();}).then(function(data){if(data.payment_link_url){window.location.href=data.payment_link_url;}else{showErr(data.error||'Try again.');resetBtn();}}).catch(function(err){clearTimeout(timeoutId);showErr(err&&err.name==='AbortError'?'Request timed out — please try again.':'Network error.');resetBtn();});}
+</script>
+<script>
+/* Individual | Student | Company switch (one shared tab bar and one shared screenshot panel). Separate from the checkout script above, which is untouched.
+   The plan ring is placed by measuring the cards (moveSelIndicator), which reads 0 while the Individual view is hidden, so show() calls it again once the view is visible. */
+(function(){
+  'use strict';
+  var tabs=[
+    {tab:document.getElementById('tabInd'),view:document.getElementById('individualView'),hash:''},
+    {tab:document.getElementById('tabSt'),view:document.getElementById('studentView'),hash:'#student'},
+    {tab:document.getElementById('tabCo'),view:document.getElementById('companyView'),hash:'#corporate'}
+  ];
+  var bar=document.querySelector('.seg');
+  var pill=document.getElementById('segPill'),cur=0;
+  // The orange highlight is one pill that slides under the labels. Moving the bar into another view resets
+  // its animation state, so the pill is first put (without animation) at the old tab, then glides to the new one.
+  function placePill(i,animate){
+    var b=tabs[i].tab;
+    if(!pill||!b.offsetWidth)return;
+    if(!pill.classList.contains('show'))animate=false;
+    if(!animate)pill.classList.add('no-anim');
+    pill.style.top=b.offsetTop+'px';pill.style.height=b.offsetHeight+'px';
+    pill.style.width=b.offsetWidth+'px';pill.style.transform='translateX('+b.offsetLeft+'px)';
+    if(!animate){void pill.offsetWidth;pill.classList.remove('no-anim');}
+    pill.classList.add('show');
+  }
+  var mock=document.querySelector('.col-mock'); // the app screenshot with the floating cards
+  for(var k=0;k<tabs.length;k++){if(!tabs[k].tab||!tabs[k].view)return;}
+  function show(i,moveFocus,keepUrl){
+    // Keep the one tab bar right above the card of the view that is showing.
+    var slot=tabs[i].view.querySelector('.seg-slot');
+    if(bar&&slot&&bar.parentNode!==slot){slot.appendChild(bar);placePill(cur,false);}
+    // The screenshot panel is shared too, so all three tabs have the same two-column look.
+    var inner=tabs[i].view.querySelector('.inner');
+    if(mock&&inner&&mock.parentNode!==inner)inner.appendChild(mock);
+    tabs.forEach(function(t,j){
+      t.view.hidden=(j!==i);
+      t.tab.setAttribute('aria-selected',j===i?'true':'false');
+      t.tab.tabIndex=(j===i)?0:-1;
+    });
+    // Re-place the plan ring only now that the Individual view is visible again (hidden cards measure 0).
+    if(i===0&&typeof moveSelIndicator==='function')moveSelIndicator();
+    placePill(i,true);
+    cur=i;
+    if(moveFocus)tabs[i].tab.focus();
+    if(!keepUrl)history.replaceState(null,'',location.pathname+location.search+tabs[i].hash);
+  }
+  function fromHash(){
+    for(var j=1;j<tabs.length;j++){if(tabs[j].hash===location.hash)return j;}
+    return 0;
+  }
+  tabs.forEach(function(t,i){
+    t.tab.addEventListener('click',function(){show(i,false,false);});
+    t.tab.addEventListener('keydown',function(e){
+      var n=tabs.length,to=-1;
+      if(e.key==='ArrowRight')to=(i+1)%n;
+      else if(e.key==='ArrowLeft')to=(i+n-1)%n;
+      else if(e.key==='Home')to=0;
+      else if(e.key==='End')to=n-1;
+      if(to<0)return;
+      e.preventDefault();show(to,true,false);
+    });
+  });
+  window.addEventListener('hashchange',function(){show(fromHash(),false,true);});
+  if(fromHash()!==0)show(fromHash(),false,true);
+  placePill(cur,false);
+  window.addEventListener('resize',function(){placePill(cur,false);});
+})();
+</script>
+<script src="eagleview_countries.js?v=20261019"></script>
+<script src="eagleview_company_rules.js?v=20261019"></script>
+<script src="eagleview_company_form.js?v=20261019"></script>
+<script>
+/* Coupon box: "Have a coupon code?" swaps itself for the input and Apply. Separate from the checkout
+   script, which is untouched: it still finds #buyCoupon and the Apply button by id. */
+(function(){
+  'use strict';
+  var btn=document.getElementById('couponToggle'),row=document.getElementById('couponRow'),inp=document.getElementById('buyCoupon');
+  if(!btn||!row||!inp)return;
+  btn.addEventListener('click',function(){
+    btn.hidden=true;
+    row.hidden=false;
+    row.classList.add('coupon-in');
+    inp.focus({preventScroll:true});
+  });
+})();
 </script>
 </body>
 </html>
