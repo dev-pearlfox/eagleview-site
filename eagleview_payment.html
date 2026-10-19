@@ -37,7 +37,7 @@
 <!-- Shared design tokens, keyframes, nav lockup, panel effects, and chip
      styles live in one file so both home + payment pages stay in sync. -->
 <link rel="stylesheet" href="eagleview-shared.css"/>
-<link rel="stylesheet" href="eagleview_payment.css?v=20261019"/>
+<link rel="stylesheet" href="eagleview_payment.css?v=20261020"/>
 </head>
 <body>
 <header class="top">
@@ -90,8 +90,8 @@
         </div>
         <div class="divider"></div>
         <div id="buyForm">
-          <div class="email-row"><input class="inp" id="buyEmail" type="email" placeholder="your@email.com" autocomplete="email"/><button type="button" class="email-edit-btn" id="buyEmailEdit" onclick="unsealEmail()" style="display:none" aria-label="Edit email address">Edit</button></div>
-          <p class="hint" id="emailPrefillHint" style="display:none;margin-top:-4px">Auto-filled — <strong>click Edit to change</strong> if this isn't your email (the license key is sent here).</p>
+          <div class="email-row"><input class="inp" id="buyEmail" type="email" placeholder="your@email.com" autocomplete="email"/></div>
+          <p class="hint" id="emailPrefillHint" style="display:none;margin-top:-4px">Filled in from your Eagle View sign-in. The license key is sent to this address.</p>
           <div class="mid-ok" id="buyMidOk"><div class="mid-dot"></div><span>Machine ID detected — <strong>key bound to this device</strong></span></div>
           <div id="buyMidManual"><input class="inp" id="buyMachineId" type="text" placeholder="Paste Machine ID from Eagle View" autocomplete="off" spellcheck="false"/><p class="hint">Eagle View → ⓘ About → <strong>Copy Machine ID</strong></p></div>
           <div class="err" id="buyErr"></div>
@@ -312,9 +312,6 @@ function renderPlans(){var root=document.getElementById('plansRoot');if(!root)re
 // The <s> visual line-through is suppressed via `.plan-std-price s{text-decoration:none}`
 // so we don't render two overlapping strike lines.
 function revealPlan(d){var el=document.querySelector('[data-days="'+d+'"]');if(!el||el.classList.contains('revealed'))return;el.classList.add('revealed');var sp=el.querySelector('.plan-std-price');if(sp&&!sp.querySelector('s'))sp.innerHTML='<s>'+sp.innerHTML+'</s>';updatePayBtn();}
-// Unseal the URL-prefilled email so the user can edit it. Hides the Edit button
-// and the auto-fill hint (they've explicitly opted into editing at this point).
-function unsealEmail(){var el=document.getElementById('buyEmail');if(el){el.readOnly=false;el.focus();el.select();}var btn=document.getElementById('buyEmailEdit');if(btn)btn.style.display='none';var hint=document.getElementById('emailPrefillHint');if(hint)hint.style.display='none';}
 renderPlans();
 (function(){var hp=document.getElementById('hpCard');if(!hp)return;hp.addEventListener('click',function(){selectPlan(90);});hp.addEventListener('keydown',function(e){if(e.key===' '||e.key==='Enter'){e.preventDefault();hp.click();}});})();
 // Price the user actually pays (drives both the button label AND the amount sent
@@ -366,8 +363,10 @@ function onCouponInput(){if(!_coupon){var err=document.getElementById('couponErr
 (function(){var p=new URLSearchParams(window.location.search),mid=(p.get('mid')||'').trim(),email=(p.get('email')||'').trim();if(mid){_mid=mid;var ok=document.getElementById('buyMidOk'),mn=document.getElementById('buyMidManual');if(ok)ok.style.display='flex';if(mn)mn.style.display='none';}/* Prefill email from URL and seal it readonly, but expose a visible Edit button
    + hint so the seal is never SILENT (audit finding #4). A phishy link
    ?email=attacker@x.com no longer locks the field without the user knowing —
-   they can see the Edit affordance and the hint the moment the page loads. */
-if(email){var el=document.getElementById('buyEmail');if(el){el.value=email;el.readOnly=true;var btn=document.getElementById('buyEmailEdit');if(btn)btn.style.display='block';var hint=document.getElementById('emailPrefillHint');if(hint)hint.style.display='block';}}})();
+   they can see the locked address and the hint the moment the page loads. There is no Edit
+   button (owner decision): the key must go to the mailbox the app is signed in with, because
+   the app's license window is locked to that same mailbox. */
+if(email){var el=document.getElementById('buyEmail');if(el){el.value=email;el.readOnly=true;var hint=document.getElementById('emailPrefillHint');if(hint)hint.style.display='block';}}})();
 function selectPlan(d){_plan=d;_price=PRICES[d];document.querySelectorAll('[data-days]').forEach(function(el){var on=parseInt(el.dataset.days,10)===d;el.classList.toggle('sel',on);if(el.getAttribute('role')==='radio')el.setAttribute('aria-checked',on?'true':'false');});renderPlanPrices();updatePayBtn();moveSelIndicator();}
 // The selection ring: one element that slides (and resizes) from card to card, so switching plans
 // glides instead of jumping. Measured with offset* so it works for the side-by-side cards and for the

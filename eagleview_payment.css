@@ -100,9 +100,6 @@ h1 .grad,.grad-text{display:block;background:linear-gradient(135deg,var(--or) 0%
 .inp::placeholder{color:var(--tx2);}
 .inp[readonly]{background:#080D1C;color:var(--tx2);border-color:rgba(0,229,255,.06);}
 .email-row{position:relative;}
-.email-row .inp{padding-right:60px;}
-.email-edit-btn{position:absolute;right:8px;top:calc(50% - 5px);transform:translateY(-50%);background:rgba(0,229,255,.10);border:1px solid rgba(0,229,255,.35);color:var(--cy);font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:5px 10px;border-radius:6px;cursor:pointer;transition:background .2s ease,border-color .2s ease;font-family:inherit;}
-.email-edit-btn:hover,.email-edit-btn:focus-visible{background:rgba(0,229,255,.20);border-color:rgba(0,229,255,.55);outline:none;}
 .mid-ok{display:none;align-items:center;gap:7px;font-size:12px;color:var(--tx2);margin-bottom:10px;}
 .mid-dot{width:7px;height:7px;border-radius:50%;background:var(--gr);box-shadow:0 0 6px var(--gr);flex-shrink:0;}
 .mid-ok strong{color:var(--gr);font-weight:600;}
