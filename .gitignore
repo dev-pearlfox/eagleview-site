@@ -9,3 +9,7 @@
 
 # Ad-hoc editing safety snapshots of the testcase draft — not needed once git tracks real history
 eagleview/testcase/*.bak*
+
+# Owner notes: kept on the owner disk only, never published (this repo is public and served as a website)
+/CLAUDE.md
+/Docs/
