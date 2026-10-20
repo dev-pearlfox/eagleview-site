@@ -150,7 +150,7 @@
       .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return { ok: r.ok, j: j }; }); })
       .then(function (res) {
         if (res.ok && res.j.pay_url && PAY_HOST.test(res.j.pay_url)) { submitBtn.textContent = 'Opening payment...'; window.location.href = res.j.pay_url; return; }
-        fail(res.j.error || 'Something went wrong. Please try again.');
+        fail(res.j.error && res.j.error !== 'Internal server error' ? res.j.error : 'Something went wrong on our side. Please try again in a few minutes, or write to dev@pearlfox.io.');
       })
       .catch(function () { fail('Could not reach the server. Check your connection and try again.'); });
   });
