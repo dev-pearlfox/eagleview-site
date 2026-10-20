@@ -37,7 +37,7 @@
 <!-- Shared design tokens, keyframes, nav lockup, panel effects, and chip
      styles live in one file so both home + payment pages stay in sync. -->
 <link rel="stylesheet" href="eagleview-shared.css"/>
-<link rel="stylesheet" href="eagleview_payment.css?v=20261020"/>
+<link rel="stylesheet" href="eagleview_payment.css?v=20261025"/>
 </head>
 <body>
 <header class="top">
@@ -122,24 +122,85 @@
   </div>
 </main>
 
-<!-- Student view: design placeholder only. Price, proof of being a student and how the key is
-     issued are not decided yet, so this shows no price and collects nothing. Shown by the tab
-     script at the bottom, which also moves the shared tab bar and screenshot panel into it. -->
+<!-- Student view: a student applies here with a proof of enrolment (uploaded), pays Rs 500, and the owner then approves
+     (the key is emailed) or rejects (the payment is refunded). Shown by the tab script at the bottom, which also moves the
+     shared tab bar and screenshot panel into it. The form is wired by eagleview_student_form.js. -->
 <main class="wrap" id="studentView" role="tabpanel" aria-labelledby="tabSt" hidden>
   <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
   <div class="inner">
     <div class="col-form">
-      <div class="badge"><span class="bdot"></span>Student license</div>
+      <div class="badge"><span class="bdot"></span>Student license &middot; Annual</div>
       <h1>Eagle View<span class="grad">for students</span></h1>
-      <p class="sub">A student license for your Mac or Windows PC is on its way.</p>
+      <p class="sub">For students at a college or university. One year, renewable.</p>
       <div class="seg-slot"></div>
       <div class="card">
-        <div class="co-price">
-          <div class="co-amt st-soon">Coming soon</div>
-          <div class="co-tax">Student pricing and how to verify you are a student will be announced here.</div>
+        <div class="st-paid" id="stPaid" role="status" hidden>
+          <strong>Payment received. Thank you.</strong>
+          We are checking your proof and will email your license key within 1 working day. If we cannot approve it, your &#8377;500 is refunded in full.
         </div>
-        <a class="pay-btn co-cta" href="mailto:dev@pearlfox.io?subject=Eagle%20View%20student%20license&amp;body=Hi%2C%20please%20tell%20me%20when%20the%20Eagle%20View%20student%20license%20is%20available.%0D%0A%0D%0ACountry%3A%0D%0ASchool%20or%20university%3A">Tell me when it opens</a>
-        <p class="hint co-hint">Or write to <strong>dev@pearlfox.io</strong>. In the meantime you can use the free 30-day trial inside the app.</p>
+        <div class="co-price">
+          <div class="co-amt">&#8377;500<span> / year</span></div>
+          <div class="co-tax">GST included &middot; renew every year with a fresh proof &middot; for your own study</div>
+        </div>
+        <div class="divider"></div>
+        <ol class="co-steps">
+          <li><strong>Apply.</strong> Enter your details and upload a proof that you are currently enrolled.</li>
+          <li><strong>Pay &#8377;500</strong> online by card, UPI or net banking.</li>
+          <li><strong>We check your proof</strong> within 1 working day.</li>
+          <li><strong>Approved:</strong> your license key is emailed to you. <strong>Not approved:</strong> your &#8377;500 is refunded in full.</li>
+        </ol>
+        <p class="hint st-proof">Accepted proof: a student ID card, a bonafide or enrolment letter, or this term's fee receipt. It must show your name, your college or university, and a date that is still valid.</p>
+        <button type="button" class="pay-btn" id="stRequest" aria-expanded="false" aria-controls="stForm" disabled>Apply for a student license</button>
+        <form id="stForm" class="co-form" novalidate hidden>
+          <div class="fld">
+            <input class="inp" id="stName" type="text" placeholder="Full name" autocomplete="name" maxlength="80" aria-required="true" aria-describedby="stName-e"/>
+            <p class="fe" id="stName-e"></p>
+          </div>
+          <div class="fld">
+            <input class="inp" id="stInst" type="text" placeholder="College or university" autocomplete="organization" maxlength="120" aria-required="true" aria-describedby="stInst-e"/>
+            <p class="fe" id="stInst-e"></p>
+          </div>
+          <div class="fld">
+            <div class="cb" id="stCountryBox">
+              <input class="inp" id="stCountry" type="text" role="combobox" placeholder="Country" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="60" aria-autocomplete="list" aria-haspopup="listbox" aria-expanded="false" aria-controls="stCountryList" aria-label="Country" aria-required="true" aria-describedby="stCountry-e"/>
+              <span class="cb-chev" aria-hidden="true"></span>
+              <ul class="cb-list" id="stCountryList" role="listbox" aria-label="Countries" hidden></ul>
+            </div>
+            <p class="fe" id="stCountry-e"></p>
+          </div>
+          <div class="fld">
+            <input class="inp" id="stSchoolEmail" type="email" placeholder="College email (optional)" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="254" aria-describedby="stSchoolEmail-e"/>
+            <p class="fe" id="stSchoolEmail-e"></p>
+          </div>
+          <div class="fld">
+            <input class="inp" id="stEmail" type="email" placeholder="Your Eagle View email" autocomplete="email" autocapitalize="off" spellcheck="false" maxlength="254" aria-required="true" aria-describedby="stEmail-e"/>
+            <p class="fe" id="stEmail-e"></p>
+          </div>
+          <p class="hint" id="stEmailHint">Use the email you sign in to Eagle View with. The license key is sent to this address.</p>
+          <div class="mid-ok" id="stMidOk"><div class="mid-dot"></div><span>Machine ID detected &mdash; <strong>key bound to this device</strong></span></div>
+          <div class="fld" id="stMachineFld">
+            <input class="inp" id="stMachine" type="text" placeholder="Machine ID" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="36" aria-required="true" aria-describedby="stMachine-e"/>
+            <p class="fe" id="stMachine-e"></p>
+            <p class="hint">Open Eagle View, go to the license window, and copy the Machine ID. Opening this page from the app's Buy button fills it in for you.</p>
+          </div>
+          <div class="fld">
+            <div class="st-drop" id="stDrop">
+              <input type="file" id="stFile" class="st-file" accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png" tabindex="-1" aria-describedby="stFile-e"/>
+              <button type="button" class="st-pick" id="stPick">Choose proof of enrolment</button>
+              <span class="st-info" id="stFileInfo">PDF, JPG or PNG, up to 5 MB. You can also drop the file here.</span>
+              <button type="button" class="st-clear" id="stClear" hidden>Remove</button>
+            </div>
+            <p class="fe" id="stFile-e"></p>
+          </div>
+          <div class="fld">
+            <label class="chk"><input type="checkbox" id="stConsent" aria-describedby="stConsent-e"/><span>I confirm that I am currently enrolled at this college or university, that I will use Eagle View for my own study, and that the details and proof I give are correct.</span></label>
+            <p class="fe" id="stConsent-e"></p>
+          </div>
+          <div class="err" id="stErr" role="alert"></div>
+          <button type="submit" class="pay-btn" id="stBtn">Continue to payment</button>
+          <p class="hint co-hint">Your proof is used only to check that you are a student. It is stored privately and deleted 30 days after we decide. See the <a href="/privacy.html">Privacy</a> page. Questions: <strong>dev@pearlfox.io</strong>.</p>
+        </form>
+        <p class="hint co-hint" id="stNoJs">This form needs JavaScript. Or write to <strong>dev@pearlfox.io</strong>.</p>
         <div class="footer-links"><a href="/">Product</a><a href="/privacy.html">Privacy</a><a href="mailto:dev@pearlfox.io">Support</a></div>
       </div>
     </div>
@@ -164,7 +225,7 @@
         <div class="divider"></div>
         <ol class="co-steps">
           <li><strong>Request an invoice.</strong> Enter your company details below and send them to us by email.</li>
-          <li><strong>Receive the invoice.</strong> We email you an invoice for the company license.</li>
+          <li><strong>Receive the invoice.</strong> We email you an invoice for &#8377;28,999, GST included.</li>
           <li><strong>Pay online.</strong> Pay the invoice by card, UPI or net banking.</li>
           <li><strong>We set you up within 1 working day</strong> after payment. Your employees then activate Eagle View with their company email address.</li>
         </ol>
@@ -194,7 +255,7 @@
               <p class="fe" id="coCountry-e"></p>
             </div>
             <div class="fld">
-              <input class="inp" id="coTax" type="text" placeholder="GSTIN / Tax ID (optional)" aria-label="GSTIN or Tax ID (optional)" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="30" aria-describedby="coTax-e"/>
+              <input class="inp" id="coTax" type="text" placeholder="GSTIN / Tax ID" aria-label="GSTIN or Tax ID" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="30" aria-describedby="coTax-e"/>
               <p class="fe" id="coTax-e"></p>
             </div>
           </div>
@@ -425,6 +486,7 @@ function startPayment(){var email=(document.getElementById('buyEmail').value||''
     if(!keepUrl)history.replaceState(null,'',location.pathname+location.search+tabs[i].hash);
   }
   function fromHash(){
+    if(/[?&]student=paid(&|$)/.test(location.search))return 1; // returning from the Student payment
     for(var j=1;j<tabs.length;j++){if(tabs[j].hash===location.hash)return j;}
     return 0;
   }
@@ -447,8 +509,10 @@ function startPayment(){var email=(document.getElementById('buyEmail').value||''
 })();
 </script>
 <script src="eagleview_countries.js?v=20261019"></script>
-<script src="eagleview_company_rules.js?v=20261019"></script>
-<script src="eagleview_company_form.js?v=20261019"></script>
+<script src="eagleview_company_rules.js?v=20261022"></script>
+<script src="eagleview_company_form.js?v=20261022"></script>
+<script src="eagleview_student_rules.js?v=20261023"></script>
+<script src="eagleview_student_form.js?v=20261023"></script>
 <script>
 /* Coupon box: "Have a coupon code?" swaps itself for the input and Apply. Separate from the checkout
    script, which is untouched: it still finds #buyCoupon and the Apply button by id. */

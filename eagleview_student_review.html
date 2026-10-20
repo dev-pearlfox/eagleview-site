@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="robots" content="noindex,nofollow"/>
+<meta name="referrer" content="no-referrer"/>
+<title>Student license review - Eagle View</title>
+<style>
+:root{--bg:#07101f;--sf:#0d1a30;--bd:rgba(0,229,255,.16);--tx:#e8f1fb;--tx2:#9fb2c8;--cy:#00e5ff;--gr:#2ee6a0;--rd:#ff6b7a;--or:#e87722}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:32px 16px}
+.box{max-width:640px;margin:0 auto;background:var(--sf);border:1px solid var(--bd);border-radius:14px;padding:26px}
+h1{margin:0 0 4px;font-size:20px}
+.sub{margin:0 0 20px;color:var(--tx2);font-size:13px}
+dl{display:grid;grid-template-columns:150px 1fr;gap:6px 14px;margin:0 0 18px}
+dt{color:var(--tx2)} dd{margin:0;font-weight:600;overflow-wrap:anywhere}
+.pill{display:inline-block;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700;border:1px solid var(--bd)}
+.pill.pending_review{color:#ffc46b;border-color:rgba(255,196,107,.4)} .pill.approved{color:var(--gr);border-color:rgba(46,230,160,.4)}
+.pill.rejected{color:var(--rd);border-color:rgba(255,107,122,.4)} .pill.awaiting_payment,.pill.expired{color:var(--tx2)}
+.proof{margin:0 0 20px;padding:14px;border:1px dashed var(--bd);border-radius:10px;text-align:center}
+.proof img{max-width:100%;max-height:520px;border-radius:8px;background:#fff}
+.proof a{color:var(--cy)}
+.proof small{display:block;margin-top:6px;color:var(--tx2)}
+textarea{width:100%;min-height:74px;margin:6px 0 12px;padding:10px 12px;border-radius:10px;border:1.5px solid var(--bd);background:#091428;color:var(--tx);font:inherit;resize:vertical}
+textarea:focus{outline:none;border-color:var(--cy)}
+label{font-size:13px;color:var(--tx2)}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+button{font:inherit;font-weight:700;border-radius:10px;padding:11px 20px;border:0;cursor:pointer;color:#fff}
+button:disabled{opacity:.5;cursor:default}
+.ok{background:#12a06b}.no{background:#c0394b}
+.msg{margin:14px 0 0;padding:10px 12px;border-radius:10px;font-size:13px}
+.msg.good{background:rgba(46,230,160,.1);border:1px solid rgba(46,230,160,.35)} .msg.bad{background:rgba(255,107,122,.1);border:1px solid rgba(255,107,122,.4)}
+.note{margin:18px 0 0;color:var(--tx2);font-size:12px}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div class="box">
+  <h1>Student license review</h1>
+  <p class="sub">Eagle View &middot; PearlFox</p>
+  <p id="state">Loading the application...</p>
+  <div id="app" hidden>
+    <dl id="facts"></dl>
+    <div class="proof" id="proof"></div>
+    <div id="decide">
+      <div class="row"><button type="button" class="ok" id="approve">Approve and send the key</button></div>
+      <p class="note">Approve emails a 365-day key to the Eagle View email above, tied to that machine.</p>
+      <hr style="border:0;border-top:1px solid var(--bd);margin:18px 0"/>
+      <label for="reason">Reject: the reason the student will see</label>
+      <textarea id="reason" maxlength="500" placeholder="For example: the ID card has expired, or the name does not match."></textarea>
+      <div class="row"><button type="button" class="no" id="reject">Reject and refund Rs 500</button></div>
+    </div>
+    <div class="msg" id="result" hidden role="status"></div>
+  </div>
+</div>
+<script src="eagleview_student_review.js?v=20261023"></script>
+</body>
+</html>

@@ -23,8 +23,9 @@
   // ---- pickers --------------------------------------------------------------------------------------------------
   function onCountry(c) {
     var india = isIndia();
-    F.tax.placeholder = !c ? 'GSTIN / Tax ID (optional)' : india ? 'GSTIN (if registered)' : 'Tax or VAT ID (optional)';
+    F.tax.placeholder = !c ? 'GSTIN / Tax ID' : india ? 'GSTIN (required)' : 'Tax or VAT ID (optional)';
     F.tax.setAttribute('aria-label', F.tax.placeholder);
+    F.tax.setAttribute('aria-required', india ? 'true' : 'false');
     F.tax.value = R.filter.tax(F.tax.value, india);  // India allows letters and digits only, so tidy what is already typed
     // The phone code follows the country until the buyer picks a code themselves (a company in India can have a contact abroad).
     if (c && dialPicker && dialAuto) setDial(c);

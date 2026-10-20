@@ -3,8 +3,7 @@
      filter.*  what a field lets you TYPE (runs on every keystroke and paste, so letters never reach the phone box);
      norm*     tidy a finished value (strip "https://" and "www." from a domain, drop spaces from a GSTIN);
      check*    '' when the value is fine, otherwise the message shown under the field.
-   The email, domain and GSTIN rules mirror supabase/functions/activate-license/companyOrder.ts, kept in step by hand
-   because this page is static. */
+   The Student form (eagleview_student_rules.js) reuses the typing filters and the email check from here. */
 (function (root) {
   'use strict';
 
@@ -17,7 +16,8 @@
 
   var MSG = {
     country: 'Choose your country from the list.',
-    dial: 'Choose your phone country code from the list.'
+    dial: 'Choose your phone country code from the list.',
+    gstin: 'Enter your GSTIN. It has 15 characters, for example 27ABCDE1234F1Z5.'   // required for India only
   };
 
   // ---- filters: what may be typed -------------------------------------------------------------------------------
@@ -97,7 +97,7 @@
 
   function checkTax(s, india) {
     var t = normTax(s, india);
-    if (!t) return '';  // optional
+    if (!t) return india ? MSG.gstin : '';  // required for India (an Indian tax invoice needs it); optional elsewhere
     if (india) return GSTIN.test(t) ? '' : 'Check the GSTIN: it has 15 characters, for example 27ABCDE1234F1Z5.';
     return /^[A-Z0-9][A-Z0-9 .\/-]{2,29}$/.test(t) ? '' : 'Check the tax ID: 3 to 30 letters, numbers, spaces, dots or dashes.';
   }
@@ -134,10 +134,15 @@
 
   // v: {company, domain, email, country, india, gstin, address, phone} with clean values.
   function buildMailto(v) {
-    var lines = ['Please send an invoice for an Eagle View company license (1 year, Rs 28,999).', '',
+    var lines = [
+      'Hello PearlFox team,', '',
+      'We would like to purchase the Eagle View Company License (annual, 1 year) and request an invoice for Rs 28,999 (GST included).', '',
+      'Company details',
       'Company name: ' + v.company, 'Email domain to license: @' + v.domain, 'Contact email: ' + v.email, 'Country: ' + v.country,
-      (v.india ? 'GSTIN: ' : 'Tax or VAT ID: ') + (v.gstin || '-'), 'Billing address: ' + v.address, 'Phone: ' + v.phone];
-    return 'mailto:' + OWNER + '?subject=' + encodeURIComponent('Eagle View company license invoice request: ' + v.company) +
+      (v.india ? 'GSTIN: ' : 'Tax or VAT ID: ') + (v.gstin || '-'), 'Billing address: ' + v.address, 'Phone: ' + v.phone, '',
+      'Please send the invoice to the contact email above. We will pay it online and look forward to your confirmation once the license is set up.', '',
+      'Thank you,', v.company];
+    return 'mailto:' + OWNER + '?subject=' + encodeURIComponent('Invoice request: Eagle View Company License (' + v.company + ')') +
       '&body=' + encodeURIComponent(lines.join('\r\n'));
   }
 
