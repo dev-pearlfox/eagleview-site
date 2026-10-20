@@ -16,7 +16,7 @@
     name: 'Enter your full name.',
     institution: 'Enter the name of your college or university.',
     country: 'Choose your country from the list.',
-    email: 'Enter your Eagle View email address.',
+    email: 'Enter your email address.',
     machine: 'Paste the Machine ID exactly as Eagle View shows it (it looks like 8A1B2C3D-0000-4000-8000-123456789ABC).',
     file: 'Attach your proof of enrolment.',
     consent: 'Please confirm the declaration.'
@@ -40,12 +40,6 @@
 
   function checkCountry(c) { return c ? '' : MSG.country; }
 
-  // The college email is optional: many colleges give no address, and a Gmail address is fine to write down.
-  function checkSchoolEmail(s) {
-    if (!String(s).trim()) return '';
-    return C.checkEmail(s, '');
-  }
-
   function checkEmail(s) {
     if (!String(s).trim()) return MSG.email;
     return C.checkEmail(s, '');
@@ -68,7 +62,7 @@
 
   var api = {
     MSG: MSG, MAX_BYTES: MAX_BYTES, filter: filter, formatSize: formatSize,
-    checkName: checkName, checkInstitution: checkInstitution, checkCountry: checkCountry, checkSchoolEmail: checkSchoolEmail,
+    checkName: checkName, checkInstitution: checkInstitution, checkCountry: checkCountry,
     checkEmail: checkEmail, checkMachine: checkMachine, checkFile: checkFile, checkConsent: checkConsent
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.StudentRules = api;

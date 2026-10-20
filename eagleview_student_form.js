@@ -14,7 +14,7 @@
   openBtn.disabled = false;
 
   var PAY_HOST = /^https:\/\/([a-z0-9-]+\.)?(rzp\.io|razorpay\.com)\//;   // only ever send the buyer to Razorpay
-  var F = { name: $('stName'), inst: $('stInst'), country: $('stCountry'), schoolEmail: $('stSchoolEmail'),
+  var F = { name: $('stName'), inst: $('stInst'), country: $('stCountry'),
             email: $('stEmail'), machine: $('stMachine'), consent: $('stConsent') };
   var fileInput = $('stFile'), drop = $('stDrop'), info = $('stFileInfo'), pickBtn = $('stPick'), clearBtn = $('stClear');
   var summary = $('stErr'), submitBtn = $('stBtn');
@@ -41,7 +41,6 @@
     { msg: 'stCountry-e', inputs: [F.country], check: function () {
       return one(F.country, picker ? R.checkCountry(picker.get()) : (F.country.value.trim().length < 2 ? R.MSG.country : ''));
     } },
-    { msg: 'stSchoolEmail-e', inputs: [F.schoolEmail], check: function () { return one(F.schoolEmail, R.checkSchoolEmail(F.schoolEmail.value)); } },
     { msg: 'stEmail-e', inputs: [F.email], check: function () { return one(F.email, R.checkEmail(F.email.value)); } },
     { msg: 'stMachine-e', inputs: [F.machine], check: function () { return machineFromLink ? [] : one(F.machine, R.checkMachine(F.machine.value)); } },
     { msg: 'stFile-e', inputs: [pickBtn], check: function () { return one(pickBtn, R.checkFile(file)); } },
@@ -71,7 +70,7 @@
   }
 
   // ---- typing filters (the caret stays where the buyer was typing) ----------------------------------------------
-  var filters = { stName: R.filter.text, stInst: R.filter.text, stSchoolEmail: R.filter.email, stEmail: R.filter.email, stMachine: R.filter.machine };
+  var filters = { stName: R.filter.text, stInst: R.filter.text, stEmail: R.filter.email, stMachine: R.filter.machine };
   function applyFilter(input, fn) {
     var v = input.value, f = fn(v);
     if (f === v) return;
@@ -82,7 +81,6 @@
   var tidyOnLeave = {
     stName: function () { F.name.value = F.name.value.trim(); },
     stInst: function () { F.inst.value = F.inst.value.trim(); },
-    stSchoolEmail: function () { F.schoolEmail.value = F.schoolEmail.value.trim(); },
     stEmail: function () { F.email.value = F.email.value.trim(); },
     stMachine: function () { F.machine.value = F.machine.value.trim().toUpperCase(); }
   };
@@ -142,7 +140,6 @@
     fd.append('name', F.name.value.trim());
     fd.append('institution', F.inst.value.trim());
     fd.append('country', picker ? picker.get().code : F.country.value.trim());
-    fd.append('school_email', F.schoolEmail.value.trim());
     fd.append('email', F.email.value.trim().toLowerCase());
     fd.append('machine_id', F.machine.value.trim());
     fd.append('consent', 'yes');

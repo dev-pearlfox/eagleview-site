@@ -21,7 +21,7 @@
   function show(r, proofUrl) {
     var dl = $('facts'); dl.textContent = '';
     fact(dl, 'Name', r.name); fact(dl, 'College or university', r.institution); fact(dl, 'Country', r.country);
-    fact(dl, 'College email', r.school_email); fact(dl, 'Key goes to', r.email); fact(dl, 'Machine ID', r.machine_id);
+    fact(dl, 'Email (key goes here)', r.email); fact(dl, 'Machine ID', r.machine_id);
     fact(dl, 'Paid', when(r.paid_at));
     var st = fact(dl, 'Status', ''); st.textContent = ''; var pill = document.createElement('span');
     pill.className = 'pill ' + r.status; pill.textContent = LABEL[r.status] || r.status; st.appendChild(pill);
