@@ -262,7 +262,13 @@ body{overscroll-behavior-y:none;}
 .trust a:hover{color:var(--cy);}
 
 /* Student application: the proof upload box, the declaration, and the "payment received" note. */
-.st-proof{margin:-6px 0 14px;color:var(--tx2);}
+.st-need{margin:0 0 16px;padding:12px 14px;border:1px solid rgba(0,229,255,.18);border-left:3px solid var(--or);border-radius:10px;background:rgba(0,229,255,.04);}
+.st-need-h{margin:0 0 8px;font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--or);}
+.st-need-l{list-style:none;margin:0 0 8px;padding:0;display:flex;flex-wrap:wrap;gap:6px 8px;}
+.st-need-l li{padding:4px 10px;font-size:12.5px;font-weight:600;color:var(--tx);border:1px solid rgba(0,229,255,.3);border-radius:999px;background:rgba(0,229,255,.08);}
+.st-need-n{margin:0;font-size:12px;line-height:1.55;color:var(--tx2);}
+.st-need-n strong,.st-need-mini strong{color:var(--tx);}
+.st-need-mini{margin:0 0 8px;font-size:12px;color:var(--tx2);}
 .st-paid{margin:0 0 16px;padding:12px 14px;border-radius:10px;border:1px solid rgba(0,229,160,.35);background:rgba(0,229,160,.07);color:var(--tx2);font-size:12.5px;line-height:1.55;}
 .st-paid strong{display:block;color:var(--gr);margin-bottom:2px;}
 .st-drop{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;padding:12px 14px;border:1.5px dashed rgba(0,229,255,.28);border-radius:10px;background:var(--sf);transition:border-color .15s,background .15s;}
