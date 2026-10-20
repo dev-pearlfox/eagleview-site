@@ -8,6 +8,7 @@
   var q = new URLSearchParams(window.location.search), id = q.get('id') || '', token = q.get('t') || '';
   var state = $('state'), app = $('app'), result = $('result'), approveBtn = $('approve'), rejectBtn = $('reject');
 
+  var studentEmail = '';
   var LABEL = { pending_review: 'Waiting for your decision', approved: 'Approved', rejected: 'Rejected', awaiting_payment: 'Not paid yet', expired: 'Expired' };
 
   function call(action, body) {
@@ -19,7 +20,7 @@
   function when(s) { return s ? new Date(s).toLocaleString() : ''; }
 
   function show(r, proofUrl) {
-    var dl = $('facts'); dl.textContent = '';
+    var dl = $('facts'); dl.textContent = ''; studentEmail = r.email || '';
     fact(dl, 'Name', r.name); fact(dl, 'College or university', r.institution); fact(dl, 'Country', r.country);
     fact(dl, 'Email (key goes here)', r.email); fact(dl, 'Machine ID', r.machine_id);
     fact(dl, 'Paid', when(r.paid_at));
@@ -61,6 +62,8 @@
       if (!res.ok) { approveBtn.disabled = rejectBtn.disabled = false; say(res.j.error || 'Something went wrong. Nothing was changed.', false); return; }
       if (res.j.already) { say('Already decided: ' + (LABEL[res.j.already] || res.j.already) + '. Nothing was changed.', false); return; }
       $('decide').hidden = true;
+      // The refund went through but the e-mail to the student failed: say so plainly, with who to write to and what to tell them.
+      if (res.j.status === 'rejected' && res.j.mail_sent === false) { say('Rejected and the Rs 500 refund has started, BUT the e-mail to the student could not be sent. Please write to ' + studentEmail + ' yourself and tell them why: ' + reason, false); return; }
       say(res.j.status === 'approved' ? 'Approved. The license key has been emailed to the student.' : 'Rejected. The Rs 500 refund has started and the student has been told why.', true);
     }).catch(function () { approveBtn.disabled = rejectBtn.disabled = false; say('Could not reach the server. Nothing was changed. Please try again.', false); });
   }
