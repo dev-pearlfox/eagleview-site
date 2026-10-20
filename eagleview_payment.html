@@ -37,7 +37,7 @@
 <!-- Shared design tokens, keyframes, nav lockup, panel effects, and chip
      styles live in one file so both home + payment pages stay in sync. -->
 <link rel="stylesheet" href="eagleview-shared.css"/>
-<link rel="stylesheet" href="eagleview_payment.css?v=20261030"/>
+<link rel="stylesheet" href="eagleview_payment.css?v=20261031"/>
 </head>
 <body>
 <header class="top">
@@ -149,15 +149,6 @@
           <li><strong>We check your proof</strong> within 1 working day.</li>
           <li><strong>Approved:</strong> your license key is emailed to you. <strong>Not approved:</strong> your &#8377;500 is refunded in full.</li>
         </ol>
-        <div class="st-need" role="note">
-          <p class="st-need-h">What to upload</p>
-          <ul class="st-need-l">
-            <li>Student ID card</li>
-            <li>Bonafide or enrolment letter</li>
-            <li>This term's fee receipt</li>
-          </ul>
-          <p class="st-need-n">Any one of these is enough. It must show your <strong>name</strong>, your <strong>college or university</strong> and a <strong>date that is still valid</strong>. Use a clear photo or scan of the whole document, so every word can be read.</p>
-        </div>
         <button type="button" class="pay-btn" id="stRequest" aria-expanded="false" aria-controls="stForm" disabled>Apply for a student license</button>
         <form id="stForm" class="co-form" novalidate hidden>
           <div class="fld">
@@ -188,7 +179,15 @@
             <p class="hint">Open Eagle View, go to the license window, and copy the Machine ID. Opening this page from the app's Buy button fills it in for you.</p>
           </div>
           <div class="fld">
-            <p class="hint st-need-mini"><strong>Upload one of:</strong> a student ID card, a bonafide or enrolment letter, or this term's fee receipt. It must show your name, your college or university and a valid date, and be clear enough to read.</p>
+            <div class="st-need" role="note">
+              <p class="st-need-h">What to upload</p>
+              <ul class="st-need-l">
+                <li>Student ID card</li>
+                <li>Bonafide or enrolment letter</li>
+                <li>This term's fee receipt</li>
+              </ul>
+              <p class="st-need-n">Any one of these is enough. It must show your <strong>name</strong>, your <strong>college or university</strong> and a <strong>date that is still valid</strong>. Use a clear photo or scan of the whole document, so every word can be read.</p>
+            </div>
             <div class="st-drop" id="stDrop">
               <input type="file" id="stFile" class="st-file" accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png" tabindex="-1" aria-describedby="stFile-e"/>
               <button type="button" class="st-pick" id="stPick">Choose proof of enrolment</button>
