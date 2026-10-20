@@ -29,7 +29,23 @@
     machineFromLink = true; F.machine.value = mid;
     $('stMachineFld').hidden = true; $('stMidOk').style.display = 'flex';
   }
-  if (/[?&]student=paid(&|$)/.test(window.location.search)) $('stPaid').hidden = false;   // back from the payment
+  // Back from the payment. Razorpay adds the link's id and status to the return address. The thank-you note is shown only when
+  // the status says paid (or is absent), and the server is asked to check with Razorpay: a second way to learn about the payment,
+  // so the application reaches the owner even if Razorpay's own notification to the server is late or lost.
+  if (/[?&]student=paid(&|$)/.test(window.location.search)) {
+    var linkStatus = qs.get('razorpay_payment_link_status'), linkId = qs.get('razorpay_payment_link_id') || '';
+    if (!linkStatus || linkStatus === 'paid') {
+      $('stPaid').hidden = false;
+      if (/^plink_[A-Za-z0-9]{1,40}$/.test(linkId)) {
+        var confirmPayment = function (retry) {
+          fetch(window.EDGE_URL + '?action=student-confirm', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ payment_link_id: linkId }) })
+            .then(function (r) { if (!r.ok && retry) setTimeout(function () { confirmPayment(false); }, 8000); })
+            .catch(function () { if (retry) setTimeout(function () { confirmPayment(false); }, 8000); });
+        };
+        confirmPayment(true);
+      }
+    }
+  }
 
   if (CP) picker = CP.attach(F.country, $('stCountryList'), { onChange: refresh });
 
