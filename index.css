@@ -292,10 +292,10 @@ html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
 /* Offset anchor targets so the fixed nav doesn't cover section headings */
 section[id]{scroll-margin-top:88px;}
 body{overscroll-behavior-y:none;}
-/* Skip layout/paint on sections while they're comfortably off-screen.
-   `auto` for intrinsic-size means the browser reuses the last measured
-   height once seen, so anchor jumps land on-target after first paint. */
-.so{content-visibility:auto;contain-intrinsic-size:auto 900px;}
+/* NOTE: do not add `content-visibility:auto` to .so. Off-screen sections then
+   use a guessed height (too tall), so the page is ~2000px too long until you
+   scroll through it, and #download / nav jumps overshoot to the feedback
+   section. Removed after measuring: jumps now land just under the nav. */
 /* Promote continuously-animated elements to their own compositor layer
    so scrolling doesn't repaint them. */
 nav,.orb,.asb,.hm,.l2{will-change:transform;}
