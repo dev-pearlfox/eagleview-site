@@ -191,7 +191,7 @@
 (function () {
   // ── Data: real durations pulled from product-launch.html ──────────────
   var RANGE_START = new Date('2026-09-01');
-  var RANGE_END   = new Date('2026-12-31');
+  var RANGE_END   = new Date('2027-02-28');
   var TODAY       = new Date(); // always the real current date — was hardcoded to Sep 12, which froze the "Today" marker forever
   var TODAY_STR   = TODAY.toISOString().slice(0, 10);
 
@@ -223,12 +223,14 @@
     ]},
     { name: 'OAuth verification', tasks: [
       { label: 'Microsoft Partner Network ID', sub: '1–3 days', start: '2026-09-29', end: '2026-10-12', cls: 'done' },
-      { label: 'D-U-N-S + Publisher Verification', sub: '1–4 weeks · after MPN ID', start: '2026-09-17', end: 'today', cls: 'teal' },
-      { label: 'Google OAuth consent verification', sub: '1–2 weeks', start: '2026-09-30', end: '2026-11-30', cls: 'teal' },
-      { label: 'CASA Tier 2 security assessment', sub: '4–8 weeks · flag arrives a few days into OAuth review', start: '2026-10-22', end: '2026-11-28', cls: 'casa' }
+      { label: 'D-U-N-S + Publisher Verification', sub: '1–4 weeks · after MPN ID', start: '2026-09-17', end: 'today', cls: 'teal' }
     ]},
     { name: 'Launch', tasks: [
       { label: 'Eagle View goes live', sub: 'Launch date', start: '2026-12-01', end: '2026-12-02', cls: 'launch' }
+    ]},
+    { name: 'After launch', tasks: [
+      { label: 'Google OAuth consent verification', sub: '1–2 weeks', start: '2026-12-02', end: '2027-02-01', cls: 'teal' },
+      { label: 'CASA Tier 2 security assessment', sub: '4–8 weeks · flag arrives a few days into OAuth review', start: '2026-12-02', end: '2027-01-19', cls: 'casa' }
     ]}
   ];
 
