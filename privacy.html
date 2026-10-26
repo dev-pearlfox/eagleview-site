@@ -449,22 +449,23 @@
 <!-- Hero -->
 <div class="hero">
   <h1>Privacy Policy for <span>Eagle View</span></h1>
-  <p class="hero-meta">Effective Date: October 12, 2026 &nbsp;·&nbsp; Version 1.5 &nbsp;·&nbsp; PearlFox, India</p>
+  <p class="hero-meta">Effective Date: October 26, 2026 &nbsp;·&nbsp; Version 1.6 &nbsp;·&nbsp; PearlFox, India</p>
   <div class="compliance-badges">
-    <span class="badge">GDPR Compliant</span>
-    <span class="badge">CCPA Compliant</span>
-    <span class="badge">DPDP Act 2023</span>
-    <span class="badge">ISO 27001 Aligned</span>
-    <span class="badge">SOC 2 Principles</span>
+    <span class="badge">GDPR · In progress</span>
+    <span class="badge">CCPA · In progress</span>
+    <span class="badge">DPDP Act 2023 · In progress</span>
+    <span class="badge">ISO 27001 · In progress</span>
+    <span class="badge">SOC 2 · In progress</span>
   </div>
+  <p class="hero-meta">These are goals we are working towards. Eagle View has not yet been independently audited or certified against any of them.</p>
 </div>
 
 <!-- Local Processing Callout -->
 <div class="local-callout">
   <div class="local-callout-inner">
     <div class="icon">🔒</div>
-    <strong>Your email, calendar, and task data never leaves your device.</strong>
-    <p>Eagle View processes all email, calendar, and task data entirely on your local machine — it is never sent to our servers. A separate licensing system securely processes your email address and a device hardware identifier solely to generate and validate your license key. See Section 5 for details.</p>
+    <strong>Your email, calendar, chat and task content is never sent to PearlFox's servers.</strong>
+    <p>Eagle View reads this content straight from your own accounts and shows it on your device. PearlFox's servers never receive it. Our licensing system receives only the licensing details described in Sections 2 and 5 (for example your email address and a device identifier).</p>
   </div>
 </div>
 
@@ -485,7 +486,7 @@
       <li><a href="#s8">Children's Privacy</a></li>
       <li><a href="#s9">International Transfers</a></li>
       <li><a href="#s10">Policy Updates</a></li>
-      <li><a href="#s11">Contact &amp; DPO</a></li>
+      <li><a href="#s11">Contact &amp; Grievances</a></li>
     </ol>
     <hr class="toc-divider">
     <div class="toc-contact">
@@ -504,10 +505,10 @@
         <h2>Overview</h2>
       </div>
       <p>This Privacy Policy describes how <strong>PearlFox</strong> ("we", "our", or "us"), a technology company based in India, handles information in connection with the <strong>Eagle View</strong> desktop application ("Application", "Service").</p>
-      <p>Eagle View is a productivity widget that connects to your Microsoft Outlook or Google Gmail account to display a real-time summary of emails, calendar meetings, and flagged tasks — all processed locally on your device. You may optionally also connect Jira, Azure DevOps, and/or Slack for the same kind of at-a-glance summary of those accounts; each is entirely opt-in and none is contacted unless you explicitly connect it.</p>
-      <p>This Policy is designed to meet the requirements of the <strong>EU General Data Protection Regulation (GDPR)</strong>, the <strong>California Consumer Privacy Act (CCPA/CPRA)</strong>, India's <strong>Digital Personal Data Protection Act 2023 (DPDP Act)</strong>, and internationally recognised privacy principles including OECD Privacy Guidelines and ISO/IEC 29101.</p>
+      <p>Eagle View is a productivity widget that connects to your Microsoft Outlook or Google Gmail account to display a real-time summary of emails, calendar meetings, flagged tasks and, where your Microsoft work account allows it, Microsoft Teams chats — all processed locally on your device. You may optionally also connect Jira, Azure DevOps, and/or Slack for the same kind of at-a-glance summary of those accounts; each is entirely opt-in and none is contacted unless you explicitly connect it.</p>
+      <p>We aim to follow the <strong>EU General Data Protection Regulation (GDPR)</strong>, the <strong>California Consumer Privacy Act (CCPA/CPRA)</strong>, India's <strong>Digital Personal Data Protection Act 2023 (DPDP Act)</strong>, and internationally recognised privacy principles including OECD Privacy Guidelines and ISO/IEC 29101. Compliance work on these, and on ISO/IEC 27001 and SOC 2, is in progress; Eagle View has not yet been independently audited or certified against any of them.</p>
       <div class="highlight">
-        <strong>Plain-language summary:</strong> Eagle View reads data from your email and calendar providers using your own credentials. This data is shown to you inside the app. It is never sent to our servers. We do not sell, share, or monetise your personal data.
+        <strong>Plain-language summary:</strong> Eagle View reads data from your email, calendar, chat and task providers using your own credentials. This data is shown to you inside the app. It is never sent to PearlFox's servers. We do not sell or monetise your personal data, and we share licensing details only with the service providers listed in Section 5.
       </div>
     </section>
 
@@ -517,7 +518,7 @@
         <div class="section-num">2</div>
         <h2>Data We Access</h2>
       </div>
-      <p>Eagle View requests the following permissions from your connected accounts. Most access is read-only, used to display your mail, calendar, and tasks. A small number of write actions are also available — see below — and every one of them only happens when you directly trigger it (e.g. clicking a button in the app); Eagle View never performs any of them automatically or in the background.</p>
+      <p>Eagle View requests the permissions listed below from your connected accounts. Most access is read-only, used to display your mail, calendar, and tasks. A small number of write actions are also available — see below — and every one of them only happens when you directly trigger it (e.g. clicking a button in the app); Eagle View never performs any of them automatically or in the background.</p>
 
       <table class="data-table">
         <thead>
@@ -525,7 +526,7 @@
             <th>Data Category</th>
             <th>Specific Fields Accessed</th>
             <th>Purpose</th>
-            <th>Stored Locally?</th>
+            <th>Where is it stored?</th>
           </tr>
         </thead>
         <tbody>
@@ -548,34 +549,88 @@
             <td>In-memory only; not persisted to disk</td>
           </tr>
           <tr>
+            <td><strong>Microsoft Teams chats</strong> <span class="flag flag-dpdp">Optional</span></td>
+            <td>Chat name, member names, a short preview of the latest message, and whether you have read it. Only for Microsoft work accounts that allow it</td>
+            <td>Show your recent Teams chats and which are unread</td>
+            <td>In-memory only; not persisted to disk</td>
+          </tr>
+          <tr>
+            <td><strong>Teams profile photos</strong> <span class="flag flag-dpdp">Optional</span></td>
+            <td>The profile photo of the people in your chats, if they have one</td>
+            <td>Show avatars next to chats</td>
+            <td>In-memory only, for the session; nothing is written to disk</td>
+          </tr>
+          <tr>
             <td><strong>Authentication tokens</strong></td>
             <td>OAuth 2.0 access token, refresh token, expiry timestamp</td>
             <td>Maintain authenticated session without repeated login</td>
-            <td>Yes — kept on your device only. Version 1.1.7 and later: the Gmail sign-in token is stored in your operating system's secure storage (macOS Keychain; Windows Credential Manager), and the Outlook, Jira, Azure DevOps and Slack tokens are encrypted in the local settings file, with the encryption key held in that same secure storage. Versions before 1.1.7 kept these tokens in the settings file without encryption.</td>
+            <td>On your device only. Version 1.1.7 and later: the Gmail sign-in token is stored in your operating system's secure storage (macOS Keychain; Windows Credential Manager), and the Outlook, Jira, Azure DevOps and Slack tokens are encrypted in the local settings file, with the encryption key held in that same secure storage. Versions before 1.1.7 kept these tokens in the settings file without encryption.</td>
           </tr>
           <tr>
             <td><strong>App settings</strong></td>
             <td>Refresh intervals, widget size/position, notes, reminder data</td>
             <td>Restore user preferences across app restarts</td>
-            <td>Yes — local settings file on your device</td>
+            <td>On your device: local settings file</td>
           </tr>
           <tr>
             <td><strong>Diagnostic log</strong></td>
-            <td>Technical events only: time, which part of the app, what it did, error codes, app version. Written so that it holds no email addresses, meeting titles, message text, account or project names, web addresses beyond the site name, or the user name in file paths.</td>
+            <td>Technical events only: time, which part of the app, what it did, error codes, app version. Written to avoid personal data: email addresses, web addresses beyond the site name and the user name in file paths are removed automatically. The app is not written to log meeting titles, message text, or account or project names.</td>
             <td>Find and fix problems; you may send it to support yourself</td>
-            <td>Yes — log file on your device, last 5 days only. Never sent by the app (see Section 4)</td>
+            <td>On your device: log file, last 5 days only. The app does not upload it (see Section 4)</td>
           </tr>
           <tr>
             <td><strong>Email address</strong> <span class="flag flag-dpdp">License</span></td>
-            <td>Email address provided during license purchase or activation</td>
-            <td>Generate and deliver license key; identify license holder</td>
-            <td>Yes — stored on our licensing server (Supabase)</td>
+            <td>Email address provided during license purchase, trial or activation</td>
+            <td>Generate and deliver license key; identify license holder; send reminders about your own license or trial</td>
+            <td>On our licensing server (Supabase)</td>
           </tr>
           <tr>
             <td><strong>Device hardware identifier</strong> <span class="flag flag-dpdp">License</span></td>
             <td>Hardware UUID of the machine on which Eagle View is installed (read from OS)</td>
             <td>Bind the license key to a specific device; prevent unauthorised use on other machines</td>
-            <td>Yes — stored on our licensing server (Supabase)</td>
+            <td>On our licensing server (Supabase)</td>
+          </tr>
+          <tr>
+            <td><strong>Country</strong> <span class="flag flag-dpdp">License</span></td>
+            <td>The country you choose on the license screen (pre-filled from your computer's region setting, which you can change), or enter when you apply for a student or company license</td>
+            <td>Kept in license records. It does not change the price or the features you get</td>
+            <td>On our licensing server (Supabase)</td>
+          </tr>
+          <tr>
+            <td><strong>Trial and activation records</strong> <span class="flag flag-dpdp">License</span></td>
+            <td>Device identifier, email address, country, the time of each trial start and each trial attempt, and whether a device is activated</td>
+            <td>Start and limit the free trial; check that a license is active on a device</td>
+            <td>On our licensing server (Supabase)</td>
+          </tr>
+          <tr>
+            <td><strong>License key</strong> <span class="flag flag-dpdp">License</span></td>
+            <td>The license key issued to you</td>
+            <td>Issue, deliver and check your license</td>
+            <td>On our licensing server (Supabase)</td>
+          </tr>
+          <tr>
+            <td><strong>License event history</strong> <span class="flag flag-dpdp">License</span></td>
+            <td>Email address, device identifier, type and date of each license event (for example trial started, payment received, key emailed, activated, renewed, revoked, refunded) and notes</td>
+            <td>Keep a record of what happened to each license</td>
+            <td>On our licensing server (Supabase). This log is append-only: entries are not edited or deleted (see Section 6)</td>
+          </tr>
+          <tr>
+            <td><strong>Payment records</strong> <span class="flag flag-dpdp">License</span></td>
+            <td>Payment ID, payment link ID, amount, currency, coupon code (if used), invoice number, license dates. Card details are handled by Razorpay. Eagle View and our servers do not collect or store them</td>
+            <td>Match a payment to a license; handle refunds</td>
+            <td>On our licensing server (Supabase)</td>
+          </tr>
+          <tr>
+            <td><strong>Student application</strong> <span class="flag flag-dpdp">Student license</span></td>
+            <td>Name, college or university, country, email address, device identifier, and the proof-of-enrolment file you upload (PDF, JPG or PNG, up to 5 MB)</td>
+            <td>Check that you are a student before a student license is issued</td>
+            <td>On our licensing server (Supabase). The proof file is kept in a private store and deleted automatically (see Section 6)</td>
+          </tr>
+          <tr>
+            <td><strong>Company license request</strong> <span class="flag flag-dpdp">Company license</span></td>
+            <td>Company name, email domain, contact email, country, tax or GSTIN number, billing address, phone number. These are sent to us by email from your own mail app, and the company record we keep (name, domain, contact, GSTIN, country, invoice number, notes) is stored on our licensing server</td>
+            <td>Issue an invoice and set up a company license</td>
+            <td>In our mailbox (Zoho Mail); company record on our licensing server (Supabase)</td>
           </tr>
           <tr>
             <td><strong>Jira issues</strong> <span class="flag flag-dpdp">Optional</span></td>
@@ -610,10 +665,37 @@
         <li><strong>Complete</strong> — marks a flagged/to-do item as done (Outlook/Gmail)</li>
         <li><strong>Transition</strong> — changes a Jira issue's status (e.g. To Do → In Progress), if you connect Jira</li>
         <li><strong>Update state</strong> — changes an Azure DevOps work item's state, if you connect Azure DevOps</li>
+        <li><strong>Mark chat as read</strong> — marks a Microsoft Teams chat as read on your account. The extra Teams permission this needs is requested only at that moment</li>
       </ul>
+      <p>Eagle View can read, mark as read, flag and delete mail. It does not send, reply to, forward or draft mail.</p>
+
       <div class="highlight" style="margin-top:0.75rem;">
-        <strong>License data is minimal and purpose-limited.</strong> The email address and device hardware identifier collected during licensing are used exclusively for license validation. They are never used for marketing, analytics, or any purpose beyond license enforcement.
+        <strong>License data is purpose-limited.</strong> The email address, device hardware identifier and the other licensing details above are used only to issue and validate licenses, to handle payments and refunds, to check student eligibility, and to send you emails about your own license or trial (your key, and reminders before it expires). They are never used for advertising, analytics or profiling.
       </div>
+
+      <h3>Permissions requested from your accounts</h3>
+      <p>These are the exact permissions (OAuth scopes) in the current version of Eagle View. Several are requested only when you use the related feature.</p>
+      <table class="data-table">
+        <thead><tr><th>Account</th><th>Permissions</th><th>What they are used for</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Microsoft (Outlook)</strong></td><td><code>User.Read</code>, <code>Mail.ReadWrite</code>, <code>Calendars.Read</code>, <code>offline_access</code></td><td>Show your profile name, read mail and perform the mail actions above, read your calendar, and stay signed in</td></tr>
+          <tr><td><strong>Microsoft Teams</strong> <span class="flag flag-dpdp">Optional</span></td><td><code>Chat.Read</code>; <code>Chat.ReadWrite</code> (only when you mark a chat as read); <code>ProfilePhoto.Read.All</code> (only to show avatars)</td><td>Show your recent chats, mark a chat as read, show profile photos</td></tr>
+          <tr><td><strong>Azure DevOps</strong> <span class="flag flag-dpdp">Optional</span></td><td><code>499b84ac-1321-427f-aa17-267ca6975798/.default</code>, <code>offline_access</code>, requested with your existing Microsoft sign-in. Or a Personal Access Token you enter yourself</td><td>Read the Azure DevOps work items assigned to you that are not closed and, only when you click the button, change a work item's state</td></tr>
+          <tr><td><strong>Google (Gmail)</strong></td><td><code>gmail.modify</code>, <code>calendar.readonly</code>, <code>openid</code>, <code>email</code>, <code>profile</code></td><td>Read mail and perform the mail actions above, read your calendar, identify your account</td></tr>
+          <tr><td><strong>Jira</strong> <span class="flag flag-dpdp">Optional</span></td><td><code>read:jira-work</code>, <code>read:jira-user</code>, <code>offline_access</code></td><td>Read your Jira issues and your Jira user</td></tr>
+          <tr><td><strong>Slack</strong> <span class="flag flag-dpdp">Optional</span></td><td><code>channels:read</code>, <code>groups:read</code>, <code>im:read</code>, <code>mpim:read</code>, <code>users:read</code></td><td>List your channels and conversations and read user profiles</td></tr>
+        </tbody>
+      </table>
+      <p>Azure DevOps is connected either with your Microsoft sign-in or with a Personal Access Token you enter yourself.</p>
+
+      <h3>Coming in a future version</h3>
+      <p><strong>Not in the version you can download today.</strong> The following are in development. We list them now so that you know what a future update will do before you install it:</p>
+      <ul>
+        <li><strong>Google Chat</strong> (read-only). Shows your recent Google Chat conversations: names of spaces and people, a short preview (up to 80 characters) of the latest message and whether you have read it. It never writes to Google Chat. It adds four read-only Google permissions to the Gmail sign-in: <code>chat.spaces.readonly</code>, <code>chat.messages.readonly</code>, <code>chat.memberships.readonly</code> and <code>chat.users.readstate.readonly</code>. Content is kept in memory only.</li>
+        <li><strong>Incidents, Learn4U and Peakon rows.</strong> These look in your mailbox for mails from a sender address that <em>you</em> save in Settings and whose subject matches the pattern for that row. Incidents and Learn4U also check that the mail is addressed to you; Peakon does not. For Incidents and Learn4U, the body is read only for the newest mail of each incident or training number, and these lists and bodies are kept in memory only. For Peakon, the app stores on your device a web link to the survey mail, the times it found and answered the survey, and whether you dismissed it. The sender address, subject text and similar settings you enter are also stored on your device.</li>
+        <li><strong>Time Sheet reminder.</strong> A reminder day that you choose in Settings, stored in the local settings file. The reminder runs entirely on your device.</li>
+      </ul>
+
     </section>
 
     <!-- 3. How We Use Data -->
@@ -630,10 +712,14 @@
         <tbody>
           <tr><td>Reading email metadata</td><td>Art. 6(1)(b) — Contract performance</td><td>Core feature of the Application</td></tr>
           <tr><td>Reading calendar events</td><td>Art. 6(1)(b) — Contract performance</td><td>Core feature of the Application</td></tr>
+          <tr><td>Reading Microsoft Teams chats and photos</td><td>Art. 6(1)(b) — Contract performance</td><td>Optional feature of the Application</td></tr>
           <tr><td>Storing OAuth tokens locally</td><td>Art. 6(1)(b) — Contract performance</td><td>Maintain authenticated session</td></tr>
           <tr><td>Storing user preferences</td><td>Art. 6(1)(b) — Contract performance</td><td>Restore app settings</td></tr>
           <tr><td>License key generation &amp; validation</td><td>Art. 6(1)(b) — Contract performance</td><td>Generate a machine-bound key on purchase; validate it on activation</td></tr>
           <tr><td>Payment processing</td><td>Art. 6(1)(b) — Contract performance</td><td>Process license purchase via Razorpay</td></tr>
+          <tr><td>Student proof of enrolment</td><td>Art. 6(1)(a) — Consent (the tick-box on the application form)</td><td>Check that you are a student before issuing a student license</td></tr>
+          <tr><td>Trial records (device identifier, email, country)</td><td>Art. 6(1)(f) — Legitimate interests</td><td>Allow one free trial per device</td></tr>
+          <tr><td>License and trial expiry reminder emails</td><td>Art. 6(1)(b) — Contract performance</td><td>Tell you before your own license or trial ends</td></tr>
         </tbody>
       </table>
       <p>We do not use your data for advertising, analytics, profiling, machine learning training, or any purpose beyond delivering the functionality you explicitly requested.</p>
@@ -646,7 +732,7 @@
         <div class="section-num">4</div>
         <h2>Local Storage &amp; Security</h2>
       </div>
-      <p>All data handled by Eagle View resides exclusively on your local device. The following files are created during normal operation:</p>
+      <p>The email, calendar, chat and task content that Eagle View handles stays on your local device (licensing details are held on our licensing server, see Section 5). The following files are created on your device during normal operation:</p>
       <table class="data-table">
         <thead><tr><th>File</th><th>Location</th><th>Contents</th></tr></thead>
         <tbody>
@@ -675,9 +761,9 @@
 
       <h3>Diagnostic log and Log Viewer</h3>
       <ul>
-        <li>The log records technical events (for example "refresh finished", "sign-in cancelled", an error code) so problems can be diagnosed. It is written to be free of personal data: email addresses, meeting titles, message text, Jira / Azure DevOps / Slack names and ids, and full web addresses are not written, and your operating-system user name in file paths is replaced with <code>&lt;user&gt;</code>. Sign-in tokens are never written to it.</li>
-        <li>Eagle View never uploads or emails the log. It stays on your device unless you choose to send it. The Log Viewer (Settings, or Debug Logs on the sign-in screen) opens it in your browser and has two buttons, Download as TXT and Download as HTML, so you can save a copy and send it to PearlFox support yourself.</li>
-        <li>The downloaded file's name contains your license email address (or your operating-system user name if there is none), the app version and the date, for example <code style="word-break:break-all;">EagleView_Log_v1.1.7_you@example.com_2026-10-12_15-38-27.txt</code>. Check the name before you share it publicly.</li>
+        <li>The log records technical events (for example "refresh finished", "sign-in cancelled", an error code) so problems can be diagnosed. It is written to avoid personal data. Email addresses and full web addresses are removed from every line automatically, and your operating-system user name in file paths is replaced with <code>&lt;user&gt;</code>. The app is not written to log meeting titles, message text, or Jira / Azure DevOps / Slack names and ids. Sign-in tokens are not written to it.</li>
+        <li>Eagle View does not upload or email the log. It stays on your device unless you choose to send it. The Log Viewer (Settings, or Debug Logs on the sign-in screen) opens it in your browser and has two buttons, Download as TXT and Download as HTML, so you can save a copy and send it to PearlFox support yourself.</li>
+        <li>The Log Viewer page shows your license email address, and the downloaded file's name contains it (or your operating-system user name if there is none), the app version and the date, for example <code style="word-break:break-all;">EagleView_Log_v1.1.7_you@example.com_2026-10-12_15-38-27.txt</code>. Check the name before you share it publicly.</li>
         <li>Old lines are removed automatically: entries older than 5 days are deleted each time Eagle View starts and each time the Log Viewer is opened. Factory Reset erases the log and any saved viewer pages.</li>
         <li>Log files written by older builds of Eagle View (before the October 12, 2026 update) may still contain data that newer builds no longer write, until those lines age out after 5 days or you use Factory Reset.</li>
       </ul>
@@ -686,12 +772,11 @@
       <ul>
         <li>Version 1.1.7 and later: the Gmail sign-in token is stored in your operating system's secure storage (macOS Keychain; Windows Credential Manager); the Outlook, Jira, Azure DevOps and Slack tokens are encrypted with AES-256-GCM before being written to disk, and the key is held in that secure storage. Versions before 1.1.7 stored these tokens in the settings file without encryption</li>
         <li>All API communication uses TLS 1.2 or higher (HTTPS only)</li>
-        <li>The Application requests minimum necessary OAuth scopes (principle of least privilege)</li>
-        <li>No telemetry, crash reporting, or usage analytics data is transmitted from the Application</li>
-        <li>The Application's Rust backend enforces memory safety to prevent buffer overflow and injection attacks</li>
+        <li>The Application requests only the permissions listed in Section 2, and requests the Teams permissions only when you use the related feature</li>
+        <li>No telemetry, crash reporting, or usage analytics data is transmitted from the Application. The Application does make a few background requests, listed under "Other services" in Section 5; like any web request, they reveal your IP address to those servers</li>
       </ul>
       <div class="highlight">
-        <strong>You are the data controller.</strong> Because all data stays on your device, you retain full control. You can delete all stored data at any time with Settings → Log Out and Factory Reset in the Application. Deleting the files above or uninstalling the Application removes the files but does not remove the Gmail sign-in token or the encryption key held in your operating system's secure storage; to remove them, delete the entries named "EagleView" in Keychain Access (macOS) or Credential Manager (Windows).
+        <strong>You are in control of the data on your device.</strong> Because your email, calendar, chat and task content stays on your device, you retain full control of it. You can delete all stored data at any time with Settings → Log Out and Factory Reset in the Application. Deleting the files above or uninstalling the Application removes the files but does not remove the Gmail sign-in token or the encryption key held in your operating system's secure storage; to remove them, delete the entries named "EagleView" in Keychain Access (macOS) or Credential Manager (Windows).
       </div>
     </section>
 
@@ -707,7 +792,7 @@
         <tbody>
           <tr>
             <td><strong>Microsoft Corporation</strong></td>
-            <td>Outlook email &amp; calendar access via Microsoft Graph API</td>
+            <td>Outlook email &amp; calendar access, and Teams chat access where your work account allows it, via Microsoft Graph API</td>
             <td>OAuth authentication credentials; API requests containing your User ID</td>
             <td>Microsoft Privacy Statement</td>
           </tr>
@@ -743,8 +828,8 @@
         <tbody>
           <tr>
             <td><strong>Supabase Inc.</strong></td>
-            <td>License server — stores and validates license records</td>
-            <td>Email address, device hardware identifier, license key, purchase timestamp</td>
+            <td>License server — stores and validates license, trial, student and company records; holds the private store for student proof files. Data is stored in Tokyo, Japan</td>
+            <td>Email address, device hardware identifier, country, license key, purchase timestamp, payment ID and amount, coupon, trial and activation records, license event history, student application details and proof file, company record</td>
             <td>Supabase Privacy Policy</td>
           </tr>
           <tr>
@@ -755,14 +840,64 @@
           </tr>
           <tr>
             <td><strong>Resend Inc.</strong></td>
-            <td>Transactional email delivery (license key emails)</td>
-            <td>Recipient email address, license key</td>
+            <td>Transactional email delivery (license key emails, student application and decision emails, and trial and license expiry reminders)</td>
+            <td>Recipient email address and the content of that email (for example your license key)</td>
             <td>Resend Privacy Policy</td>
+          </tr>
+          <tr>
+            <td><strong>Zoho Corporation</strong> (Zoho Mail)</td>
+            <td>Hosts the dev@pearlfox.io mailbox that receives company invoice requests, privacy requests and support emails</td>
+            <td>Whatever you choose to email us, including the company details in the invoice-request email created by the website form</td>
+            <td>Zoho Privacy Policy</td>
           </tr>
         </tbody>
       </table>
 
-      <p>PearlFox is not responsible for the privacy practices of Microsoft, Google, Atlassian, or Slack. Eagle View's use of data obtained from these APIs is limited to displaying information within the Application and is not used for any secondary purposes. Jira, Azure DevOps, and Slack are all optional integrations — none of them are contacted unless you explicitly connect them.</p>
+      <h3>Other services</h3>
+      <p>These services receive no account, mail, calendar or task data from you. Like any web request, each one can see your IP address.</p>
+      <table class="data-table">
+        <thead><tr><th>Service</th><th>What it is used for</th><th>When</th><th>What it receives</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>GitHub</strong></td>
+            <td>Hosts the Eagle View website and the installer downloads. Eagle View checks <code>eagleview.pearlfox.io/version.json</code> to tell you when a new version exists</td>
+            <td>1 minute and 1 hour after Eagle View starts; and when you visit the website or download the app</td>
+            <td>A normal web request (IP address, browser or app details)</td>
+          </tr>
+          <tr>
+            <td><strong>jsDelivr</strong> (cdn.jsdelivr.net)</td>
+            <td>Gold and silver prices when a currency other than INR is selected</td>
+            <td>When Eagle View starts, then every 8 hours</td>
+            <td>A normal web request</td>
+          </tr>
+          <tr>
+            <td><strong>ibjarates.com</strong></td>
+            <td>Gold and silver prices in INR</td>
+            <td>When Eagle View starts, then every 8 hours</td>
+            <td>A normal web request</td>
+          </tr>
+          <tr>
+            <td><strong>frankfurter.app</strong></td>
+            <td>Exchange rates for the Currency row</td>
+            <td>When the Currency row fetches rates</td>
+            <td>A normal web request, including the currency code you chose</td>
+          </tr>
+          <tr>
+            <td><strong>Google</strong> (favicon service)</td>
+            <td>The small site icon shown for each of your Quick Links</td>
+            <td>When your Quick Links are shown</td>
+            <td>The website name (not the full address) of each Quick Link, and a normal web request</td>
+          </tr>
+          <tr>
+            <td><strong>Google Fonts</strong></td>
+            <td>Fonts on the website pages (home page and payment page), not in the app</td>
+            <td>When you visit those pages</td>
+            <td>A normal web request</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>PearlFox is not responsible for the privacy practices of Microsoft, Google, Atlassian, Slack, or the other services listed above. Eagle View's use of data obtained from these APIs is limited to displaying information within the Application and is not used for any secondary purposes. Jira, Azure DevOps, and Slack are all optional integrations — none of them are contacted unless you explicitly connect them.</p>
       <p>Eagle View's use and transfer to any other app of information received from Google APIs adheres to the <strong>Google API Services User Data Policy</strong>, including the Limited Use requirements.</p>
     </section>
 
@@ -772,18 +907,24 @@
         <div class="section-num">6</div>
         <h2>Data Retention</h2>
       </div>
-      <p>Because PearlFox does not collect or store any data on our servers, our data retention obligations are minimal:</p>
+      <p>PearlFox's servers do not receive your email, calendar, chat or task content. They do hold the licensing records described below. Retention periods:</p>
       <table class="data-table">
         <thead><tr><th>Data</th><th>Retention Period</th><th>Deletion Method</th></tr></thead>
         <tbody>
-          <tr><td>Email &amp; calendar data (in-memory)</td><td>Duration of app session only</td><td>Automatically cleared on app close</td></tr>
+          <tr><td>Email, calendar &amp; chat data (in-memory)</td><td>Duration of app session only</td><td>Automatically cleared on app close</td></tr>
           <tr><td>OAuth tokens</td><td>Until logout or uninstall</td><td>Settings → Log Out or Factory Reset; also delete the "EagleView" entries in Keychain Access / Credential Manager if you uninstall without logging out</td></tr>
           <tr><td>App preferences &amp; notes</td><td>Until uninstall</td><td>Delete the settings and notes files, or uninstall the app</td></tr>
           <tr><td>Diagnostic log</td><td>Last 5 days; older lines removed at each app start and when the Log Viewer is opened</td><td>Factory Reset, or delete the log folder shown in Section 4</td></tr>
-          <tr><td>License records (email address, device identifier, license key)</td><td>Duration of license + 1 year for dispute resolution</td><td>Contact dev@pearlfox.io to request deletion</td></tr>
+          <tr><td>License records (email address, device identifier, license key)</td><td>Duration of license + 1 year for dispute resolution. No automatic deletion at present</td><td>Contact dev@pearlfox.io to request deletion (the event history below is the exception)</td></tr>
+          <tr><td>License event history (email address, device identifier, event type and date)</td><td>Kept as an append-only audit log; no fixed period</td><td>Entries cannot currently be edited or deleted one by one. Contact dev@pearlfox.io and we will tell you what we hold and what can be removed</td></tr>
+          <tr><td>Technical logs on our licensing server (these can include an email address, a device identifier and a country)</td><td>We do not delete them ourselves; the period is set by our hosting provider (Supabase)</td><td>Contact dev@pearlfox.io</td></tr>
+          <tr><td>Student proof-of-enrolment file</td><td>Deleted automatically 30 days after we approve or reject the application, or 3 days after an application that was never paid</td><td>Automatic; you may also ask us to delete it sooner at dev@pearlfox.io</td></tr>
+          <tr><td>Trial records and student application details (name, college, country, email, device identifier)</td><td>No fixed period and no automatic deletion at present</td><td>Contact dev@pearlfox.io to request deletion</td></tr>
+          <tr><td>Company invoice requests and company license records</td><td>No fixed period and no automatic deletion at present</td><td>Contact dev@pearlfox.io to request deletion</td></tr>
+          <tr><td>Invoices and payment records</td><td>Where tax or accounting law requires us to keep them, for as long as it requires</td><td>Contact dev@pearlfox.io</td></tr>
         </tbody>
       </table>
-      <p>For email, calendar, and task data: PearlFox retains no copies on our servers. For license records (email address and device identifier): these are retained on our licensing server for the duration described above and deleted upon request.</p>
+      <p>For email, calendar, chat and task content: PearlFox retains no copies on our servers. For licensing records: these are retained on our licensing server for the periods above and deleted upon request, except the event history described above and where the law requires us to keep them.</p>
     </section>
 
     <!-- 7. Your Rights -->
@@ -792,7 +933,7 @@
         <div class="section-num">7</div>
         <h2>Your Rights</h2>
       </div>
-      <p>Depending on your jurisdiction, you have the following rights regarding your personal data. Because Eagle View does not transmit data to our servers, most of these rights can be exercised directly by you within the Application or your operating system.</p>
+      <p>Depending on your jurisdiction, you have the following rights regarding your personal data. Because Eagle View does not send your email, calendar, chat or task content to our servers, most rights over that content can be exercised directly by you within the Application or your operating system. For the licensing records we hold (Sections 2 and 6), contact us at dev@pearlfox.io.</p>
 
       <h3>Rights under GDPR <span class="flag flag-gdpr">GDPR</span></h3>
       <div class="rights-grid">
@@ -816,7 +957,7 @@
       <div class="rights-grid">
         <div class="right-card"><div class="right-title">Right to Information (S.11)</div><p>This Policy provides complete information about personal data processing activities.</p></div>
         <div class="right-card"><div class="right-title">Right to Correction &amp; Erasure (S.12)</div><p>Contact us or use Factory Reset in the app to erase processed data.</p></div>
-        <div class="right-card"><div class="right-title">Right to Grievance Redressal (S.13)</div><p>Contact our Data Protection Officer at dev@pearlfox.io.</p></div>
+        <div class="right-card"><div class="right-title">Right to Grievance Redressal (S.13)</div><p>Contact our grievance contact at dev@pearlfox.io.</p></div>
         <div class="right-card"><div class="right-title">Right to Nominate (S.14)</div><p>You may nominate a representative to exercise your rights on your behalf.</p></div>
       </div>
 
@@ -839,7 +980,7 @@
         <div class="section-num">9</div>
         <h2>International Data Transfers</h2>
       </div>
-      <p>PearlFox is headquartered in India. Because Eagle View processes all data locally on your device and does not transmit personal data to our servers, there are no international transfers of personal data by PearlFox.</p>
+      <p>PearlFox is headquartered in India. Eagle View processes your email, calendar, chat and task content locally on your device and does not send it to our servers. The licensing details described in Sections 2 and 5 are stored by our licensing provider, Supabase, in <strong>Tokyo, Japan</strong>. Our other providers (Razorpay, Resend, Zoho and GitHub) process data in their own locations, which may be in other countries.</p>
       <p>When Eagle View connects to Microsoft or Google APIs on your behalf, your data may be processed on servers operated by these providers in various countries. These transfers are governed by Microsoft's and Google's respective data transfer mechanisms (including Standard Contractual Clauses under GDPR).</p>
       <p>For enterprise deployments subject to data residency requirements, please ensure your Microsoft or Google tenant is configured with the appropriate regional data boundary settings before deploying Eagle View.</p>
     </section>
@@ -853,28 +994,26 @@
       <p>We may update this Privacy Policy from time to time to reflect changes in our practices, legal requirements, or the features of Eagle View. When we make material changes, we will:</p>
       <ul>
         <li>Update the "Effective Date" at the top of this document</li>
-        <li>Display a notice within the Eagle View application</li>
         <li>Post the updated Policy at <strong>eagleview.pearlfox.io/privacy.html</strong></li>
       </ul>
       <p>Your continued use of Eagle View after the effective date of a revised Policy constitutes your acceptance of the changes. If you do not agree with the changes, you should discontinue use of the Application.</p>
-      <p>For material changes that require fresh consent under applicable law, we will request your explicit confirmation within the Application before continuing to process your data.</p>
     </section>
 
     <!-- 11. Contact -->
     <section class="section" id="s11">
       <div class="section-header">
         <div class="section-num">11</div>
-        <h2>Contact &amp; Data Protection Officer</h2>
+        <h2>Contact &amp; Grievances</h2>
       </div>
       <div class="contact-card">
-        <h3>PearlFox — Privacy Office</h3>
-        <p>For privacy enquiries, data subject requests, or to contact our Data Protection Officer, reach us at the address below. We aim to respond to all enquiries within 30 calendar days.</p>
+        <h3>PearlFox — Privacy &amp; Grievance Contact</h3>
+        <p>For privacy enquiries, data subject requests or grievances, reach us at the address below. We aim to respond to all enquiries within 30 calendar days.</p>
         <a href="mailto:dev@pearlfox.io">dev@pearlfox.io</a>
       </div>
       <p style="margin-top:1.25rem; font-size:0.82rem; color:var(--muted);">
         <strong style="color:var(--text)">Business address:</strong> PearlFox, India<br>
-        <strong style="color:var(--text)">Data Protection Officer (GDPR):</strong> dev@pearlfox.io<br>
-        <strong style="color:var(--text)">Grievance Officer (DPDP Act / IT Act):</strong> dev@pearlfox.io<br>
+        <strong style="color:var(--text)">Privacy contact:</strong> dev@pearlfox.io<br>
+        <strong style="color:var(--text)">Grievance contact (DPDP Act / IT Act):</strong> dev@pearlfox.io<br>
         <strong style="color:var(--text)">EU Representative:</strong> To be appointed upon EU market entry<br>
         <strong style="color:var(--text)">UK Representative:</strong> To be appointed upon UK market entry
       </p>
@@ -885,7 +1024,7 @@
 
 <footer class="doc-footer">
   <p>© 2026 PearlFox. All rights reserved. &nbsp;·&nbsp; <a href="mailto:dev@pearlfox.io">Contact</a></p>
-  <p style="margin-top:0.5rem; opacity:0.6;">Eagle View is a product of PearlFox. This document was last updated on October 12, 2026. Version 1.5 — added the diagnostic log and Log Viewer (what it holds, where it is, 5-day retention, the downloaded file name, how to erase it). Version 1.4 — corrected how sign-in tokens are stored (secure storage and encryption, and that versions before 1.1.7 did not encrypt them), where notes are stored, and how to erase all local data. Version 1.3 — added disclosure for Jira (Atlassian), Azure DevOps, and Slack: the optional data these integrations access, that Azure DevOps reuses the existing Microsoft sign-in (or an optional Personal Access Token) rather than a separate account, and the Jira issue-transition / Azure work-item-state write actions. Version 1.2 corrected Section 2 to accurately disclose message-body access and the mark-as-read/flag/delete/complete write actions.</p>
+  <p style="margin-top:0.5rem; opacity:0.6;">Eagle View is a product of PearlFox. This document was last updated on October 26, 2026. Version 1.6 — brought the policy in line with the current app and website: Microsoft Teams chats and photos and their permissions; a full list of requested permissions; that Eagle View cannot send mail; trial, student (including the uploaded proof and its automatic deletion), company and payment records; Zoho Mail, GitHub, jsDelivr, ibjarates.com, frankfurter.app, Google favicons and Google Fonts; where licensing data is stored (Tokyo, Japan); retention periods; compliance goals shown as in progress rather than achieved; a list of features coming in a future version; and clearer privacy and grievance contacts. Also: trial and activation records, license keys, the license event history (kept as an append-only audit log), the technical logs on our licensing server, and the trial rule corrected to one trial per device. Version 1.5 — added the diagnostic log and Log Viewer (what it holds, where it is, 5-day retention, the downloaded file name, how to erase it). Version 1.4 — corrected how sign-in tokens are stored (secure storage and encryption, and that versions before 1.1.7 did not encrypt them), where notes are stored, and how to erase all local data. Version 1.3 — added disclosure for Jira (Atlassian), Azure DevOps, and Slack: the optional data these integrations access, that Azure DevOps reuses the existing Microsoft sign-in (or an optional Personal Access Token) rather than a separate account, and the Jira issue-transition / Azure work-item-state write actions. Version 1.2 corrected Section 2 to accurately disclose message-body access and the mark-as-read/flag/delete/complete write actions.</p>
 </footer>
 </body>
 </html>
