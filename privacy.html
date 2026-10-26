@@ -449,7 +449,7 @@
 <!-- Hero -->
 <div class="hero">
   <h1>Privacy Policy for <span>Eagle View</span></h1>
-  <p class="hero-meta">Effective Date: October 26, 2026 &nbsp;·&nbsp; Version 1.6 &nbsp;·&nbsp; PearlFox, India</p>
+  <p class="hero-meta">Effective Date: October 26, 2026 &nbsp;·&nbsp; Version 1.7 &nbsp;·&nbsp; PearlFox, India</p>
   <div class="compliance-badges">
     <span class="badge">GDPR · In progress</span>
     <span class="badge">CCPA · In progress</span>
@@ -564,7 +564,7 @@
             <td><strong>Authentication tokens</strong></td>
             <td>OAuth 2.0 access token, refresh token, expiry timestamp</td>
             <td>Maintain authenticated session without repeated login</td>
-            <td>On your device only. Version 1.1.7 and later: the Gmail sign-in token is stored in your operating system's secure storage (macOS Keychain; Windows Credential Manager), and the Outlook, Jira, Azure DevOps and Slack tokens are encrypted in the local settings file, with the encryption key held in that same secure storage. Versions before 1.1.7 kept these tokens in the settings file without encryption.</td>
+            <td>On your device only. Version 1.1.7 and later: the Gmail sign-in token is stored in your operating system's secure storage (macOS Keychain; Windows Credential Manager), and the Outlook, Jira, Azure DevOps and Slack tokens are encrypted in the local settings file, with the encryption key held in that same secure storage. Versions before 1.1.7 kept these tokens in the settings file without encryption. For Jira this is your site address, email and API token; you can revoke the API token at any time in your Atlassian account.</td>
           </tr>
           <tr>
             <td><strong>App settings</strong></td>
@@ -634,7 +634,7 @@
           </tr>
           <tr>
             <td><strong>Jira issues</strong> <span class="flag flag-dpdp">Optional</span></td>
-            <td>Issue key, summary, status, priority, assignee</td>
+            <td>Issue key, summary, status, priority, due date</td>
             <td>Display your assigned/relevant Jira issues</td>
             <td>In-memory only; not persisted to disk</td>
           </tr>
@@ -680,13 +680,13 @@
         <tbody>
           <tr><td><strong>Microsoft (Outlook)</strong></td><td><code>User.Read</code>, <code>Mail.ReadWrite</code>, <code>Calendars.Read</code>, <code>offline_access</code></td><td>Show your profile name, read mail and perform the mail actions above, read your calendar, and stay signed in</td></tr>
           <tr><td><strong>Microsoft Teams</strong> <span class="flag flag-dpdp">Optional</span></td><td><code>Chat.Read</code>; <code>Chat.ReadWrite</code> (only when you mark a chat as read); <code>ProfilePhoto.Read.All</code> (only to show avatars)</td><td>Show your recent chats, mark a chat as read, show profile photos</td></tr>
-          <tr><td><strong>Azure DevOps</strong> <span class="flag flag-dpdp">Optional</span></td><td><code>499b84ac-1321-427f-aa17-267ca6975798/.default</code>, <code>offline_access</code>, requested with your existing Microsoft sign-in. Or a Personal Access Token you enter yourself</td><td>Read the Azure DevOps work items assigned to you that are not closed and, only when you click the button, change a work item's state</td></tr>
+          <tr><td><strong>Azure DevOps</strong> <span class="flag flag-dpdp">Optional</span></td><td><code>499b84ac-1321-427f-aa17-267ca6975798/.default</code>, <code>offline_access</code>, requested with your existing Microsoft sign-in</td><td>Read the Azure DevOps work items assigned to you that are not closed and, only when you click the button, change a work item's state</td></tr>
           <tr><td><strong>Google (Gmail)</strong></td><td><code>gmail.modify</code>, <code>calendar.readonly</code>, <code>openid</code>, <code>email</code>, <code>profile</code></td><td>Read mail and perform the mail actions above, read your calendar, identify your account</td></tr>
-          <tr><td><strong>Jira</strong> <span class="flag flag-dpdp">Optional</span></td><td><code>read:jira-work</code>, <code>read:jira-user</code>, <code>offline_access</code></td><td>Read your Jira issues and your Jira user</td></tr>
+          <tr><td><strong>Jira</strong> <span class="flag flag-dpdp">Optional</span></td><td>None. You connect Jira with your Jira site address, your Atlassian email and an API token you create yourself. &ldquo;Sign in with Atlassian&rdquo; is switched off.</td><td>Read the Jira issues assigned to you and, only when you click the button, change an issue&rsquo;s status</td></tr>
           <tr><td><strong>Slack</strong> <span class="flag flag-dpdp">Optional</span></td><td><code>channels:read</code>, <code>groups:read</code>, <code>im:read</code>, <code>mpim:read</code>, <code>users:read</code></td><td>List your channels and conversations and read user profiles</td></tr>
         </tbody>
       </table>
-      <p>Azure DevOps is connected either with your Microsoft sign-in or with a Personal Access Token you enter yourself.</p>
+      <p>Azure DevOps is connected with your existing Microsoft sign-in.</p>
 
       <h3>Coming in a future version</h3>
       <p><strong>Not in the version you can download today.</strong> The following are in development. We list them now so that you know what a future update will do before you install it:</p>
@@ -770,7 +770,7 @@
 
       <h3>Security Measures</h3>
       <ul>
-        <li>Version 1.1.7 and later: the Gmail sign-in token is stored in your operating system's secure storage (macOS Keychain; Windows Credential Manager); the Outlook, Jira, Azure DevOps and Slack tokens are encrypted with AES-256-GCM before being written to disk, and the key is held in that secure storage. Versions before 1.1.7 stored these tokens in the settings file without encryption</li>
+        <li>Version 1.1.7 and later: the Gmail sign-in token is stored in your operating system's secure storage (macOS Keychain; Windows Credential Manager); the Outlook, Jira, Azure DevOps and Slack tokens are encrypted with AES-256-GCM before being written to disk, and the key is held in that secure storage. Versions before 1.1.7 stored these tokens in the settings file without encryption. For Jira this is your site address, email and API token; you can revoke the API token at any time in your Atlassian account</li>
         <li>All API communication uses TLS 1.2 or higher (HTTPS only)</li>
         <li>The Application requests only the permissions listed in Section 2, and requests the Teams permissions only when you use the related feature</li>
         <li>No telemetry, crash reporting, or usage analytics data is transmitted from the Application. The Application does make a few background requests, listed under "Other services" in Section 5; like any web request, they reveal your IP address to those servers</li>
@@ -804,8 +804,8 @@
           </tr>
           <tr>
             <td><strong>Microsoft Corporation</strong> <span class="flag flag-dpdp">Optional</span></td>
-            <td>Azure DevOps work item access, if you connect it — uses either your existing Microsoft sign-in above or a Personal Access Token you enter yourself</td>
-            <td>OAuth or PAT credentials; API requests containing your organization name</td>
+            <td>Azure DevOps work item access, if you connect it — uses your existing Microsoft sign-in above</td>
+            <td>OAuth credentials; API requests containing your organization name</td>
             <td>Microsoft Privacy Statement</td>
           </tr>
           <tr>
@@ -912,7 +912,8 @@
         <thead><tr><th>Data</th><th>Retention Period</th><th>Deletion Method</th></tr></thead>
         <tbody>
           <tr><td>Email, calendar &amp; chat data (in-memory)</td><td>Duration of app session only</td><td>Automatically cleared on app close</td></tr>
-          <tr><td>OAuth tokens</td><td>Until logout or uninstall</td><td>Settings → Log Out or Factory Reset; also delete the "EagleView" entries in Keychain Access / Credential Manager if you uninstall without logging out</td></tr>
+          <tr><td>Microsoft and Gmail sign-in tokens</td><td>Until logout or uninstall</td><td>Settings → Log Out or Factory Reset; also delete the "EagleView" entries in Keychain Access / Credential Manager if you uninstall without logging out</td></tr>
+          <tr><td>Saved Jira, Azure DevOps and Slack connections</td><td>Until you disconnect them. Log Out does not remove them</td><td>The Disconnect button next to each one in Settings, or Factory Reset</td></tr>
           <tr><td>App preferences &amp; notes</td><td>Until uninstall</td><td>Delete the settings and notes files, or uninstall the app</td></tr>
           <tr><td>Diagnostic log</td><td>Last 5 days; older lines removed at each app start and when the Log Viewer is opened</td><td>Factory Reset, or delete the log folder shown in Section 4</td></tr>
           <tr><td>License records (email address, device identifier, license key)</td><td>Duration of license + 1 year for dispute resolution. No automatic deletion at present</td><td>Contact dev@pearlfox.io to request deletion (the event history below is the exception)</td></tr>
@@ -939,7 +940,7 @@
       <div class="rights-grid">
         <div class="right-card"><div class="right-title">Right of Access (Art. 15)</div><p>You can view all data the app accesses directly within Eagle View's interface.</p></div>
         <div class="right-card"><div class="right-title">Right to Erasure (Art. 17)</div><p>Use Settings → Log Out and Factory Reset to erase all locally stored data, including the entries in your operating system's secure storage.</p></div>
-        <div class="right-card"><div class="right-title">Right to Restrict Processing (Art. 18)</div><p>Disconnect your account via Settings → Log Out to stop all data processing.</p></div>
+        <div class="right-card"><div class="right-title">Right to Restrict Processing (Art. 18)</div><p>Use Settings → Log Out to sign out of Microsoft or Gmail, and the Disconnect button to remove Jira, Azure DevOps or Slack.</p></div>
         <div class="right-card"><div class="right-title">Right to Data Portability (Art. 20)</div><p>Your settings file is a standard JSON file you may copy or transfer freely.</p></div>
         <div class="right-card"><div class="right-title">Right to Object (Art. 21)</div><p>Uninstall the Application to cease all data processing immediately.</p></div>
         <div class="right-card"><div class="right-title">Right to Lodge a Complaint</div><p>Contact your national supervisory authority (e.g., ICO, CNIL, BfDI).</p></div>
@@ -1024,7 +1025,7 @@
 
 <footer class="doc-footer">
   <p>© 2026 PearlFox. All rights reserved. &nbsp;·&nbsp; <a href="mailto:dev@pearlfox.io">Contact</a></p>
-  <p style="margin-top:0.5rem; opacity:0.6;">Eagle View is a product of PearlFox. This document was last updated on October 26, 2026. Version 1.6 — brought the policy in line with the current app and website: Microsoft Teams chats and photos and their permissions; a full list of requested permissions; that Eagle View cannot send mail; trial, student (including the uploaded proof and its automatic deletion), company and payment records; Zoho Mail, GitHub, jsDelivr, ibjarates.com, frankfurter.app, Google favicons and Google Fonts; where licensing data is stored (Tokyo, Japan); retention periods; compliance goals shown as in progress rather than achieved; a list of features coming in a future version; and clearer privacy and grievance contacts. Also: trial and activation records, license keys, the license event history (kept as an append-only audit log), the technical logs on our licensing server, and the trial rule corrected to one trial per device. Version 1.5 — added the diagnostic log and Log Viewer (what it holds, where it is, 5-day retention, the downloaded file name, how to erase it). Version 1.4 — corrected how sign-in tokens are stored (secure storage and encryption, and that versions before 1.1.7 did not encrypt them), where notes are stored, and how to erase all local data. Version 1.3 — added disclosure for Jira (Atlassian), Azure DevOps, and Slack: the optional data these integrations access, that Azure DevOps reuses the existing Microsoft sign-in (or an optional Personal Access Token) rather than a separate account, and the Jira issue-transition / Azure work-item-state write actions. Version 1.2 corrected Section 2 to accurately disclose message-body access and the mark-as-read/flag/delete/complete write actions.</p>
+  <p style="margin-top:0.5rem; opacity:0.6;">Eagle View is a product of PearlFox. This document was last updated on October 26, 2026. Version 1.7 — corrected the Jira and Azure DevOps connection details (Jira uses an API token you create, Atlassian sign-in is switched off, no Jira permissions are requested, Jira fields listed correctly, Azure DevOps no longer accepts a Personal Access Token) and what Log Out removes (Jira, Azure DevOps and Slack connections stay until disconnected). Version 1.6 — brought the policy in line with the current app and website: Microsoft Teams chats and photos and their permissions; a full list of requested permissions; that Eagle View cannot send mail; trial, student (including the uploaded proof and its automatic deletion), company and payment records; Zoho Mail, GitHub, jsDelivr, ibjarates.com, frankfurter.app, Google favicons and Google Fonts; where licensing data is stored (Tokyo, Japan); retention periods; compliance goals shown as in progress rather than achieved; a list of features coming in a future version; and clearer privacy and grievance contacts. Also: trial and activation records, license keys, the license event history (kept as an append-only audit log), the technical logs on our licensing server, and the trial rule corrected to one trial per device. Version 1.5 — added the diagnostic log and Log Viewer (what it holds, where it is, 5-day retention, the downloaded file name, how to erase it). Version 1.4 — corrected how sign-in tokens are stored (secure storage and encryption, and that versions before 1.1.7 did not encrypt them), where notes are stored, and how to erase all local data. Version 1.3 — added disclosure for Jira (Atlassian), Azure DevOps, and Slack: the optional data these integrations access, that Azure DevOps reuses the existing Microsoft sign-in (or an optional Personal Access Token) rather than a separate account, and the Jira issue-transition / Azure work-item-state write actions. Version 1.2 corrected Section 2 to accurately disclose message-body access and the mark-as-read/flag/delete/complete write actions.</p>
 </footer>
 </body>
 </html>
