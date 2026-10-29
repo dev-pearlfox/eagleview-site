@@ -449,7 +449,7 @@
 <!-- Hero -->
 <div class="hero">
   <h1>Privacy Policy for <span>Eagle View</span></h1>
-  <p class="hero-meta">Effective Date: October 26, 2026 &nbsp;·&nbsp; Version 1.9 &nbsp;·&nbsp; PearlFox, India</p>
+  <p class="hero-meta">Effective Date: October 28, 2026 &nbsp;·&nbsp; Version 2.0 &nbsp;·&nbsp; PearlFox, India</p>
   <div class="compliance-badges">
     <span class="badge">GDPR · In progress</span>
     <span class="badge">CCPA · In progress</span>
@@ -465,7 +465,7 @@
   <div class="local-callout-inner">
     <div class="icon">🔒</div>
     <strong>Your email, calendar, chat and task content is never sent to PearlFox's servers.</strong>
-    <p>Eagle View reads this content straight from your own accounts and shows it on your device. PearlFox's servers never receive it. Our licensing system receives only the licensing details described in Sections 2 and 5 (for example your email address and a device identifier).</p>
+    <p>Eagle View reads this content straight from your own accounts and shows it on your device. PearlFox's servers never receive it. The only exception is the sign-in code and token of &ldquo;Sign in with Atlassian&rdquo; (see Jira in Section 2): a PearlFox server function forwards them to Atlassian and does not store them. Our licensing system receives only the licensing details described in Sections 2 and 5 (for example your email address and a device identifier).</p>
   </div>
 </div>
 
@@ -538,7 +538,7 @@
           </tr>
           <tr>
             <td><strong>Email message body</strong></td>
-            <td>Full text of a specific message — when you open it to read it in-app, and for the Incidents and Learn4U rows the newest matching mail (see below)</td>
+            <td>Full text of a specific message — when you open it to read it in-app, and for the ServiceNow and Learn4U rows the newest matching mail (see below)</td>
             <td>Display the message content so you can read it without leaving Eagle View</td>
             <td>In-memory only, for that session; not persisted to disk</td>
           </tr>
@@ -564,7 +564,7 @@
             <td><strong>Authentication tokens</strong></td>
             <td>OAuth 2.0 access token, refresh token, expiry timestamp</td>
             <td>Maintain authenticated session without repeated login</td>
-            <td>On your device only. Version 1.1.7 and later: the Gmail sign-in token is stored in your operating system's secure storage (macOS Keychain; Windows Credential Manager), and the Outlook, Jira, Azure DevOps and Slack tokens are encrypted in the local settings file, with the encryption key held in that same secure storage. Versions before 1.1.7 kept these tokens in the settings file without encryption. For Jira this is your site address, email and API token; you can revoke the API token at any time in your Atlassian account.</td>
+            <td>On your device only. <strong>Version 1.1.8 and later:</strong> on macOS, the sign-in tokens for Microsoft (Outlook, Teams and Azure DevOps), Gmail, Jira (when you use &ldquo;Sign in with Atlassian&rdquo;) and ServiceNow, and the key that protects the other saved settings, are kept in your Keychain. On Windows they are kept in Credential Manager. A Jira API token and a Slack token are encrypted with AES-256-GCM before being written to disk, and the key is held in the Keychain or Credential Manager. Azure DevOps stores no secret of its own. For ServiceNow, your organisation's ServiceNow address and the Client ID are saved as plain text in the local settings file; they are not secrets. <strong>Version 1.1.7</strong> kept the Outlook, Jira, Azure DevOps and Slack tokens in the encrypted settings file. <strong>Versions before 1.1.7</strong> kept them in the settings file without encryption. For Jira this is your site address, email and API token; you can revoke the API token at any time in your Atlassian account.</td>
           </tr>
           <tr>
             <td><strong>App settings</strong></td>
@@ -654,7 +654,7 @@
       </table>
 
       <div class="highlight">
-        <strong>Message content is accessed when you open a specific message, and for the Incidents and Learn4U rows as described below.</strong> Eagle View's mail list reads only metadata (sender, subject, time) — the body of a message is fetched when you open that specific message in-app, or for the Incidents and Learn4U rows as described below. Whether reading metadata or a message body, content is processed only in memory for that session and is never stored to disk or transmitted to our servers.
+        <strong>Message content is accessed when you open a specific message, and for the ServiceNow and Learn4U rows as described below.</strong> Eagle View's mail list reads only metadata (sender, subject, time) — the body of a message is fetched when you open that specific message in-app, or for the Incidents and Learn4U rows as described below. Whether reading metadata or a message body, content is processed only in memory for that session and is never stored to disk or transmitted to our servers.
       </div>
       <h3>Write actions you can trigger</h3>
       <p>These actions are available directly from Eagle View's interface. Each one is performed on your connected account only when you click the corresponding button — never automatically, never in the background, and never without you initiating it:</p>
@@ -682,17 +682,26 @@
           <tr><td><strong>Microsoft Teams</strong> <span class="flag flag-dpdp">Optional</span></td><td><code>Chat.Read</code>; <code>Chat.ReadWrite</code> (only when you mark a chat as read); <code>ProfilePhoto.Read.All</code> (only to show avatars)</td><td>Show your recent chats, mark a chat as read, show profile photos</td></tr>
           <tr><td><strong>Azure DevOps</strong> <span class="flag flag-dpdp">Optional</span></td><td><code>499b84ac-1321-427f-aa17-267ca6975798/.default</code>, <code>offline_access</code>, requested with your existing Microsoft sign-in</td><td>Read the Azure DevOps work items assigned to you that are not closed and, only when you click the button, change a work item's state</td></tr>
           <tr><td><strong>Google (Gmail)</strong></td><td><code>gmail.modify</code>, <code>calendar.readonly</code>, <code>openid</code>, <code>email</code>, <code>profile</code></td><td>Read mail and perform the mail actions above, read your calendar, identify your account</td></tr>
-          <tr><td><strong>Jira</strong> <span class="flag flag-dpdp">Optional</span></td><td>None. You connect Jira with your Jira site address, your Atlassian email and an API token you create yourself. &ldquo;Sign in with Atlassian&rdquo; is switched off.</td><td>Read the Jira issues assigned to you and, only when you click the button, change an issue&rsquo;s status</td></tr>
+          <tr><td><strong>Jira</strong> <span class="flag flag-dpdp">Optional</span></td><td>Two ways to connect. With an API token you create yourself: none requested. With &ldquo;Sign in with Atlassian&rdquo;: <code>read:jira-work</code>, <code>write:jira-work</code> (only when you click the button to change an issue&rsquo;s status), <code>read:jira-user</code>, <code>offline_access</code> (to stay signed in).</td><td>Read the Jira issues assigned to you and, only when you click the button, change an issue&rsquo;s status</td></tr>
+          <tr><td><strong>ServiceNow</strong> <span class="flag flag-dpdp">Optional</span></td><td>None requested by Eagle View. You sign in in your web browser (OAuth 2.0 with PKCE, no client secret). By default the sign-in uses ServiceNow&rsquo;s standard permission level; your organisation&rsquo;s ServiceNow administrator can limit it to read-only access to the Table API.</td><td>Read the incidents assigned to you that are still open (up to 100): record id, incident number, priority, state and due date. Eagle View never creates, changes or deletes anything in ServiceNow. The data goes directly between your computer and your organisation&rsquo;s ServiceNow, not through PearlFox&rsquo;s servers.</td></tr>
           <tr><td><strong>Slack</strong> <span class="flag flag-dpdp">Optional</span></td><td><code>channels:read</code>, <code>groups:read</code>, <code>im:read</code>, <code>mpim:read</code>, <code>users:read</code></td><td>List your channels and conversations and read user profiles</td></tr>
         </tbody>
       </table>
       <p>Azure DevOps is connected with your existing Microsoft sign-in.</p>
 
+      <h3>Jira (optional)</h3>
+      <p>There are two ways to connect. (1) With your Jira site address, your Atlassian email and an API token you create yourself: this goes directly from your computer to Atlassian. (2) With &ldquo;Sign in with Atlassian&rdquo; in your web browser. For (2), the one-time code and later the refresh token pass through a PearlFox server function, because Atlassian requires an app secret that cannot be stored safely inside a desktop app. The function only forwards the request to Atlassian and returns the answer. PearlFox does not store these tokens or read your Jira issues. The tokens are kept on your computer in the operating system&rsquo;s secure storage.</p>
+
+      <h3>ServiceNow (Incidents), Learn4U and Peakon rows</h3>
+      <p>These look in your mailbox for mails from a sender address that <em>you</em> save in Settings and whose subject matches the pattern for that row. ServiceNow and Learn4U also check that the mail is addressed to you; Peakon does not. For ServiceNow and Learn4U, the body is read only for the newest mail of each incident or training number, and these lists and bodies are kept in memory only. For Peakon, the app stores on your device a web link to the survey mail, the times it found and answered the survey, and whether you dismissed it. The sender address, subject text and similar settings you enter are also stored on your device.</p>
+
+      <h3>ServiceNow (optional)</h3>
+      <p>If you connect ServiceNow, Eagle View shows your open incidents. There are two ways: by mail (Eagle View reads your own incident notification mails, as described under ServiceNow (Incidents), Learn4U and Peakon rows above) or by signing in to your organisation&rsquo;s ServiceNow in your web browser. With the browser sign-in, your password is typed only in your browser and is never seen by Eagle View. The long-lived sign-in token is kept in your operating system&rsquo;s secure storage and the short-lived token in memory only. Signing out in Settings deletes the saved token.</p>
+
       <h3>Coming in a future version</h3>
       <p><strong>Not in the version you can download today.</strong> The following are in development. We list them now so that you know what a future update will do before you install it:</p>
       <ul>
         <li><strong>Google Chat</strong> (read-only). Shows your recent Google Chat conversations: names of spaces and people, a short preview (up to 80 characters) of the latest message and whether you have read it. It never writes to Google Chat. It adds four read-only Google permissions to the Gmail sign-in: <code>chat.spaces.readonly</code>, <code>chat.messages.readonly</code>, <code>chat.memberships.readonly</code> and <code>chat.users.readstate.readonly</code>. Content is kept in memory only.</li>
-        <li><strong>Incidents, Learn4U and Peakon rows.</strong> These look in your mailbox for mails from a sender address that <em>you</em> save in Settings and whose subject matches the pattern for that row. Incidents and Learn4U also check that the mail is addressed to you; Peakon does not. For Incidents and Learn4U, the body is read only for the newest mail of each incident or training number, and these lists and bodies are kept in memory only. For Peakon, the app stores on your device a web link to the survey mail, the times it found and answered the survey, and whether you dismissed it. The sender address, subject text and similar settings you enter are also stored on your device.</li>
         <li><strong>Time Sheet reminder.</strong> A reminder day that you choose in Settings, stored in the local settings file. The reminder runs entirely on your device.</li>
       </ul>
 
@@ -770,7 +779,7 @@
 
       <h3>Security Measures</h3>
       <ul>
-        <li>Version 1.1.7 and later: the Gmail sign-in token is stored in your operating system's secure storage (macOS Keychain; Windows Credential Manager); the Outlook, Jira, Azure DevOps and Slack tokens are encrypted with AES-256-GCM before being written to disk, and the key is held in that secure storage. Versions before 1.1.7 stored these tokens in the settings file without encryption. For Jira this is your site address, email and API token; you can revoke the API token at any time in your Atlassian account</li>
+        <li><strong>Version 1.1.8 and later:</strong> on macOS, the sign-in tokens for Microsoft (Outlook, Teams and Azure DevOps), Gmail, Jira (when you use &ldquo;Sign in with Atlassian&rdquo;) and ServiceNow, and the key that protects the other saved settings, are kept in your Keychain. On Windows they are kept in Credential Manager. A Jira API token and a Slack token are encrypted with AES-256-GCM before being written to disk, and the key is held in the Keychain or Credential Manager. Azure DevOps stores no secret of its own. For ServiceNow, your organisation's ServiceNow address and the Client ID are saved as plain text in the local settings file; they are not secrets. <strong>Version 1.1.7</strong> kept the Outlook, Jira, Azure DevOps and Slack tokens in the encrypted settings file. <strong>Versions before 1.1.7</strong> kept them in the settings file without encryption. For Jira this is your site address, email and API token; you can revoke the API token at any time in your Atlassian account.</li>
         <li>All API communication uses TLS 1.2 or higher (HTTPS only)</li>
         <li>The Application requests only the permissions listed in Section 2, and requests the Teams permissions only when you use the related feature</li>
         <li>No telemetry, crash reporting, or usage analytics data is transmitted from the Application. The Application does make a few background requests, listed under "Other services" in Section 5; like any web request, they reveal your IP address to those servers</li>
@@ -828,8 +837,8 @@
         <tbody>
           <tr>
             <td><strong>Supabase Inc.</strong></td>
-            <td>License server — stores and validates license, trial, student and company records; holds the private store for student proof files. Data is stored in Tokyo, Japan</td>
-            <td>Email address, device hardware identifier, country, license key, purchase timestamp, payment ID and amount, coupon, trial and activation records, license event history, student application details and proof file, company record</td>
+            <td>License server — stores and validates license, trial, student and company records; holds the private store for student proof files; and forwards the &ldquo;Sign in with Atlassian&rdquo; sign-in exchange to Atlassian without storing it. Data is stored in Tokyo, Japan</td>
+            <td>Email address, device hardware identifier, country, license key, purchase timestamp, payment ID and amount, coupon, trial and activation records, license event history, student application details and proof file, company record. For &ldquo;Sign in with Atlassian&rdquo; only, the one-time code and refresh token pass through the function and are not stored</td>
             <td>Supabase Privacy Policy</td>
           </tr>
           <tr>
@@ -913,7 +922,7 @@
         <tbody>
           <tr><td>Email, calendar &amp; chat data (in-memory)</td><td>Duration of app session only</td><td>Automatically cleared on app close</td></tr>
           <tr><td>Microsoft and Gmail sign-in tokens</td><td>Until logout or uninstall</td><td>Settings → Log Out or Factory Reset; also delete the "EagleView" entries in Keychain Access / Credential Manager if you uninstall without logging out</td></tr>
-          <tr><td>Saved Jira, Azure DevOps and Slack connections</td><td>Until you disconnect them. Log Out does not remove them</td><td>The Disconnect button next to each one in Settings, or Factory Reset</td></tr>
+          <tr><td>Saved Jira, Azure DevOps, Slack and ServiceNow connections</td><td>Until you sign out of them. Log Out does not remove them</td><td>The Sign out button next to each one in Settings, or Factory Reset</td></tr>
           <tr><td>App preferences &amp; notes</td><td>Until uninstall</td><td>Delete the settings and notes files, or uninstall the app</td></tr>
           <tr><td>Diagnostic log</td><td>Last 5 days; older lines removed at each app start and when the Log Viewer is opened</td><td>Factory Reset, or delete the log folder shown in Section 4</td></tr>
           <tr><td>License records (email address, device identifier, license key)</td><td>Duration of license + 1 year for dispute resolution. No automatic deletion at present</td><td>Contact dev@pearlfox.io to request deletion (the event history below is the exception)</td></tr>
@@ -940,7 +949,7 @@
       <div class="rights-grid">
         <div class="right-card"><div class="right-title">Right of Access (Art. 15)</div><p>You can view all data the app accesses directly within Eagle View's interface.</p></div>
         <div class="right-card"><div class="right-title">Right to Erasure (Art. 17)</div><p>Use Settings → Log Out and Factory Reset to erase all locally stored data, including the entries in your operating system's secure storage.</p></div>
-        <div class="right-card"><div class="right-title">Right to Restrict Processing (Art. 18)</div><p>Use Settings → Log Out to sign out of Microsoft or Gmail, and the Disconnect button to remove Jira, Azure DevOps or Slack.</p></div>
+        <div class="right-card"><div class="right-title">Right to Restrict Processing (Art. 18)</div><p>Use Settings → Log Out to sign out of Microsoft or Gmail, and the Sign out button next to Jira, Azure DevOps, Slack or ServiceNow to remove them.</p></div>
         <div class="right-card"><div class="right-title">Right to Data Portability (Art. 20)</div><p>Your settings file is a standard JSON file you may copy or transfer freely.</p></div>
         <div class="right-card"><div class="right-title">Right to Object (Art. 21)</div><p>Uninstall the Application to cease all data processing immediately.</p></div>
         <div class="right-card"><div class="right-title">Right to Lodge a Complaint</div><p>Contact your national supervisory authority (e.g., ICO, CNIL, BfDI).</p></div>
@@ -1025,7 +1034,7 @@
 
 <footer class="doc-footer">
   <p>© 2026 PearlFox. All rights reserved. &nbsp;·&nbsp; <a href="mailto:dev@pearlfox.io">Contact</a></p>
-  <p style="margin-top:0.5rem; opacity:0.6;">Eagle View is a product of PearlFox. This document was last updated on October 26, 2026. Version 1.9 — the highlighted note on message content now also names the Incidents and Learn4U mails, and says open instead of click. Version 1.8 — the email message body row now also names the Incidents and Learn4U mails. Version 1.7 — corrected the Jira and Azure DevOps connection details (Jira uses an API token you create, Atlassian sign-in is switched off, no Jira permissions are requested, Jira fields listed correctly, Azure DevOps no longer accepts a Personal Access Token) and what Log Out removes (Jira, Azure DevOps and Slack connections stay until disconnected). Version 1.6 — brought the policy in line with the current app and website: Microsoft Teams chats and photos and their permissions; a full list of requested permissions; that Eagle View cannot send mail; trial, student (including the uploaded proof and its automatic deletion), company and payment records; Zoho Mail, GitHub, jsDelivr, ibjarates.com, frankfurter.app, Google favicons and Google Fonts; where licensing data is stored (Tokyo, Japan); retention periods; compliance goals shown as in progress rather than achieved; a list of features coming in a future version; and clearer privacy and grievance contacts. Also: trial and activation records, license keys, the license event history (kept as an append-only audit log), the technical logs on our licensing server, and the trial rule corrected to one trial per device. Version 1.5 — added the diagnostic log and Log Viewer (what it holds, where it is, 5-day retention, the downloaded file name, how to erase it). Version 1.4 — corrected how sign-in tokens are stored (secure storage and encryption, and that versions before 1.1.7 did not encrypt them), where notes are stored, and how to erase all local data. Version 1.3 — added disclosure for Jira (Atlassian), Azure DevOps, and Slack: the optional data these integrations access, that Azure DevOps reuses the existing Microsoft sign-in (or an optional Personal Access Token) rather than a separate account, and the Jira issue-transition / Azure work-item-state write actions. Version 1.2 corrected Section 2 to accurately disclose message-body access and the mark-as-read/flag/delete/complete write actions.</p>
+  <p style="margin-top:0.5rem; opacity:0.6;">Eagle View is a product of PearlFox. This document was last updated on October 28, 2026. Version 2.0 — added ServiceNow (sign-in in your browser, or by mail) and moved the ServiceNow (Incidents), Learn4U and Peakon mail rows into the main text; added &ldquo;Sign in with Atlassian&rdquo; for Jira and the PearlFox server function that forwards it; where sign-in tokens are kept; &ldquo;Disconnect&rdquo; is now &ldquo;Sign out&rdquo;. Version 1.9 — the highlighted note on message content now also names the Incidents and Learn4U mails, and says open instead of click. Version 1.8 — the email message body row now also names the Incidents and Learn4U mails. Version 1.7 — corrected the Jira and Azure DevOps connection details (Jira uses an API token you create, Atlassian sign-in is switched off, no Jira permissions are requested, Jira fields listed correctly, Azure DevOps no longer accepts a Personal Access Token) and what Log Out removes (Jira, Azure DevOps and Slack connections stay until disconnected). Version 1.6 — brought the policy in line with the current app and website: Microsoft Teams chats and photos and their permissions; a full list of requested permissions; that Eagle View cannot send mail; trial, student (including the uploaded proof and its automatic deletion), company and payment records; Zoho Mail, GitHub, jsDelivr, ibjarates.com, frankfurter.app, Google favicons and Google Fonts; where licensing data is stored (Tokyo, Japan); retention periods; compliance goals shown as in progress rather than achieved; a list of features coming in a future version; and clearer privacy and grievance contacts. Also: trial and activation records, license keys, the license event history (kept as an append-only audit log), the technical logs on our licensing server, and the trial rule corrected to one trial per device. Version 1.5 — added the diagnostic log and Log Viewer (what it holds, where it is, 5-day retention, the downloaded file name, how to erase it). Version 1.4 — corrected how sign-in tokens are stored (secure storage and encryption, and that versions before 1.1.7 did not encrypt them), where notes are stored, and how to erase all local data. Version 1.3 — added disclosure for Jira (Atlassian), Azure DevOps, and Slack: the optional data these integrations access, that Azure DevOps reuses the existing Microsoft sign-in (or an optional Personal Access Token) rather than a separate account, and the Jira issue-transition / Azure work-item-state write actions. Version 1.2 corrected Section 2 to accurately disclose message-body access and the mark-as-read/flag/delete/complete write actions.</p>
 </footer>
 </body>
 </html>

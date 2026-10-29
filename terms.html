@@ -449,7 +449,7 @@
 <!-- Hero -->
 <div class="hero">
   <h1>Terms of Service for <span>Eagle View</span></h1>
-  <p class="hero-meta">Effective Date: October 26, 2026 &nbsp;·&nbsp; Version 1.3 &nbsp;·&nbsp; PearlFox, India</p>
+  <p class="hero-meta">Effective Date: October 28, 2026 &nbsp;·&nbsp; Version 1.4 &nbsp;·&nbsp; PearlFox, India</p>
   <div class="compliance-badges">
     <span class="badge">India Contract Act, 1872</span>
     <span class="badge">IT Act, 2000</span>
@@ -598,22 +598,24 @@
         <div class="section-num">8</div>
         <h2>Third-Party Services</h2>
       </div>
-      <p>Eagle View integrates with third-party platforms at your direction, including Microsoft (Outlook Mail, Calendar), Google (Gmail), and optionally Jira, Azure DevOps, Microsoft Teams, and Slack. Your use of each connected platform remains subject to that platform's own terms of service and privacy policy, which PearlFox does not control.</p>
+      <p>Eagle View integrates with third-party platforms at your direction, including Microsoft (Outlook Mail, Calendar), Google (Gmail), and optionally Jira, ServiceNow, Azure DevOps, Microsoft Teams, and Slack. Your use of each connected platform remains subject to that platform's own terms of service and privacy policy, which PearlFox does not control.</p>
       <table class="data-table">
         <thead><tr><th>Provider</th><th>Role</th></tr></thead>
         <tbody>
           <tr><td><strong>Microsoft Corporation</strong></td><td>Outlook email &amp; calendar access via Microsoft Graph API; Teams and, if connected, Azure DevOps work item access, both via the same Microsoft sign-in</td></tr>
           <tr><td><strong>Google LLC</strong></td><td>Gmail access via the Gmail API</td></tr>
           <tr><td><strong>Atlassian Pty Ltd</strong></td><td>Jira issue access via Atlassian's REST API, if connected</td></tr>
+          <tr><td><strong>ServiceNow, Inc.</strong></td><td>Incident access through ServiceNow's REST API, or through your own incident notification mails, if connected</td></tr>
           <tr><td><strong>Slack Technologies, LLC</strong></td><td>Channel, DM, and user profile access via Slack's Web API, if connected</td></tr>
           <tr><td><strong>Razorpay Software Pvt. Ltd.</strong></td><td>Payment processing for license purchases</td></tr>
-          <tr><td><strong>Supabase Inc.</strong></td><td>License server: stores and validates license, trial, student and company records</td></tr>
+          <tr><td><strong>Supabase Inc.</strong></td><td>License server: stores and validates license, trial, student and company records; and forwards the &ldquo;Sign in with Atlassian&rdquo; exchange without storing it</td></tr>
           <tr><td><strong>Resend Inc.</strong></td><td>Transactional email delivery (license key, student application and decision emails, and trial and license expiry reminders)</td></tr>
           <tr><td><strong>Zoho Corporation</strong> (Zoho Mail)</td><td>Hosts the dev@pearlfox.io mailbox for invoice requests, privacy requests and support</td></tr>
           <tr><td><strong>GitHub</strong></td><td>Hosts the website and installer downloads; serves the update check</td></tr>
         </tbody>
       </table>
       <p>PearlFox is not responsible for the availability, accuracy, or practices of these third-party services. If a third-party provider changes or discontinues an API that Eagle View relies on, related functionality may be affected and PearlFox will make reasonable efforts to notify users, but cannot guarantee uninterrupted access to any third-party integration.</p>
+      <p>If your organisation provides a connected system such as ServiceNow or Jira, your organisation&rsquo;s own policies also apply, and your organisation may restrict or withdraw your access at any time. PearlFox does not control this.</p>
     </section>
 
     <!-- 9. Intellectual Property -->
@@ -623,7 +625,7 @@
         <h2>Intellectual Property</h2>
       </div>
       <p>Eagle View, including its software, design, branding, logos, and documentation, is the property of PearlFox and is protected by applicable copyright, trademark, and other intellectual property laws. These Terms do not grant you any ownership rights in the Application — only the limited license described in Section 4.</p>
-      <p>Microsoft, Google, and other third-party names, logos, and trademarks referenced in the Application or on this website belong to their respective owners and are used solely to describe integration compatibility.</p>
+      <p>Microsoft, Google, Atlassian, ServiceNow, Slack and other third-party names, logos, and trademarks referenced in the Application or on this website belong to their respective owners and are used solely to describe integration compatibility. Eagle View is an independent product of PearlFox and is not affiliated with, endorsed by or sponsored by these companies.</p>
     </section>
 
     <!-- 10. Disclaimer of Warranties -->
@@ -691,6 +693,7 @@
       <p style="margin-top:1.25rem; font-size:0.82rem; color:var(--muted);">
         <strong style="color:var(--text)">Business address:</strong> PearlFox, Door No. A13, Gandhi Market W, (Opp. Police Station), Oddanchatram, Dindigul – 624619, India<br>
         <strong style="color:var(--text)">Support:</strong> dev@pearlfox.io<br>
+        <strong style="color:var(--text)">Security:</strong> admin@pearlfox.io (security questions and reports; we reply within 7 days)<br>
         <strong style="color:var(--text)">Phone:</strong> +91 88258 90877
       </p>
     </section>
@@ -700,7 +703,7 @@
 
 <footer class="doc-footer">
   <p>© 2026 PearlFox. All rights reserved. &nbsp;·&nbsp; <a href="mailto:dev@pearlfox.io">Contact</a> &nbsp;·&nbsp; <a href="privacy.html">Privacy Policy</a></p>
-  <p style="margin-top:0.5rem; opacity:0.6;">Eagle View is a product of PearlFox. This document was last updated on October 26, 2026. Version 1.3 — corrected the Azure DevOps connection: it uses your Microsoft sign-in only and no longer accepts a Personal Access Token. Version 1.2 — corrected what is processed on your device and what is held on our licensing server (including trial, activation and license-event records and server logs), and added Zoho Mail and GitHub to the Third-Party Services table. Version 1.1 — added Jira (Atlassian) and Slack rows to the Third-Party Services table, and noted that Teams and Azure DevOps use the same Microsoft sign-in as Outlook (Azure DevOps can alternatively use a self-entered Personal Access Token).</p>
+  <p style="margin-top:0.5rem; opacity:0.6;">Eagle View is a product of PearlFox. This document was last updated on October 28, 2026. Version 1.4 — added ServiceNow to the Third-Party Services table; noted that your organisation&rsquo;s own policies also apply to connected systems; added that Eagle View is not affiliated with the third-party companies it names; added the security contact. Version 1.3 — corrected the Azure DevOps connection: it uses your Microsoft sign-in only and no longer accepts a Personal Access Token. Version 1.2 — corrected what is processed on your device and what is held on our licensing server (including trial, activation and license-event records and server logs), and added Zoho Mail and GitHub to the Third-Party Services table. Version 1.1 — added Jira (Atlassian) and Slack rows to the Third-Party Services table, and noted that Teams and Azure DevOps use the same Microsoft sign-in as Outlook (Azure DevOps can alternatively use a self-entered Personal Access Token).</p>
 </footer>
 </body>
 </html>
