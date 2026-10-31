@@ -1,10 +1,10 @@
 {
-  "version": "1.1.7",
+  "version": "1.1.8",
   "url": "https://eagleview.pearlfox.io/",
-  "notes": "Smoother Settings transition, Quick Links quick-add, trial/license reliability fixes",
+  "notes": "ServiceNow and Jira browser sign-in, Incidents row, Learn4U and Peakon rows, Time Sheet reminder settings",
   "platforms": {
-    "macos_silicon": "https://github.com/dev-pearlfox/eagleview-site/releases/download/v1.1.7/Eagle.View_1.1.7_aarch64.dmg",
-    "macos_intel": "https://github.com/dev-pearlfox/eagleview-site/releases/download/v1.1.7/Eagle.View_1.1.7_x64.dmg",
-    "windows": "https://github.com/dev-pearlfox/eagleview-site/releases/download/v1.1.7/Eagle.View_1.1.7_x64-setup.exe"
+    "macos_silicon": "https://github.com/dev-pearlfox/eagleview-site/releases/download/v1.1.8/Eagle.View_1.1.8_aarch64.dmg",
+    "macos_intel": "https://github.com/dev-pearlfox/eagleview-site/releases/download/v1.1.8/Eagle.View_1.1.8_x64.dmg",
+    "windows": "https://github.com/dev-pearlfox/eagleview-site/releases/download/v1.1.8/Eagle.View_1.1.8_x64-setup.exe"
   }
 }
