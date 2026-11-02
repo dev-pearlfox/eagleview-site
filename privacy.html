@@ -564,7 +564,7 @@
             <td><strong>Authentication tokens</strong></td>
             <td>OAuth 2.0 access token, refresh token, expiry timestamp</td>
             <td>Maintain authenticated session without repeated login</td>
-            <td>On your device only. <strong>Version 1.1.8 and later:</strong> on macOS, the sign-in tokens for Microsoft (Outlook, Teams and Azure DevOps), Gmail, Jira (when you use &ldquo;Sign in with Atlassian&rdquo;) and ServiceNow, and the key that protects the other saved settings, are kept in your Keychain. On Windows they are kept in Credential Manager. A Jira API token and a Slack token are encrypted with AES-256-GCM before being written to disk, and the key is held in the Keychain or Credential Manager. Azure DevOps stores no secret of its own. For ServiceNow, your organisation's ServiceNow address and the Client ID are saved as plain text in the local settings file; they are not secrets. <strong>Version 1.1.7</strong> kept the Outlook, Jira, Azure DevOps and Slack tokens in the encrypted settings file. <strong>Versions before 1.1.7</strong> kept them in the settings file without encryption. For Jira this is your site address, email and API token; you can revoke the API token at any time in your Atlassian account.</td>
+            <td>On your device only. <strong>Version 1.1.8 and later:</strong> on macOS, the sign-in tokens for Microsoft (Outlook, Teams and Azure DevOps), Gmail, Jira (when you use &ldquo;Sign in with Atlassian&rdquo;) and ServiceNow, and the key that protects the other saved settings, are kept in your Keychain. On Windows they are meant to be kept in Credential Manager (we have not yet been able to test the Windows version on a real PC). A Jira API token and a Slack token are encrypted with AES-256-GCM before being written to disk, and the key is held in the Keychain or Credential Manager. Azure DevOps stores no secret of its own. For ServiceNow, your organisation's ServiceNow address and the Client ID are saved as plain text in the local settings file; they are not secrets. <strong>Version 1.1.7</strong> kept the Outlook, Jira, Azure DevOps and Slack tokens in the encrypted settings file. <strong>Versions before 1.1.7</strong> kept them in the settings file without encryption. For Jira this is your site address, email and API token; you can revoke the API token at any time in your Atlassian account.</td>
           </tr>
           <tr>
             <td><strong>App settings</strong></td>
@@ -698,6 +698,9 @@
       <h3>ServiceNow (optional)</h3>
       <p>If you connect ServiceNow, Eagle View shows your open incidents. There are two ways: by mail (Eagle View reads your own incident notification mails, as described under ServiceNow (Incidents), Learn4U and Peakon rows above) or by signing in to your organisation&rsquo;s ServiceNow in your web browser. With the browser sign-in, your password is typed only in your browser and is never seen by Eagle View. The long-lived sign-in token is kept in your operating system&rsquo;s secure storage and the short-lived token in memory only. Signing out in Settings deletes the saved token.</p>
 
+      <h3>Clipboard</h3>
+      <p>Some Settings boxes have a paste button. Eagle View reads your clipboard only at the moment you press that button, and puts the first line of it into the box you are filling. It does not read the clipboard at any other time, does not write it to the log, and does not send it to PearlFox.</p>
+
       <h3>Coming in a future version</h3>
       <p><strong>Not in the version you can download today.</strong> The following are in development. We list them now so that you know what a future update will do before you install it:</p>
       <ul>
@@ -747,7 +750,7 @@
         <tbody>
           <tr>
             <td><strong>eagle-view-settings.json</strong></td>
-            <td>macOS: <code>~/Library/Application Support/com.manojpro.eagleview/</code><br>Windows: <code>%APPDATA%\com.manojpro.eagleview\</code></td>
+            <td>macOS: <code>~/Library/Application Support/io.pearlfox.eagleview/</code><br>Windows: <code>%APPDATA%\io.pearlfox.eagleview\</code></td>
             <td>Encrypted sign-in tokens (see Security Measures), widget preferences, reminder data</td>
           </tr>
           <tr>
@@ -757,7 +760,7 @@
           </tr>
           <tr>
             <td><strong>Eagle View.log</strong></td>
-            <td>macOS: <code>~/Library/Logs/com.manojpro.eagleview/</code><br>Windows: <code>%LOCALAPPDATA%\com.manojpro.eagleview\logs\</code></td>
+            <td>macOS: <code>~/Library/Logs/io.pearlfox.eagleview/</code><br>Windows: <code>%LOCALAPPDATA%\io.pearlfox.eagleview\logs\</code></td>
             <td>Diagnostic log (see below). Plain text, not encrypted. Only the last 5 days are kept</td>
           </tr>
           <tr>
@@ -779,7 +782,7 @@
 
       <h3>Security Measures</h3>
       <ul>
-        <li><strong>Version 1.1.8 and later:</strong> on macOS, the sign-in tokens for Microsoft (Outlook, Teams and Azure DevOps), Gmail, Jira (when you use &ldquo;Sign in with Atlassian&rdquo;) and ServiceNow, and the key that protects the other saved settings, are kept in your Keychain. On Windows they are kept in Credential Manager. A Jira API token and a Slack token are encrypted with AES-256-GCM before being written to disk, and the key is held in the Keychain or Credential Manager. Azure DevOps stores no secret of its own. For ServiceNow, your organisation's ServiceNow address and the Client ID are saved as plain text in the local settings file; they are not secrets. <strong>Version 1.1.7</strong> kept the Outlook, Jira, Azure DevOps and Slack tokens in the encrypted settings file. <strong>Versions before 1.1.7</strong> kept them in the settings file without encryption. For Jira this is your site address, email and API token; you can revoke the API token at any time in your Atlassian account.</li>
+        <li><strong>Version 1.1.8 and later:</strong> on macOS, the sign-in tokens for Microsoft (Outlook, Teams and Azure DevOps), Gmail, Jira (when you use &ldquo;Sign in with Atlassian&rdquo;) and ServiceNow, and the key that protects the other saved settings, are kept in your Keychain. On Windows they are meant to be kept in Credential Manager (we have not yet been able to test the Windows version on a real PC). A Jira API token and a Slack token are encrypted with AES-256-GCM before being written to disk, and the key is held in the Keychain or Credential Manager. Azure DevOps stores no secret of its own. For ServiceNow, your organisation's ServiceNow address and the Client ID are saved as plain text in the local settings file; they are not secrets. <strong>Version 1.1.7</strong> kept the Outlook, Jira, Azure DevOps and Slack tokens in the encrypted settings file. <strong>Versions before 1.1.7</strong> kept them in the settings file without encryption. For Jira this is your site address, email and API token; you can revoke the API token at any time in your Atlassian account.</li>
         <li>All API communication uses TLS 1.2 or higher (HTTPS only)</li>
         <li>The Application requests only the permissions listed in Section 2, and requests the Teams permissions only when you use the related feature</li>
         <li>No telemetry, crash reporting, or usage analytics data is transmitted from the Application. The Application does make a few background requests, listed under "Other services" in Section 5; like any web request, they reveal your IP address to those servers</li>

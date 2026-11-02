@@ -7,7 +7,7 @@ import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
 //                     deployments keep working until the secret is added)
 
 const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY')!
-const TO_EMAIL       = Deno.env.get('NOTIFY_TO_EMAIL') || 'manojkmahesh@gmail.com'
+const TO_EMAIL       = Deno.env.get('NOTIFY_TO_EMAIL') || 'dev@pearlfox.io'
 const FROM_EMAIL     = 'tester@pearlfox.io'
 const TESTCASE_URL   = 'https://eagleview.pearlfox.io/eagleview/testcase/'
 
